@@ -8,7 +8,7 @@ Actually your dataset can be imported in format defined [here](https://jekyllrb.
 
 All dataset shall have a "lan" and "lon" fields.
 
-You can contribute to this project [here]()
+You can contribute to this project [here](https://github.com/iltempe/jmap)
 
 In your about page please put the credits:
 
