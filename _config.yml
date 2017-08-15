@@ -15,7 +15,7 @@
 # in the templates via {{ site.myvariable }}.
 title: JMAP
 email: mtempestini@gmail.com
-description: This is JMAP created and distribute with MIT licence.The framework is designed based on Jekyll to generate maps from data.
+description: This is JMAP. The framework is designed in collaborative way, based on Jekyll to generate maps from data. Created and distribute with MIT licence.
 baseurl: "/jmap" # the subpath of your site, e.g. /blog
 url: "https://iltempe.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: il_tempe
