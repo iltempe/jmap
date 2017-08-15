@@ -1,0 +1,66 @@
+---
+layout: default
+---
+<article class="map">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.0/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js"></script>
+
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title | escape }}</h1>
+    <a href={{ page.source | escape }}>Data Source</a>
+    
+  </header>
+
+  <style>
+    #map{ height: 500px }
+  </style>
+
+  <div class="row"> <div class="col-md-2"></div><div class="col-md-4"> <div id="map"></div> </div> </div>
+
+  <script>
+    var houseMarker = L.AwesomeMarkers.icon({
+    icon: '{{page.icon}}',
+    prefix: 'fa',
+    markerColor: '{{page.colour}}'
+    });
+
+    var markerList=[];
+
+    {% assign data_file = page.dataset %}
+    {% for member in site.data[data_file] %}
+      markerList.push([{{member.lat}}, {{member.lon}}]);
+    {% endfor %}
+
+    // init map
+    var map = L.map('map')
+
+    // create the tile layer with correct attribution
+    var osmUrl='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+    var osmAttrib='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>';
+    var osm = new L.TileLayer(osmUrl, {minZoom: 6, maxZoom: 19, attribution: osmAttrib});
+    var sumLat = 0.;
+    var sumLon = 0.;
+    var countMarkers=0;
+
+    //map the markers
+    for (var i=0; i<markerList.length; i++) {
+            var lat = markerList[i][0];
+            var lon = markerList[i][1];
+            if (!isNaN(lat) && !isNaN(lon)) {
+              var markerLocation = new L.LatLng(lat, lon);
+              var marker = new L.Marker(markerLocation, { icon: houseMarker} );
+              map.addLayer(marker);
+              sumLat += lat;
+              sumLon += lon;
+              countMarkers++;
+            }
+    }
+
+    //add the layer
+    map.addLayer(osm).setView([sumLat / countMarkers, sumLon / countMarkers], 6);
+    </script>
+
+</article>
