@@ -1,44 +1,69 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-
 # Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-title: JMAP
-email: mtempestini@gmail.com
-description: This is JMAP. The framework is designed in collaborative way, based on Jekyll to generate maps from data. Created and distribute with MIT licence.
-baseurl: "/jmap" # the subpath of your site, e.g. /blog
-url: "https://iltempe.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: il_tempe
-github_username:  iltempe
+ title: "JMAP"
+ description: "This is JMAP. The framework is designed in collaborative way, based on Jekyll to generate maps from data. Created and distribute with MIT licence."
 
-collections:
+ collections:
   maps:
     output: true
+    permalink: /:collection/:name
 
-# Build settings
-markdown: kramdown
-theme: minima
-plugins:
-  - jekyll-feed
 
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+ email: mtempestini@gmail.com
+
+#blog logo
+ logo: "/assets/images/logo.jpg"
+ float_logo: true # true, false (default)
+
+# blog cover
+ cover: "/assets/images/back.jpeg"
+
+ name: 'Matteo Tempestini'
+ author: 'Matteo Tempestini'
+ author_image: "/assets/images/logo.jpg"
+
+ paginate:	5
+
+ url: "https://iltempe.github.io" # the base hostname & protocol for your site
+ baseurl: "/jmap"
+
+#used to display twitter cards
+ twitter_handle: '@il_tempe'
+
+#fill in disqus shortname to use disqus
+#disqus: disqus-shortname
+
+#google_analytics: UA-XXXXX-X
+
+# social icons and sharing options
+ social:
+  - icon:	twitter
+    url:	https://twitter.com/il_tempe
+    desc: Follow me on twitter
+    share_url: http://twitter.com/share
+    share_title: ?text=
+    share_link: "&amp;url="
+
+#  - icon:	facebook
+#    url:	https://facebook.com/???
+#    desc: Connect with me facebook
+#    share_url: https://www.facebook.com/sharer.php
+#    share_title: ?t=
+#    share_link: "&amp;u="
+
+  - icon:	github
+    url:	https://github.com/iltempe/jmap
+    desc:	Fork me on github
+    share_url: https://github.com/iltempe/jmap
+    share_title: JMAP
+    share_link: https://github.com/iltempe/jmap
+
+#  - icon:	google-plus
+#    url:	https://google.com/???
+#    desc:	Add me on google+
+#    share_url:
+#    share_title:
+#    share_link:
+
+ plugins:
+  - jemoji
+  - jekyll-paginate
