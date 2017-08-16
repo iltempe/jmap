@@ -14,6 +14,8 @@ In your about page please put the credits:
 
 This is JMAP is a collaborative project launched by [Matteo Tempestini](http://iltempe.github.io) to generate a website of maps with [Jekyll](https://jekyllrb.com/).
 
+Maps are generated with [Leaflet](http://leafletjs.com/) and [Icons](http://fontawesome.io/license/)
+
 You can find the source code for Jekyll at GitHub:
 [jekyll][jekyll-organization] /
 [jekyll](https://github.com/jekyll/jekyll)
