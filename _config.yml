@@ -11,7 +11,7 @@
  email: mtempestini@gmail.com
 
 #blog logo
- logo: "/logo.jpg"
+ logo: "https://github.com/iltempe/jmap/blob/master/logo.jpg?raw=true"
  float_logo: true # true, false (default)
 
 # blog cover
@@ -19,7 +19,7 @@
 
 name: 'Matteo Tempestini'
 author: 'Matteo Tempestini'
-author_image: "/logo.jpg"
+author_image: ""
 
  paginate:	5
 
