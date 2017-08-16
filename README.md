@@ -1,5 +1,7 @@
 # JMAP
 
+[![Join the chat at https://gitter.im/jmap_repo/Lobby](https://badges.gitter.im/jmap_repo/Lobby.svg)](https://gitter.im/jmap_repo/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 JMAP is a web map generator based on [Jekyll](https://github.com/jekyll/jekyll).
 
 You can use it to generate maps with tags of map in _maps folder inserted in markdown files and data put in _data folder.
