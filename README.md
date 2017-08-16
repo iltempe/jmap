@@ -16,6 +16,4 @@ JMAP is a collaborative project launched by [Matteo Tempestini](http://iltempe.g
 
 JMAP is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+You can find the source code for Jekyll at GitHub: [jekyll](https://github.com/jekyll/jekyll)
