@@ -11,15 +11,15 @@
  email: mtempestini@gmail.com
 
 #blog logo
- logo: "/assets/images/logo.jpg"
+ logo: "https://github.com/iltempe/jmap/blob/master/assets/images/logo.jpg?raw=true"
  float_logo: true # true, false (default)
 
 # blog cover
  cover: "/assets/images/back.jpeg"
 
- name: 'Matteo Tempestini'
- author: 'Matteo Tempestini'
- author_image: "/assets/images/logo.jpg"
+name: 'Matteo Tempestini'
+author: 'Matteo Tempestini'
+author_image: "https://github.com/iltempe/jmap/blob/master/assets/images/logo.jpg?raw=true"
 
  paginate:	5
 
