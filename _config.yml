@@ -23,7 +23,7 @@ author_image: "/assets/images/logo.jpeg"
 
  paginate:	5
 
- url: "http://iltempe.github.io" # the base hostname & protocol for your site
+ url: "https://iltempe.github.io" # the base hostname & protocol for your site
  baseurl: "/jmap"
 
 #used to display twitter cards
