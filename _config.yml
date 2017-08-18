@@ -19,7 +19,7 @@
 
 name: 'Matteo Tempestini'
 author: 'Matteo Tempestini'
-author_image: "https://github.com/iltempe/jmap/blob/master/assets/images/logo.jpg?raw=true"
+author_image: "/assets/images/logo.jpeg"
 
  paginate:	5
 
