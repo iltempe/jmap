@@ -1,11 +1,16 @@
 ---
 layout: page_map
 ---
-<link rel="stylesheet" href="https://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
-<script src="https://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" integrity="sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA==" crossorigin=""></script>
 
 <link rel="stylesheet" href="{{"/assets/leaflet.awesome-markers.css" | prepend: site.baseurl }}">
 <script type="text/javascript" src="{{"/assets/js/leaflet.awesome-markers.js" | prepend: site.baseurl  }}"></script>
+
+<link rel="stylesheet" href="{{"/assets/MarkerCluster.css" | prepend: site.baseurl }}">
+<link rel="stylesheet" href="{{"/assets/MarkerCluster.Default.css" | prepend: site.baseurl }}">
+<script type="text/javascript" src="{{"/assets/js/leaflet.markercluster-src.js" | prepend: site.baseurl  }}"></script>
+
 
 <article class="map">
 
@@ -37,14 +42,15 @@ layout: page_map
     {% endfor %}
 
     // init map
-    var map = L.map('map')
+    var map = L.map('map');
+    var markers = L.markerClusterGroup();
 
     // create the tile layer with correct attribution
     var osm = new L.TileLayer(osmUrl, {minZoom: 6, maxZoom: 19, attribution: osmAttrib});
     var sumLat = 0.;
     var sumLon = 0.;
     var countMarkers=0;
-    console.log(Marker);
+
     //map the markers
     for (var i=0; i<markerList.length; i++) {
             var lat = markerList[i][0];
@@ -52,15 +58,23 @@ layout: page_map
             if (!isNaN(lat) && !isNaN(lon)) {
               var markerLocation = new L.LatLng(lat, lon);
               var marker = new L.Marker(markerLocation, {icon: Marker});
-              map.addLayer(marker);
+              if({{page.cluster}})
+              {
+                markers.addLayer(marker);
+              }else{
+                map.addLayer(marker);
+              }
               sumLat += lat;
               sumLon += lon;
               countMarkers++;
             }
     }
+    if({{page.cluster}})
+    {
+      map.addLayer(markers);
+    }
+      map.addLayer(osm).setView([sumLat / countMarkers, sumLon / countMarkers], 6);
 
-    //add the layer
-    map.addLayer(osm).setView([sumLat / countMarkers, sumLon / countMarkers], 6);
     </script>
 
 </article>
