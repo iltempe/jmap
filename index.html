@@ -34,11 +34,19 @@ layout: default
     <ul class="map-list">
       {% for post in site.maps %}
 
-          <h2>
-            <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
-          </h2>
-            {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
-            <span class="post-meta">{{ post.date | date: date_format }}</span>
+      <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
+        <div class="article-item">
+          <header class="post-header">
+            <h2 class="post-title" itemprop="name"><a href="{{ post.url | prepend: site.baseurl }}" itemprop="url">{{ post.title }}</a></h2>
+          </header>
+          <section class="post-excerpt" itemprop="description">
+            <p>{{ post.description | strip_html | truncatewords: 50 }}</p>
+          </section>
+          <div class="post-meta">
+            <time datetime="{{ post.date | date_to_long_string }}">{{ post.date | date_to_long_string }}</time>
+          </div>
+        </div>
+      </article>
 
       {% endfor %}
     </ul>
