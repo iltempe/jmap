@@ -4,13 +4,19 @@ layout: page_map
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="" />
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" integrity="sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA==" crossorigin=""></script>
 
-<link rel="stylesheet" href="{{"/assets/leaflet.awesome-markers.css" | prepend: site.baseurl }}">
+<link rel="stylesheet" href="{{"/assets/css/leaflet.awesome-markers.css" | prepend: site.baseurl }}">
 <script type="text/javascript" src="{{"/assets/js/leaflet.awesome-markers.js" | prepend: site.baseurl  }}"></script>
 
-<link rel="stylesheet" href="{{"/assets/MarkerCluster.css" | prepend: site.baseurl }}">
-<link rel="stylesheet" href="{{"/assets/MarkerCluster.Default.css" | prepend: site.baseurl }}">
-<script type="text/javascript" src="{{"/assets/js/leaflet.markercluster-src.js" | prepend: site.baseurl  }}"></script>
+<link rel="stylesheet" href="{{"/assets/css/gh-fork-ribbon.css"| prepend: site.baseurl }}">
+<script type="text/javascript" src="{{"/assets/js/leaflet-providers.js" | prepend: site.baseurl  }}"></script>
 
+<!--[if IE]>
+  <link rel="stylesheet" href="css/gh-fork-ribbon.ie.css" />
+<![endif]-->
+
+<link rel="stylesheet" href="{{"/assets/css/MarkerCluster.css" | prepend: site.baseurl }}">
+<link rel="stylesheet" href="{{"/assets/css/MarkerCluster.Default.css" | prepend: site.baseurl }}">
+<script type="text/javascript" src="{{"/assets/js/leaflet.markercluster-src.js" | prepend: site.baseurl  }}"></script>
 
 <article class="map">
 
@@ -24,8 +30,6 @@ layout: page_map
   <div id="map"></div>
 
   <script>
-    var osmUrl='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
-    var osmAttrib='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>';
 
     var Marker = L.AwesomeMarkers.icon({
     icon: '{{page.marker.icon}}',
@@ -45,13 +49,14 @@ layout: page_map
     var map = L.map('map');
     var markers = L.markerClusterGroup();
 
-    // create the tile layer with correct attribution
-    var osm = new L.TileLayer(osmUrl, {minZoom: 6, maxZoom: 19, attribution: osmAttrib});
     var sumLat = 0.;
     var sumLon = 0.;
     var countMarkers=0;
 
-    //map the markers
+    // create the style tile layer
+    var style = L.tileLayer.provider('{{page.style}}').addTo(map);
+
+    //create the markers
     for (var i=0; i<markerList.length; i++) {
             var lat = markerList[i][0];
             var lon = markerList[i][1];
@@ -69,11 +74,15 @@ layout: page_map
               countMarkers++;
             }
     }
+
+    //create the clusters
     if({{page.cluster}})
     {
       map.addLayer(markers);
     }
-      map.addLayer(osm).setView([sumLat / countMarkers, sumLon / countMarkers], 6);
+
+    //center the map view
+    map.addLayer(style).setView([sumLat / countMarkers, sumLon / countMarkers], 6);
 
     </script>
 
