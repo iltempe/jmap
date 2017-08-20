@@ -14,6 +14,8 @@ You can contribute to this project [here](https://github.com/iltempe/jmap)
 
 Read more on [Medium](https://medium.com/@iltempe/jmap-a-map-generator-opensource-ca28db714860)
 
+**Wiki** is in progress [here](https://github.com/iltempe/jmap/wiki)
+
 ## Credits
 
 JMAP is a collaborative project launched by [Matteo Tempestini](http://iltempe.github.io) to generate a website of maps with [Jekyll](https://jekyllrb.com/).
