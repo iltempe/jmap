@@ -67,6 +67,7 @@ layout: page_map
             var lat = markerList[i][0];
             var lon = markerList[i][1];
             var popup = popupList[i];
+
             if (!isNaN(lat) && !isNaN(lon)) {
               var markerLocation = new L.LatLng(lat, lon);
               var marker = new L.Marker(markerLocation, {icon: Marker});
