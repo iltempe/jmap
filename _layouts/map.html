@@ -46,7 +46,10 @@ layout: page_map
     {% endfor %}
 
     // init map
-    var map = L.map('map');
+    var map = L.map('map', {
+        minZoom: 3,
+        maxZoom: 19
+    });
     var markers = L.markerClusterGroup();
 
     var sumLat = 0.;
