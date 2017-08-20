@@ -12,7 +12,7 @@ Read more on [Medium](https://medium.com/@iltempe/jmap-a-map-generator-opensourc
 
 #Credits
 
-JMAP is a collaborative project launched by [Matteo Tempestini](http://iltempe.github.io) to generate a website of maps with [Jekyll](https://jekyllrb.com/). JMAP is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+JMAP is a collaborative project launched by [Matteo Tempestini](http://iltempe.github.io) to generate a website of maps and is available on [Github](https://github.com/iltempe/jmap). JMAP is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
 Maps are generated with [Leaflet](http://leafletjs.com/)
 
