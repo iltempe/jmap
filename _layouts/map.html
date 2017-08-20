@@ -37,12 +37,15 @@ layout: page_map
     markerColor: '{{page.marker.color}}'});
 
     var markerList=[];
+    var popupList=[];
 
     //find the dataset
     {% assign data_file = page.dataset %}
+
     //find the coordinates in the dataset
     {% for member in site.data[data_file] %}
       markerList.push([{{member.lat}}, {{member.lon}}]);
+      popupList.push(["{{member[page.popup]}}"]);
     {% endfor %}
 
     // init map
@@ -63,6 +66,7 @@ layout: page_map
     for (var i=0; i<markerList.length; i++) {
             var lat = markerList[i][0];
             var lon = markerList[i][1];
+            var popup = popupList[i];
             if (!isNaN(lat) && !isNaN(lon)) {
               var markerLocation = new L.LatLng(lat, lon);
               var marker = new L.Marker(markerLocation, {icon: Marker});
@@ -71,6 +75,10 @@ layout: page_map
                 markers.addLayer(marker);
               }else{
                 map.addLayer(marker);
+              }
+              if(popup != "")
+              {
+                marker.bindPopup(''+popup);
               }
               sumLat += lat;
               sumLon += lon;
