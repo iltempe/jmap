@@ -10,22 +10,20 @@ layout: page_map
 <link rel="stylesheet" href="{{"/assets/css/gh-fork-ribbon.css"| prepend: site.baseurl }}">
 <script type="text/javascript" src="{{"/assets/js/leaflet-providers.js" | prepend: site.baseurl  }}"></script>
 
-<!--[if IE]>
-  <link rel="stylesheet" href="css/gh-fork-ribbon.ie.css" />
-<![endif]-->
-
 <link rel="stylesheet" href="{{"/assets/css/MarkerCluster.css" | prepend: site.baseurl }}">
 <link rel="stylesheet" href="{{"/assets/css/MarkerCluster.Default.css" | prepend: site.baseurl }}">
 <script type="text/javascript" src="{{"/assets/js/leaflet.markercluster-src.js" | prepend: site.baseurl  }}"></script>
 
-<article class="map">
 
-  <style>
-    #map{
-      height: 800px;
-      width: 700px
-    }
-  </style>
+
+<article>
+
+<style>
+#map{
+height: 700px;
+width: 800px;
+}
+</style>
 
   <div id="map"></div>
 
@@ -93,9 +91,37 @@ layout: page_map
       map.addLayer(markers);
     }
 
+    //any post to be mapped here?
+    JekyllMaps();
+
     //center the map view
     map.addLayer(style).setView([sumLat / countMarkers, sumLon / countMarkers], 6);
 
-    </script>
-
+function JekyllMaps() {
+    this.map;
+    this.data = {
+      type: 'FeatureCollection',
+      features: [
+        {% for post in site.posts %}{
+          'type': 'Feature',
+          'properties': '{{ post.title }}',
+          'link':'{{post.url}}',
+          //'properties': "<a href="{{ post.url | prepend: site.baseurl }}" itemprop="url">{{ post.title }}</a>",
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [
+              {{ post.lng }},
+              {{ post.lat }}
+            ]
+          }
+        },{% endfor %}
+      ]
+    };
+  var myPostLayer = L.geoJSON(data, {onEachFeature: function (features, layer) {
+    layer.bindPopup('<a href='+features.link+' itemprop="url">'+features.properties+'</a>');
+  }
+}).addTo(map);
+  myPostLayer.addData(this.data);
+}
+</script>
 </article>

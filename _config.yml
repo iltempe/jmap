@@ -2,10 +2,12 @@
  title: "JMAP"
  description: "This is JMAP. The framework is designed in collaborative way, based on Jekyll to generate maps from data. Created and distribute with MIT licence."
 
+######## DON'T CHANGE
  collections:
   maps:
     output: true
     permalink: /:collection/:name
+########
 
  email: mtempestini@gmail.com
 
@@ -47,7 +49,6 @@ social:
 #     share_url:
 #     share_title:
 #     share_link:
-
 
  plugins:
   - jemoji
