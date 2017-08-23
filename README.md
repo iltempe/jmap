@@ -4,17 +4,11 @@
 
 JMAP is a web map generator based on [Jekyll](https://github.com/jekyll/jekyll).
 
-You can use it to generate maps with tags of map in _maps folder inserted in markdown files and data put in _data folder.
-
-Actually your dataset can be imported in format defined [in Jekyll](https://jekyllrb.com/docs/datafiles/).
-
-All dataset shall have a "lan" and "lon" fields.
-
 You can contribute to this project [here](https://github.com/iltempe/jmap)
 
 Read more on [Medium](https://medium.com/@iltempe/jmap-a-map-generator-opensource-ca28db714860)
 
-**Wiki** is in progress [here](https://github.com/iltempe/jmap/wiki)
+**WIKI** is [here](https://github.com/iltempe/jmap/wiki)
 
 ## Credits
 
