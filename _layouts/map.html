@@ -97,30 +97,33 @@ width: 800px;
     //center the map view
     map.addLayer(style).setView([sumLat / countMarkers, sumLon / countMarkers], 6);
 
+//manages post mapping
 function JekyllMaps() {
     this.map;
     this.data = {
       type: 'FeatureCollection',
       features: [
-        {% for post in site.posts %}{
-          'type': 'Feature',
-          'properties': '{{ post.title }}',
-          'link':'{{post.url}}',
-          //'properties': "<a href="{{ post.url | prepend: site.baseurl }}" itemprop="url">{{ post.title }}</a>",
-          'geometry': {
-            'type': 'Point',
-            'coordinates': [
-              {{ post.lng }},
-              {{ post.lat }}
-            ]
-          }
-        },{% endfor %}
+        {% for post in site.posts %}
+          {% if post.map == page.title %}
+              {
+                'type': 'Feature',
+                'properties': '{{ post.title }}',
+                'link':'{{post.url | prepend: site.baseurl}}',
+                'geometry': {
+                  'type': 'Point',
+                  'coordinates': [
+                    {{ post.lng }},
+                    {{ post.lat }}
+                  ]
+                }
+              },
+            {% endif %}
+          {% endfor %}
       ]
     };
   var myPostLayer = L.geoJSON(data, {onEachFeature: function (features, layer) {
     layer.bindPopup('<a href='+features.link+' itemprop="url">'+features.properties+'</a>');
-  }
-}).addTo(map);
+  }}).addTo(map);
   myPostLayer.addData(this.data);
 }
 </script>
