@@ -19,5 +19,3 @@ JMAP is available as open source under the terms of the [MIT License](http://ope
 Maps are generated with [Leaflet](http://leafletjs.com/) and [Icons](http://fontawesome.io/license/)
 
 You can find the source code for Jekyll at GitHub: [jekyll](https://github.com/jekyll/jekyll)
-
-Theme is [Mediator](https://github.com/dirkfabisch/mediator)
