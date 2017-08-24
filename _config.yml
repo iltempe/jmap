@@ -18,9 +18,9 @@
 # blog cover
  cover: "/assets/images/back.jpeg"
 
-name: 'Matteo Tempestini'
-author: 'Matteo Tempestini'
-author_image: "/assets/images/logo.jpeg"
+ name: 'Matteo Tempestini'
+ author: 'Matteo Tempestini'
+ author_image: "/assets/images/logo.jpeg"
 
  paginate_path: "/blog/page:num/"
  paginate: 5
@@ -38,13 +38,14 @@ author_image: "/assets/images/logo.jpeg"
 
 # social icons and sharing options
  social:
-     icon: twitter
-     url: https://twitter.com/il_tempe
-     desc: Follow me on twitter
-#   - icon: github
-#     url: https://github.com/iltempe/jmap
-#     desc: Fork me on github
-
+  -
+    icon: twitter
+    url: https://twitter.com/il_tempe
+    desc: Follow me on twitter
+  -
+    icon: github
+    url: https://github.com/iltempe/jmap
+    desc: Fork me on github
 
  plugins:
   - jemoji
