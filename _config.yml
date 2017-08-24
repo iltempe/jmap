@@ -37,19 +37,14 @@ author_image: "/assets/images/logo.jpeg"
 #google_analytics: UA-XXXXX-X
 
 # social icons and sharing options
-social:
-  - icon: twitter
-    url: "https://twitter.com/il_tempe"
-    desc: Follow me on twitter
-    share_url: http://twitter.com/share
-    share_title: ?text=
-    share_link: "&amp;url="
+ social:
+     icon: twitter
+     url: https://twitter.com/il_tempe
+     desc: Follow me on twitter
 #   - icon: github
 #     url: https://github.com/iltempe/jmap
 #     desc: Fork me on github
-#     share_url:
-#     share_title:
-#     share_link:
+
 
  plugins:
   - jemoji
