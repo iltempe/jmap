@@ -22,7 +22,8 @@ name: 'Matteo Tempestini'
 author: 'Matteo Tempestini'
 author_image: "/assets/images/logo.jpeg"
 
- paginate:	5
+ paginate_path: "/blog/page:num/"
+ paginate: 5
 
  url: "https://iltempe.github.io" # the base hostname & protocol for your site
  baseurl: "/jmap"
@@ -37,12 +38,12 @@ author_image: "/assets/images/logo.jpeg"
 
 # social icons and sharing options
 social:
-  icon: twitter
-  url: "https://twitter.com/il_tempe"
-  desc: Follow me on twitter
-  share_url: http://twitter.com/share
-  share_title: ?text=
-  share_link: "&amp;url="
+  - icon: twitter
+    url: "https://twitter.com/il_tempe"
+    desc: Follow me on twitter
+    share_url: http://twitter.com/share
+    share_title: ?text=
+    share_link: "&amp;url="
 #   - icon: github
 #     url: https://github.com/iltempe/jmap
 #     desc: Fork me on github
