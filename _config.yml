@@ -1,6 +1,6 @@
 # Site settings
  title: "JMAP"
- description: "This is JMAP. The framework is designed in collaborative way, based on Jekyll to generate maps from data. Created and distribute with MIT licence."
+ description: "This is JMAP. The framework is based on Jekyll and generates maps from data."
 
 ######## DON'T CHANGE
  collections:
@@ -38,7 +38,7 @@ author_image: "/assets/images/logo.jpeg"
 # social icons and sharing options
 social:
   icon: twitter
-  url: https://twitter.com/il_tempe
+  url: "https://twitter.com/il_tempe"
   desc: Follow me on twitter
   share_url: http://twitter.com/share
   share_title: ?text=
