@@ -34,7 +34,7 @@ author_image: "/assets/images/logo.jpeg"
 #fill in disqus shortname to use disqus
 #disqus: disqus-shortname
 
-#google_analytics: UA-XXXXX-X
+ google_analytics: UA-47474515-6
 
 # social icons and sharing options
  social:
