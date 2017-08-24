@@ -12,6 +12,6 @@ Read more on [Medium](https://medium.com/@iltempe/jmap-a-map-generator-opensourc
 
 Instructions are on the [wiki page](https://github.com/iltempe/jmap/wiki/Credits)
 
-#Credits
+# Credits
 
 All credits in the [wiki page](https://github.com/iltempe/jmap/wiki/Credits)
