@@ -94,15 +94,21 @@ layout: page_map
 
     //set the map view
     var center_map=[];
+    center_map=[sumLat / countMarkers, sumLon / countMarkers];
     var zoom_map = 6;
     {% if page.view %}
     {
-      center_map=[{{page.view.center_lat}},{{page.view.center_lon}}];
-      zoom_map={{page.view.zoom}};
+      {% if page.view.center_lat %}
+      {
+        center_map=[{{page.view.center_lat}},{{page.view.center_lon}}];
+      }{% endif %}
+      {% if page.view.zoom %}
+      {
+        zoom_map={{page.view.zoom}};
+      }{% endif %}
       map.addLayer(style).setView(center_map,zoom_map);
     }
     {% else %}{
-      center_map=[sumLat / countMarkers, sumLon / countMarkers];
       map.addLayer(style).setView(center_map, zoom_map);
     }{% endif %}
 
@@ -113,7 +119,7 @@ layout: page_map
     {% if page.streetview == true %}
       {
 
-
+        //to be done
 
       }{% endif %}
 
