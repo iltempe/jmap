@@ -1,9 +1,6 @@
 The MIT License (MIT)
 
-Jekyll Copyright (c) 2008-2017 Tom Preston-Werner and Jekyll contributors
-Minima Copyright (c) 2016 Parker Moore
-Mediator Copyright (c) 2014 Dirk Fabisch
-JMAP Copyright (c) 2017 Matteo Tempestini and contributors
+JMAP Copyright (c) 2017 Matteo Tempestini
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
