@@ -10,6 +10,9 @@ permalink: /blog/
     {% for post in site.posts %}
       <li>
         <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        <div class="post-meta">
+            <time datetime="{{ post.date | date_to_long_string }}">{{ post.date | date_to_long_string }}</time>
+          </div>
       </li>
     {% endfor %}
   </ul>
