@@ -14,4 +14,4 @@ Instructions are on the [wiki page](https://github.com/iltempe/jmap/wiki/Credits
 
 # Credits
 
-All credits in the [wiki page](https://github.com/iltempe/jmap/wiki/Credits)
+All credits are in the [wiki page](https://github.com/iltempe/jmap/wiki/Credits)
