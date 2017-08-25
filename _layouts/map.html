@@ -14,21 +14,23 @@ layout: page_map
 <link rel="stylesheet" href="{{"/assets/css/MarkerCluster.Default.css" | prepend: site.baseurl }}">
 <script type="text/javascript" src="{{"/assets/js/leaflet.markercluster-src.js" | prepend: site.baseurl  }}"></script>
 
+<link rel="stylesheet" href='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.css'>
+<script type="text/javascript" src='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.js'></script>
 
-
-<article>
 
 <style>
 #map{
-height: 700px;
-width: 800px;
+  height: 800px;
+  width: 100%;
 }
 </style>
 
+<article>
   <div id="map"></div>
 
   <script>
 
+    //setting icons
     var Marker = L.AwesomeMarkers.icon({
     icon: '{{page.marker.icon}}',
     prefix: 'fa',
@@ -52,7 +54,6 @@ width: 800px;
         maxZoom: 20
     });
     var markers = L.markerClusterGroup();
-
     var sumLat = 0.;
     var sumLon = 0.;
     var countMarkers=0;
@@ -85,20 +86,39 @@ width: 800px;
             }
     }
 
-    //create the clusters
+    //create clusters
     if({{page.cluster}})
     {
       map.addLayer(markers);
     }
 
-    //any post to be mapped here?
-    JekyllMaps();
+    //set the map view
+    var center_map=[];
+    var zoom_map = 6;
+    {% if page.view %}
+    {
+      center_map=[{{page.view.center_lat}},{{page.view.center_lon}}];
+      zoom_map={{page.view.zoom}};
+      map.addLayer(style).setView(center_map,zoom_map);
+    }
+    {% else %}{
+      center_map=[sumLat / countMarkers, sumLon / countMarkers];
+      map.addLayer(style).setView(center_map, zoom_map);
+    }{% endif %}
 
-    //center the map view
-    map.addLayer(style).setView([sumLat / countMarkers, sumLon / countMarkers], 6);
+    //any post to be mapped here?
+    JekyllMapPosts();
+
+    //set streetview
+    {% if page.streetview == true %}
+      {
+
+
+
+      }{% endif %}
 
 //manages post mapping
-function JekyllMaps() {
+function JekyllMapPosts() {
     this.map;
     this.data = {
       type: 'FeatureCollection',
@@ -112,7 +132,7 @@ function JekyllMaps() {
                 'geometry': {
                   'type': 'Point',
                   'coordinates': [
-                    {{ post.lng }},
+                    {{ post.lon }},
                     {{ post.lat }}
                   ]
                 }
