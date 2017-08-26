@@ -1,35 +1,34 @@
 ---
 layout: page_map
 ---
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" integrity="sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA==" crossorigin=""></script>
 
-<link rel="stylesheet" href="{{"/assets/css/leaflet.awesome-markers.css" | prepend: site.baseurl }}">
-<script type="text/javascript" src="{{"/assets/js/leaflet.awesome-markers.js" | prepend: site.baseurl  }}"></script>
-
-<link rel="stylesheet" href="{{"/assets/css/gh-fork-ribbon.css"| prepend: site.baseurl }}">
-<script type="text/javascript" src="{{"/assets/js/leaflet-providers.js" | prepend: site.baseurl  }}"></script>
-
-<link rel="stylesheet" href="{{"/assets/css/MarkerCluster.css" | prepend: site.baseurl }}">
-<link rel="stylesheet" href="{{"/assets/css/MarkerCluster.Default.css" | prepend: site.baseurl }}">
-<script type="text/javascript" src="{{"/assets/js/leaflet.markercluster-src.js" | prepend: site.baseurl  }}"></script>
-
-<link rel="stylesheet" href='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.css'>
-<script type="text/javascript" src='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.js'></script>
-
+{% include head_map.html %}
 
 <style>
-#map{
-  height: 800px;
-  width: 100%;
-}
+  #map{
+    height: 800px;
+    {% if page.streetview %}
+    width: 40%;
+    float:right;
+    {% else %}
+    width: 100%;
+    {% endif %}
+  }
+  #mly{
+      height: 800px;
+      width: 60%;
+      float:left;
+    }
 </style>
 
 <article>
+  {% if page.streetview %}
+  <div id="mly"></div>
+  {% endif %}
   <div id="map"></div>
 
-  <script>
 
+  <script>
     //setting icons
     var Marker = L.AwesomeMarkers.icon({
     icon: '{{page.marker.icon}}',
@@ -39,14 +38,17 @@ layout: page_map
     var markerList=[];
     var popupList=[];
 
-    //find the dataset
-    {% assign data_file = page.dataset %}
+    {% if page.dataset %}
+      //find the dataset
+      {% assign data_file = page.dataset %}
 
-    //find the coordinates in the dataset
-    {% for member in site.data[data_file] %}
-      markerList.push([{{member.lat}}, {{member.lon}}]);
-      popupList.push(["{{member[page.popup]}}"]);
-    {% endfor %}
+      //find the coordinates in the dataset
+      {% for member in site.data[data_file] %}
+        markerList.push([{{member.lat}}, {{member.lon}}]);
+        popupList.push(["{{member[page.popup]}}"]);
+      {% endfor %}
+    {% endif %}
+
 
     // init map
     var map = L.map('map', {
@@ -116,10 +118,24 @@ layout: page_map
     JekyllMapPosts();
 
     //set streetview
-    {% if page.streetview == true %}
+    {% if page.streetview %}
       {
-
-        //to be done
+        var mly = new Mapillary.Viewer(
+            'mly',
+            '{{site.mapillary_client_id}}',
+            '{{page.streetview.mapillary_photo_id}}');
+        var marker1;
+        mly.on(Mapillary.Viewer.nodechanged, function (node) {
+            var latLon = [node.latLon.lat, node.latLon.lon];
+            if (!marker1) {
+                marker1 = L.marker(latLon);
+                marker1.addTo(map);
+            } else {
+                marker1.setLatLng(latLon);
+            }
+            map.setView(latLon);
+        });
+        window.addEventListener('resize', function() { mly.resize(); });
 
       }{% endif %}
 
