@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- (1) force latest IE rendering engine: bit.ly/1c8EiC9 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Tuscany Museums</title>
+  <meta name="description" content="" />
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@il_tempe" />
+    <meta name="twitter:title" content="Tuscany Museums" />
+    <meta name="twitter:image" content="https://iltempe.github.io/jmap/assets/images/logo.jpg" />
+    
+    <meta name="twitter:description"  content="" />
+    
+  
+
+  <meta property="og:site_name" content="JMAP" />
+  <meta property="og:title" content="Tuscany Museums"/>
+  
+  <meta property="og:description" content="" />
+  
+  <meta property="og:image" content="https://iltempe.github.io/jmap/assets/images/logo.jpg" />
+  <meta property="og:url" content="https://iltempe.github.io/jmap/maps/2017-08-15-map1" >
+  <meta property="og:type" content="blog" />
+  <meta property="article:published_time" content="2017-08-15T20:50:24+00:00">
+
+  <link rel="canonical" href="https://iltempe.github.io/jmap/maps/2017-08-15-map1"/>
+  <link rel="shortcut icon" href="/jmap/assets/images/favicon.png" type="image/png"/>
+
+  <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
+  <link rel="stylesheet" href="/jmap/assets/css/font-awesome-4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/jmap/css/main.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="/jmap/css/print.css" />
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+</head>
+
+  <body itemscope itemtype="http://schema.org/Article">
+    <!-- header start -->
+
+
+  <a href="https://iltempe.github.io/jmap" class="logo-readium"><span class="logo" style="background-image: url(/jmap/assets/images/logo.jpg)"></span></a>
+
+<!-- header end -->
+
+    <style>
+    .content{
+      max-width: 1300px;
+    }
+    </style>
+    
+    <main class="content" role="main">
+      <article class="post">
+        
+        <div class="noarticleimage">
+          <div class="post-meta">
+            <h1 class="post-title">Tuscany Museums</h1>
+            <div class="cf post-meta-text">
+              <h4> <a href=http://dati.toscana.it/dataset/rt-musei/resource/164d3a36-ede9-44a7-8f01-d9431f9f0cff>Data Source</a> </h4>
+              <h4 class="description-name" itemprop="author" itemscope itemtype="http://schema.org/Person">The map of museums in Tuscany, my beautiful Region in Italy.</h4>
+              <time datetime="15 August 2017">15 August 2017</time>
+            </div>
+          </div>
+        </div>
+        
+        <section class="post-content">
+          <a name="topofpage"></a>
+          <link href='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.css' rel='stylesheet' />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="" />
+
+<script type="text/javascript" src='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.js'></script>
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" integrity="sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA==" crossorigin=""></script>
+
+<link rel="stylesheet" href="/jmap/assets/css/leaflet.awesome-markers.css">
+<script type="text/javascript" src="/jmap/assets/js/leaflet.awesome-markers.js"></script>
+
+<link rel="stylesheet" href="/jmap/assets/css/gh-fork-ribbon.css">
+<script type="text/javascript" src="/jmap/assets/js/leaflet-providers.js"></script>
+
+<link rel="stylesheet" href="/jmap/assets/css/MarkerCluster.css">
+<link rel="stylesheet" href="/jmap/assets/css/MarkerCluster.Default.css">
+<script type="text/javascript" src="/jmap/assets/js/leaflet.markercluster-src.js"></script>
+
+
+
+<style>
+  #map{
+    height: 800px;
+    
+    width: 100%;
+    
+  }
+  #mly{
+      height: 800px;
+      width: 60%;
+      float:left;
+    }
+</style>
+
+<article>
+  
+  <div id="map"></div>
+
+
+  <script>
+    //setting icons
+    var Marker = L.AwesomeMarkers.icon({
+    icon: 'home',
+    prefix: 'fa',
+    markerColor: 'red'});
+
+    var markerList=[];
+    var popupList=[];
+
+    // init map default values
+    var map = L.map('map', {
+        minZoom: 1,
+        maxZoom: 20
+    });
+    var markers = L.markerClusterGroup();
+    var sumLat = 0.;
+    var sumLon = 0.;
+    var countMarkers=0;
+    var center_map=[40.737,-73.923];
+    var zoom_map = 7;
+
+    // create the style tile layer
+    var style = L.tileLayer.provider('OpenStreetMap.BlackAndWhite').addTo(map);
+
+    //any post to be mapped?
+    center_map=JekyllMapPosts();
+
+    //any dataset to be mapped?
+    
+      //find the dataset
+      
+      //find the coordinates in the dataset
+      
+        markerList.push([43.722648  , 10.396000  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.722648  , 10.396000  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.547405  , 11.041373  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.535422  , 11.234480  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([42.681620  , 11.713812  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.488111  , 11.150027  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.537487  , 11.235814  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.657245  , 11.184533  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.583158  , 11.315322  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.685055  , 11.255016  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.816564  , 11.021420  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.785389  , 11.282879  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.787537  , 10.926722  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.570073  , 12.138503  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.921141  , 10.526156  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.700020  , 10.744174  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.756319  , 11.278377  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.809987  , 11.287604  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.365663  , 11.710135  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.524366  , 11.567074  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.688463  , 11.337141  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.720854  , 10.947704  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.766283  , 11.248755  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.768904  , 11.262923  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.782463  , 11.266510  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.777182  , 11.260247  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.767928  , 11.260252  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.774087  , 11.247710  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.795392  , 11.316829  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.630735  , 11.072880  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.729817  , 10.807386  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.933632  , 10.916717  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.907709  , 10.852081  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.903402  , 10.781194  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.161536  , 10.610955  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.160786  , 10.610254  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([42.811953  , 10.330056  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.815907  , 10.331802  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.404610  , 10.474991  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.402173  , 10.408296  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.389868  , 10.432452  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.841307  , 10.505641  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.841252  , 10.504284  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.840664  , 10.504613  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.841114  , 10.499615  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.853375  , 10.362976  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.743716  , 11.337534  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.615906  , 11.474963  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.617633  , 11.472255  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.837324  , 10.620739  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.871956  , 10.242498  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.236838  , 10.122597  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.035893  , 10.142275  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.618927  , 11.471444  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.138919  , 11.481712  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.779108  , 10.660658  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.602605  , 10.743035  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.577301  , 10.755259  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.947893  , 10.879117  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.719828  , 10.397125  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.422631  , 11.121068  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.298628  , 10.873970  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.882097  , 11.097872  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.679553  , 10.850326  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.680567  , 10.860308  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([44.078192  , 10.894720  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.880120  , 11.095364  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.661995  , 11.445577  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.042458  , 11.150397  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.901879  , 10.688202  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.540867  , 12.056441  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.898406  , 10.687090  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.888827  , 10.657656  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.935027  , 10.918338  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([44.055920  , 10.820039  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.460718  , 11.879502  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.467936  , 11.878114  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.464712  , 11.880787  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.468952  , 11.880328  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.622784  , 11.559888  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.775921  , 11.259270  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.776666  , 11.261142  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.317151  , 11.328364  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.154357  , 11.087577  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.417330  , 11.282829  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.792626  , 11.064550  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.859269  , 10.970149  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.031763  , 11.954368  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.031763  , 11.954368  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.464712  , 11.880787  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.321318  , 11.330211  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.326224  , 11.228153  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.315420  , 11.339686  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.845553  , 10.512838  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.843542  , 10.499172  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.715033  , 10.407567  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.816390  , 10.332370  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([42.784418  , 10.286539  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.732642  , 11.556988  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.417919  , 11.722785  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.676535  , 10.843858  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.465142  , 11.883219  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.138689  , 11.481895  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.137988  , 11.482691  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.236659  , 11.558463  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.235394  , 11.560129  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.993457  , 10.708577  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.153421  , 11.590259  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.258421  , 11.616325  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.191871  , 10.845277  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.785380  , 11.278456  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.929003  , 10.919087  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.930793  , 10.917273  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.931927  , 10.921619  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.871344  , 10.813467  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.763478  , 11.211483  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.318968  , 11.332973  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.772528  , 11.245627  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.771644  , 11.285785  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.777424  , 11.251245  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.778799  , 11.256411  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.777122  , 11.257502  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.816453  , 11.232652  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.816453  , 11.232652  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.775107  , 11.263908  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.765039  , 11.249464  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.765039  , 11.249464  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.765228  , 11.248340  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.765228  , 11.248340  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.765228  , 11.248340  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.765228  , 11.248340  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.765228  , 11.248340  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.778126  , 11.258999  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.772125  , 11.257989  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.776385  , 11.258002  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.414121  , 11.463607  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.059635  , 10.618707  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.233562  , 10.616714  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.535254  , 10.305372  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.542393  , 10.318620  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.076536  , 11.681079  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.784418  , 10.286539  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.076550  , 11.679270  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.922287  , 10.528418  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.405002  , 10.410631  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.550178  , 10.310140  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.523495  , 11.568030  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.462397  , 11.158272  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.492988  , 10.349711  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.816128  , 10.427833  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([42.794838  , 10.169901  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.789375  , 10.167300  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.789240  , 10.169891  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([44.168561  , 10.391457  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.843658  , 10.507361  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.467393  , 11.145627  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([42.897156  , 11.768099  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.570896  , 12.142988  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.571064  , 12.141407  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([44.000180  , 10.637522  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.894023  , 10.227894  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.937167  , 10.304664  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.799063  , 11.709599  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.141494  , 11.687985  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.973832  , 10.156523  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.832534  , 10.306024  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.993277  , 10.312513  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.235096  , 11.850423  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.261346  , 11.974207  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.815118  , 10.674809  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.923266  , 11.091225  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.262645  , 10.956543  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.708362  , 10.618416  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.709936  , 10.619997  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.691349  , 10.840099  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.677653  , 10.548228  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.464768  , 11.880690  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.719368  , 10.946465  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.275282  , 11.984971  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.565986  , 10.592099  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.391839  , 10.751426  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([44.199234  , 10.174846  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([43.722648  , 10.396000  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.722331  , 10.396943  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.722648  , 10.396000  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.722648  , 10.396000  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.807364  , 11.290965  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.814559  , 11.289577  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.715505  , 10.394500  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.718378  , 10.399955  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.707963  , 10.411543  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.402681  , 10.859452  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([44.007769  , 10.171599  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.402749  , 10.859539  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.401849  , 10.859528  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.402103  , 10.858592  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.130152  , 10.718956  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.879673  , 10.727797  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.869891  , 10.729104  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.766638  , 10.893741  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.972634  , 10.756321  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.934290  , 10.912214  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.930793  , 10.917273  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.935725  , 10.913975  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.933632  , 10.916717  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.924873  , 10.906408  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.934775  , 10.918363  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.881402  , 10.992688  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.891232  , 10.663071  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.904825  , 10.690260  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.840894  , 10.747293  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.919642  , 10.860084  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([42.762525  , 11.113626  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.882941  , 11.086041  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([44.038069  , 10.870098  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([44.012457  , 11.023990  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([44.056475  , 10.820977  ]);
+        popupList.push(["Punto Informativo, spazio mostre"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Luogo di Lavoro"]);
+      
+        markerList.push([44.059918  , 10.911049  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([44.045208  , 10.753706  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.645337  , 11.320964  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.587439  , 11.516041  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.769923  , 11.505534  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.845046  , 10.509348  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.804760  , 10.537134  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.768986  , 11.255693  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.771488  , 11.247139  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.768637  , 11.254021  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.767921  , 11.322917  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.675336  , 11.530154  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.879481  , 11.097816  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.477285  , 11.355512  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.315113  , 11.339232  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.391414  , 11.052117  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.467621  , 11.042801  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.773562  , 11.256578  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.773562  , 11.256578  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.772223  , 11.257262  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.773562  , 11.256578  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.773562  , 11.256578  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.773518  , 11.256124  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.768473  , 11.261615  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.771396  , 11.252388  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.771396  , 11.252388  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.764600  , 11.246962  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.762895  , 11.254730  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.770819  , 11.248858  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.760594  , 11.242623  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.774473  , 11.197600  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.780442  , 11.144564  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.815754  , 11.237138  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.807364  , 11.290965  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.565287  , 10.958178  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.769470  , 11.098148  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.732573  , 11.023783  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.315264  , 11.331913  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.051308  , 10.892511  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.384961  , 11.196766  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.437983  , 11.118661  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.627241  , 11.140961  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.098858  , 11.037453  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.758898  , 11.179671  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.834919  , 11.207549  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.838832  , 11.191324  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.750140  , 11.417639  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.785635  , 11.508155  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.009153  , 11.168344  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([42.909386  , 10.850620  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.321171  , 11.328781  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.319008  , 11.334603  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.316387  , 11.330597  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.313254  , 11.327989  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.317151  , 11.328364  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.323051  , 11.331568  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.317213  , 11.327299  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.314801  , 11.329574  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.209394  , 11.255089  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.317000  , 11.334286  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.319681  , 11.332789  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.325267  , 11.327383  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.317785  , 11.338483  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.319756  , 11.328786  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.323133  , 11.332889  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.716282  , 10.396981  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.774855  , 11.252548  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.774024  , 11.253376  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([43.916275  , 11.095879  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.765020  , 11.247997  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.526130  , 11.564745  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.904657  , 10.688099  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.730480  , 11.811935  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.601400  , 11.790276  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.722395  , 10.964455  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.654392  , 11.873202  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.793960  , 11.876547  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.722407  , 11.766645  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.575599  , 11.869233  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.322029  , 11.328610  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.484478  , 12.112475  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.770096  , 11.919035  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([43.801684  , 11.707305  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([43.820277  , 11.710149  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.315040  , 11.339801  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.535514  , 10.298150  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.316926  , 11.328813  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.017409  , 10.174911  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([44.377558  , 9.8826931  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.804678  , 11.137574  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.794739  , 11.148531  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.771041  , 11.090205  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.341209  , 11.923567  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.341714  , 11.923384  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.341221  , 11.925094  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.774448  , 11.254979  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.589720  , 11.434739  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.485874  , 12.112371  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.769759  , 11.255178  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.898965  , 10.554577  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.886481  , 10.607405  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.076489  , 11.679111  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.832747  , 11.216553  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.425666  , 11.828838  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.477532  , 11.618007  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.476835  , 11.613671  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([44.077018  , 11.612903  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.682639  , 11.197623  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([42.887621  , 11.478877  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([42.849231  , 11.460984  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([42.908497  , 11.517389  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.831436  , 11.585546  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.893416  , 11.538914  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.766128  , 11.643214  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.849231  , 11.460984  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.770167  , 11.254788  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.331968  , 11.724484  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.928209  , 11.556169  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.953421  , 10.720552  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.056718  , 11.489992  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.657283  , 11.646641  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.467227  , 11.883589  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.859960  , 11.298254  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.775306  , 11.254400  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.140847  , 11.664681  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.203882  , 10.358419  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.280954  , 11.591524  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.551034  , 10.590868  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.679458  , 10.848527  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.679773  , 10.848957  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.058234  , 11.826311  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.679173  , 10.851339  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.881410  , 11.094654  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.590030  , 10.475947  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.166751  , 10.864397  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.815907  , 10.331802  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.882328  , 11.665522  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.405092  , 10.855185  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.813618  , 10.327931  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.764916  , 11.257381  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.543712  , 10.313399  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.540928  , 12.057402  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.809304  , 11.249777  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.743985  , 10.380135  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.776088  , 11.095494  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.753079  , 11.537462  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.722033  , 11.288358  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.699132  , 10.586794  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.814034  , 11.018468  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.816446  , 11.055280  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.820752  , 11.225981  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.460718  , 11.879502  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.880208  , 11.094831  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.921880  , 11.017528  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.059005  , 11.832190  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.715661  , 10.400783  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.841360  , 10.509780  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.908702  , 10.745383  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.694504  , 11.810832  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([42.807714  , 10.310471  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.986291  , 11.303784  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.655862  , 11.186707  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.882394  , 11.676128  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.006152  , 11.616056  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.540682  , 12.056244  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.038117  , 10.882020  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.015367  , 10.589688  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.997772  , 10.518966  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.160767  , 11.387914  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.769891  , 11.251206  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.861291  , 11.109883  ]);
+        popupList.push(["Arte contemporanea"]);
+      
+        markerList.push([44.149213  , 10.249340  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([44.058012  , 10.066764  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.580082  , 10.548979  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.781045  , 11.096927  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.776642  , 11.304704  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.813318  , 10.402220  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.783091  , 11.036821  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.564008  , 11.531143  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.315401  , 9.9944274  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.740443  , 11.293641  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.276290  , 11.983929  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.758955  , 10.878992  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.417986  , 9.8499143  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.879932  , 11.080773  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.923137  , 11.092675  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.772184  , 11.261112  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.567246  , 10.515436  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.772974  , 11.249007  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.775229  , 11.256026  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.581192  , 10.678012  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.315261  , 11.339500  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.321455  , 11.332004  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.422903  , 11.182541  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.460604  , 11.146659  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.068203  , 11.725624  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.314722  , 11.339461  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.314722  , 11.339461  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.348043  , 11.324754  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.892989  , 10.590811  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.781593  , 11.145606  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.568626  , 12.141739  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.962904  , 11.900673  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([44.207261  , 9.9681293  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.276612  , 11.992954  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.274620  , 11.746682  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.298492  , 10.874181  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.943420  , 11.885293  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.314200  , 11.330824  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.815928  , 11.057800  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.894811  , 10.252312  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([44.109712  , 10.410921  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.775340  , 11.254294  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.763204  , 11.254549  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.341675  , 11.043114  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.977682  , 10.541244  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.933002  , 11.465599  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.679580  , 10.852389  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.016862  , 11.948083  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.990068  , 11.870219  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.644197  , 11.985823  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.880815  , 11.096464  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.390106  , 11.223439  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.720025  , 10.948356  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.733999  , 11.222196  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.467930  , 11.042029  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.798091  , 11.262369  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.605167  , 10.969218  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.796223  , 10.931912  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.786684  , 10.926975  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([44.075009  , 10.102258  ]);
+        popupList.push(["Arte contemporanea"]);
+      
+        markerList.push([42.923100  , 10.521923  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.348043  , 11.324754  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.549349  , 10.720905  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.760587  , 11.116071  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.781612  , 11.095179  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.547786  , 10.720906  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.547709  , 10.720926  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.547356  , 10.720578  ]);
+        popupList.push(["Arte contemporanea"]);
+      
+        markerList.push([43.319111  , 11.332798  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.909836  , 11.084685  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.466893  , 11.882096  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.314250  , 11.322805  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.314250  , 11.322805  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.773273  , 11.250039  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.718293  , 10.396926  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.771830  , 11.249646  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.775698  , 11.257768  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.775698  , 11.257768  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.724135  , 10.519531  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.633416  , 11.666304  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.769837  , 11.263603  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.933741  , 10.916829  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.772792  , 11.255018  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.679600  , 10.851067  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.057775  , 11.489246  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.436305  , 11.207443  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.554972  , 11.132049  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.841889  , 10.501138  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.697939  , 10.692019  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.015932  , 11.949292  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.720502  , 10.395587  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.871350  , 10.813941  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([43.764852  , 11.263971  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.779399  , 11.261741  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.865019  , 10.249788  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.321246  , 11.332996  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.876503  , 11.097905  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.051739  , 10.890988  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.050496  , 10.887838  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.083329  , 10.987898  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.801982  , 11.707729  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.767904  , 11.259726  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.713862  , 10.405315  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.773652  , 11.256718  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.767564  , 11.256492  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.791935  , 11.255351  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.348925  , 11.504343  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.502121  , 11.205554  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.535960  , 10.313885  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([44.210025  , 9.9717684  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.719407  , 10.945590  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.724135  , 10.519531  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([42.761672  , 11.113848  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.422362  , 11.120529  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.886188  , 10.834756  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.412615  , 10.575380  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([43.552655  , 10.912812  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.524522  , 10.896976  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.525235  , 11.566635  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.842562  , 10.507414  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([43.871239  , 10.242050  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.995940  , 11.355011  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.783507  , 11.222179  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.809987  , 11.287604  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.843288  , 10.501529  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.891377  , 11.523617  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([44.238855  , 10.123466  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.313910  , 11.331358  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.549151  , 11.044524  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.773273  , 11.250039  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.315733  , 10.501092  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.310362  , 10.511093  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([44.033328  , 10.145493  ]);
+        popupList.push(["architettura civile/militare"]);
+      
+        markerList.push([44.290770  , 9.9512111  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([44.168086  , 10.152208  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.826280  , 11.487727  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([44.118333  , 11.378608  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([44.112329  , 11.547598  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([44.112329  , 11.547598  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.717482  , 10.404373  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.711611  , 10.398187  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([44.059316  , 10.911682  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.957424  , 10.232718  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.957296  , 10.231695  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.950690  , 10.239585  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([44.038433  , 10.865248  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.958535  , 10.231178  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([44.021069  , 11.334420  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.766972  , 11.247599  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.158730  , 10.335404  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.934671  , 11.462605  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.935852  , 11.452949  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.716832  , 10.391336  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.765071  , 11.258435  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.775191  , 11.248975  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.315733  , 10.501092  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.771011  , 11.256985  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([44.189586  , 10.480596  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.467024  , 11.042272  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.051215  , 10.893123  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.049295  , 10.889546  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.051419  , 10.890741  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.051419  , 10.890741  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.729133  , 10.808531  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([42.634827  , 11.668612  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.801577  , 11.707185  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.400839  , 10.864224  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.422222  , 11.125795  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.769346  , 11.255240  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.893146  , 11.537824  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.772788  , 11.254908  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.553620  , 10.317656  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.900090  , 10.687331  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.842162  , 10.570859  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.467953  , 11.043119  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.776666  , 11.261142  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.855185  , 11.160957  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.093650  , 11.780930  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.465083  , 11.884108  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.852022  , 10.666922  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.468928  , 11.287225  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.698438  , 10.691995  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.660906  , 10.632681  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.669152  , 10.760592  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([43.833890  , 10.890053  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([42.761526  , 11.113933  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.807251  , 11.294834  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.050517  , 10.894653  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([42.634632  , 11.668751  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.314981  , 11.328298  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.318209  , 11.329571  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.317630  , 11.329606  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.317151  , 11.328364  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.317151  , 11.328364  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.321961  , 11.334464  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.230421  , 11.715083  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.318148  , 11.333099  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.772709  , 11.265290  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.469941  , 11.042554  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.734637  , 11.022690  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.730420  , 11.011211  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.941863  , 10.980414  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.869344  , 10.814119  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.472952  , 10.565547  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.720312  , 10.395571  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.715575  , 10.398186  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.845468  , 10.503228  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.402590  , 10.860790  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.187795  , 11.668026  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.769337  , 11.255273  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.921173  , 10.756100  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.885662  , 11.527727  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.632126  , 10.944158  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.442465  , 11.389076  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.029424  , 10.605050  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.547623  , 10.320306  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.784888  , 11.309554  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.896784  , 10.788436  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([42.436305  , 11.207443  ]);
+        popupList.push(["Archeologia"]);
+      
+        markerList.push([43.841055  , 10.501060  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.571538  , 12.141485  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.546011  , 11.453867  ]);
+        popupList.push(["Specializzato"]);
+      
+        markerList.push([43.594318  , 11.632603  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.593179  , 11.631782  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.261549  , 11.044341  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.768251  , 11.243825  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([42.921138  , 10.530057  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([44.024834  , 11.370022  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.863995  , 11.163218  ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.636918  , 11.089360  ]);
+        popupList.push(["Territoriale"]);
+      
+        markerList.push([43.771741  , 11.257958  ]);
+        popupList.push(["Etnografia e antropologia"]);
+      
+        markerList.push([43.778328  , 11.259836  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.778328  , 11.259836  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.778328  , 11.259836  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.764614  , 11.247129  ]);
+        popupList.push(["Storia e scienze naturali"]);
+      
+        markerList.push([43.317990  , 11.331745  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.316926  , 11.328813  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([43.317990  , 11.331745  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push(["Storia"]);
+      
+        markerList.push([43.777108  , 11.264067  ]);
+        popupList.push(["Scienza e tecnica"]);
+      
+        markerList.push([43.274671  , 11.746187  ]);
+        popupList.push(["Arte"]);
+      
+        markerList.push([, ]);
+        popupList.push([""]);
+      
+        markerList.push([, ]);
+        popupList.push([""]);
+      
+    
+
+    //create the markers for a dataset
+     
+    {
+      for (var i=0; i<markerList.length; i++) {
+              var lat = markerList[i][0];
+              var lon = markerList[i][1];
+              var popup = popupList[i];
+
+              if (!isNaN(lat) && !isNaN(lon)) {
+                var markerLocation = new L.LatLng(lat, lon);
+                var marker = new L.Marker(markerLocation, {icon: Marker});
+                
+                {
+                  markers.addLayer(marker);
+                }
+                
+                if(popup != "")
+                {
+                  marker.bindPopup(''+popup);
+                }
+                sumLat += lat;
+                sumLon += lon;
+                countMarkers++;
+              }
+      }
+  }
+
+    //create clusters
+    
+    {
+      map.addLayer(markers);
+    }
+
+    //set the map view for dataset
+    
+    {
+      center_map=[sumLat / countMarkers, sumLon / countMarkers];
+    }
+
+    //set the map for the view
+    
+    {
+      
+      {
+        center_map=[43.9099,11.0847];
+      }
+      
+      {
+        zoom_map=10;
+      }
+    }
+
+    map.addLayer(style).setView(center_map,zoom_map);
+
+    //set streetview with Mapillary
+    
+
+//manages post mapping
+function JekyllMapPosts() {
+
+    this.map;
+
+    var center_map1 = [0,0];
+    var lat1=0;
+    var lon1=0;
+    var sumLat1 = 0.;
+    var sumLon1 = 0.;
+    var countMarkers1 = 0;
+
+    this.data = {
+      type: 'FeatureCollection',
+      features: [
+        
+          
+          
+          
+          
+      ]
+    };
+
+    
+      
+    
+      
+    
+
+  var myPostLayer = L.geoJSON(data, {onEachFeature: function (features, layer) {
+    layer.bindPopup('<a href='+features.link+' itemprop="url">'+features.properties+'</a>');
+  }}).addTo(map);
+
+  center_map1=[lat1 , lon1];
+  myPostLayer.addData(this.data);
+  return center_map1;
+}
+</script>
+</article>
+        </section>
+      </article>
+    </main>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/jmap/assets/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/jmap/assets/js/index.js"></script>
+<script type="text/javascript" src="/jmap/assets/js/readingTime.min.js"></script>
+<script>
+(function ($) {
+  "use strict";
+  $(document).ready(function(){
+
+    var $window = $(window),
+    $image = $('.post-image-image, .teaserimage-image');
+    
+      $window.on('scroll', function() {
+        var top = $window.scrollTop();
+
+        if (top < 0 || top > 1500) { return; }
+        $image
+          .css('transform', 'translate3d(0px, '+top/3+'px, 0px)')
+          .css('opacity', 1-Math.max(top/700, 0));
+      });
+      $window.trigger('scroll');
+
+      var height = $('.article-image').height();
+      $('.post-content').css('padding-top', height + 'px');
+
+      $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+         && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+          if (target.length) {
+            $('html,body').animate({ scrollTop: target.offset().top }, 500);
+            return false;
+          }
+        }
+      });
+
+  });
+}(jQuery));
+</script>
+
+<!-- Google Analytics -->
+<script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-47474515-6', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+  </body>
+</html>

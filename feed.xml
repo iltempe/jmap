@@ -1,30 +1,45 @@
----
-layout: null
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.title | xml_escape }}</title>
-    <description>{{ site.description | xml_escape }}</description>
-    <link>{{ site.url }}{{ site.baseurl }}/</link>
-    <atom:link href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" rel="self" type="application/rss+xml" />
-    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
-    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
-    <generator>Jekyll v{{ jekyll.version }}</generator>
-    {% for post in site.posts limit:10 %}
+    <title>JMAP</title>
+    <description>This is JMAP. The framework is based on Jekyll and generates maps from data.</description>
+    <link>https://iltempe.github.io/jmap/</link>
+    <atom:link href="https://iltempe.github.io/jmap/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 27 Aug 2017 16:57:16 +0000</pubDate>
+    <lastBuildDate>Sun, 27 Aug 2017 16:57:16 +0000</lastBuildDate>
+    <generator>Jekyll v3.5.2</generator>
+    
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.content | xml_escape }}</description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
-        <guid isPermaLink="true">{{ post.url | prepend: site.baseurl | prepend: site.url }}</guid>
-        {% for tag in post.tags %}
-        <category>{{ tag | xml_escape }}</category>
-        {% endfor %}
-        {% for cat in post.categories %}
-        <category>{{ cat | xml_escape }}</category>
-        {% endfor %}
+        <title>Seattle!</title>
+        <description>&lt;p&gt;Seattle is a coastal seaport city and the seat of King County, in the U.S. state of Washington. With an estimated 652,405 residents as of 2013, Seattle is the largest city in the Pacific Northwest region of North America and the fastest-growing major city in the United States. Source: Wikipedia
+….
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum accumsan libero et ante imperdiet, eu pharetra mi ornare. Aenean non orci imperdiet, sodales mi et, cursus ante. Suspendisse potenti. Suspendisse condimentum commodo elementum. Fusce et elit et felis posuere ornare. In hac habitasse platea dictumst. Praesent eu vestibulum arcu, vel finibus diam. Suspendisse potenti. Donec ipsum lacus, dignissim sit amet cursus consectetur, ornare eu metus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.&lt;/p&gt;
+
+&lt;p&gt;Vestibulum sagittis tortor non mollis pellentesque. Suspendisse potenti. Proin varius ultrices metus, vel volutpat orci iaculis id. Fusce elementum libero elit, quis lacinia tellus tempus nec. Nullam orci massa, porta eget tincidunt vitae, porttitor sit amet mi. Nunc augue ipsum, euismod at pretium ut, consequat in risus. Vivamus vitae metus eu leo pharetra suscipit at id lorem. Sed sagittis, nisi vel venenatis hendrerit, sem turpis sollicitudin est, id hendrerit ipsum erat quis enim. Phasellus et purus lorem. Duis quis turpis fermentum, porta nulla nec, tempor velit. Donec elit lorem, malesuada nec ante et, elementum posuere dolor. Aenean dignissim ligula et volutpat sagittis. Ut a aliquet mi. Ut non dolor laoreet, dictum ante eget, ultricies ligula. Etiam justo diam, scelerisque sollicitudin erat ut, sagittis aliquam diam.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 21 Aug 2017 10:18:56 +0000</pubDate>
+        <link>https://iltempe.github.io/jmap/post/2017/08/21/post1.html</link>
+        <guid isPermaLink="true">https://iltempe.github.io/jmap/post/2017/08/21/post1.html</guid>
+        
+        
+        <category>post</category>
+        
       </item>
-    {% endfor %}
+    
+      <item>
+        <title>Paris!</title>
+        <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum accumsan libero et ante imperdiet, eu pharetra mi ornare. Aenean non orci imperdiet, sodales mi et, cursus ante. Suspendisse potenti. Suspendisse condimentum commodo elementum. Fusce et elit et felis posuere ornare. In hac habitasse platea dictumst. Praesent eu vestibulum arcu, vel finibus diam. Suspendisse potenti. Donec ipsum lacus, dignissim sit amet cursus consectetur, ornare eu metus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.&lt;/p&gt;
+
+&lt;p&gt;Vestibulum sagittis tortor non mollis pellentesque. Suspendisse potenti. Proin varius ultrices metus, vel volutpat orci iaculis id. Fusce elementum libero elit, quis lacinia tellus tempus nec. Nullam orci massa, porta eget tincidunt vitae, porttitor sit amet mi. Nunc augue ipsum, euismod at pretium ut, consequat in risus. Vivamus vitae metus eu leo pharetra suscipit at id lorem. Sed sagittis, nisi vel venenatis hendrerit, sem turpis sollicitudin est, id hendrerit ipsum erat quis enim. Phasellus et purus lorem. Duis quis turpis fermentum, porta nulla nec, tempor velit. Donec elit lorem, malesuada nec ante et, elementum posuere dolor. Aenean dignissim ligula et volutpat sagittis. Ut a aliquet mi. Ut non dolor laoreet, dictum ante eget, ultricies ligula. Etiam justo diam, scelerisque sollicitudin erat ut, sagittis aliquam diam.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 20 Aug 2017 10:18:56 +0000</pubDate>
+        <link>https://iltempe.github.io/jmap/post/2017/08/20/post2.html</link>
+        <guid isPermaLink="true">https://iltempe.github.io/jmap/post/2017/08/20/post2.html</guid>
+        
+        
+        <category>post</category>
+        
+      </item>
+    
   </channel>
 </rss>

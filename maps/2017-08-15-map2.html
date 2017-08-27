@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- (1) force latest IE rendering engine: bit.ly/1c8EiC9 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Wi-Fi HotSpot Prato City</title>
+  <meta name="description" content="" />
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@il_tempe" />
+    <meta name="twitter:title" content="Wi-Fi HotSpot Prato City" />
+    <meta name="twitter:image" content="https://iltempe.github.io/jmap/assets/images/logo.jpg" />
+    
+    <meta name="twitter:description"  content="" />
+    
+  
+
+  <meta property="og:site_name" content="JMAP" />
+  <meta property="og:title" content="Wi-Fi HotSpot Prato City"/>
+  
+  <meta property="og:description" content="" />
+  
+  <meta property="og:image" content="https://iltempe.github.io/jmap/assets/images/logo.jpg" />
+  <meta property="og:url" content="https://iltempe.github.io/jmap/maps/2017-08-15-map2" >
+  <meta property="og:type" content="blog" />
+  <meta property="article:published_time" content="2017-08-15T20:50:24+00:00">
+
+  <link rel="canonical" href="https://iltempe.github.io/jmap/maps/2017-08-15-map2"/>
+  <link rel="shortcut icon" href="/jmap/assets/images/favicon.png" type="image/png"/>
+
+  <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
+  <link rel="stylesheet" href="/jmap/assets/css/font-awesome-4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/jmap/css/main.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="/jmap/css/print.css" />
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+</head>
+
+  <body itemscope itemtype="http://schema.org/Article">
+    <!-- header start -->
+
+
+  <a href="https://iltempe.github.io/jmap" class="logo-readium"><span class="logo" style="background-image: url(/jmap/assets/images/logo.jpg)"></span></a>
+
+<!-- header end -->
+
+    <style>
+    .content{
+      max-width: 1300px;
+    }
+    </style>
+    
+    <main class="content" role="main">
+      <article class="post">
+        
+        <div class="noarticleimage">
+          <div class="post-meta">
+            <h1 class="post-title">Wi-Fi HotSpot Prato City</h1>
+            <div class="cf post-meta-text">
+              <h4> <a href=http://www.dati.gov.it/dataset/punti-wi-fi-ad-accesso-libero-comune-prato-provincia-prato>Data Source</a> </h4>
+              <h4 class="description-name" itemprop="author" itemscope itemtype="http://schema.org/Person">Wifi Hotspots Map of my city, Prato in Tuscany</h4>
+              <time datetime="15 August 2017">15 August 2017</time>
+            </div>
+          </div>
+        </div>
+        
+        <section class="post-content">
+          <a name="topofpage"></a>
+          <link href='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.css' rel='stylesheet' />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="" />
+
+<script type="text/javascript" src='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.js'></script>
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" integrity="sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA==" crossorigin=""></script>
+
+<link rel="stylesheet" href="/jmap/assets/css/leaflet.awesome-markers.css">
+<script type="text/javascript" src="/jmap/assets/js/leaflet.awesome-markers.js"></script>
+
+<link rel="stylesheet" href="/jmap/assets/css/gh-fork-ribbon.css">
+<script type="text/javascript" src="/jmap/assets/js/leaflet-providers.js"></script>
+
+<link rel="stylesheet" href="/jmap/assets/css/MarkerCluster.css">
+<link rel="stylesheet" href="/jmap/assets/css/MarkerCluster.Default.css">
+<script type="text/javascript" src="/jmap/assets/js/leaflet.markercluster-src.js"></script>
+
+
+
+<style>
+  #map{
+    height: 800px;
+    
+    width: 100%;
+    
+  }
+  #mly{
+      height: 800px;
+      width: 60%;
+      float:left;
+    }
+</style>
+
+<article>
+  
+  <div id="map"></div>
+
+
+  <script>
+    //setting icons
+    var Marker = L.AwesomeMarkers.icon({
+    icon: 'home',
+    prefix: 'fa',
+    markerColor: 'orange'});
+
+    var markerList=[];
+    var popupList=[];
+
+    // init map default values
+    var map = L.map('map', {
+        minZoom: 1,
+        maxZoom: 20
+    });
+    var markers = L.markerClusterGroup();
+    var sumLat = 0.;
+    var sumLon = 0.;
+    var countMarkers=0;
+    var center_map=[40.737,-73.923];
+    var zoom_map = 7;
+
+    // create the style tile layer
+    var style = L.tileLayer.provider('OpenStreetMap.HOT').addTo(map);
+
+    //any post to be mapped?
+    center_map=JekyllMapPosts();
+
+    //any dataset to be mapped?
+    
+      //find the dataset
+      
+      //find the coordinates in the dataset
+      
+        markerList.push([43.880086, 11.09691601]);
+        popupList.push([""]);
+      
+        markerList.push([43.880251, 11.09670451]);
+        popupList.push([""]);
+      
+        markerList.push([43.880234, 11.09768801]);
+        popupList.push([""]);
+      
+        markerList.push([43.880371, 11.09688001]);
+        popupList.push([""]);
+      
+        markerList.push([43.880086, 11.09691601]);
+        popupList.push([""]);
+      
+        markerList.push([43.880391, 11.09701701]);
+        popupList.push([""]);
+      
+        markerList.push([43.880171, 11.09670601]);
+        popupList.push([""]);
+      
+        markerList.push([43.880151, 11.09670551]);
+        popupList.push([""]);
+      
+        markerList.push([43.880341, 11.09601701]);
+        popupList.push([""]);
+      
+        markerList.push([43.879715, 11.09639301]);
+        popupList.push([""]);
+      
+        markerList.push([43.88145025, 11.0961445]);
+        popupList.push([""]);
+      
+        markerList.push([43.80989593, 10.98317997]);
+        popupList.push([""]);
+      
+        markerList.push([43.93651995, 11.12780489]);
+        popupList.push([""]);
+      
+        markerList.push([43.90623633, 11.11568414]);
+        popupList.push([""]);
+      
+        markerList.push([43.86443299, 11.11317274]);
+        popupList.push([""]);
+      
+        markerList.push([43.86333518, 11.13483755]);
+        popupList.push([""]);
+      
+        markerList.push([43.89300386, 11.09845721]);
+        popupList.push([""]);
+      
+        markerList.push([43.86690888, 11.12838651]);
+        popupList.push([""]);
+      
+        markerList.push([43.79278253, 11.05653936]);
+        popupList.push([""]);
+      
+        markerList.push([43.8771307, 11.05737688]);
+        popupList.push([""]);
+      
+        markerList.push([44.03294733, 11.1430686]);
+        popupList.push([""]);
+      
+        markerList.push([43.81403378, 11.05556021]);
+        popupList.push([""]);
+      
+        markerList.push([43.83533592, 11.10555771]);
+        popupList.push([""]);
+      
+        markerList.push([43.89441462, 11.06758232]);
+        popupList.push([""]);
+      
+        markerList.push([43.89804324, 11.05509581]);
+        popupList.push([""]);
+      
+        markerList.push([43.84455403, 11.08620292]);
+        popupList.push([""]);
+      
+        markerList.push([43.92299512, 11.09243121]);
+        popupList.push([""]);
+      
+        markerList.push([43.896599, 11.059592]);
+        popupList.push([""]);
+      
+        markerList.push([43.89453324, 11.08240976]);
+        popupList.push([""]);
+      
+        markerList.push([43.87948732, 11.09423048]);
+        popupList.push([""]);
+      
+        markerList.push([43.86312342, 11.11798112]);
+        popupList.push([""]);
+      
+        markerList.push([43.87338629, 11.09050534]);
+        popupList.push([""]);
+      
+        markerList.push([43.88315831, 11.09791535]);
+        popupList.push([""]);
+      
+        markerList.push([43.813502, 10.996858]);
+        popupList.push([""]);
+      
+        markerList.push([44.09099277, 11.15865485]);
+        popupList.push([""]);
+      
+        markerList.push([43.8832424, 11.09706348]);
+        popupList.push([""]);
+      
+        markerList.push([43.88460877, 11.05445485]);
+        popupList.push([""]);
+      
+        markerList.push([43.87365338, 11.06577856]);
+        popupList.push([""]);
+      
+        markerList.push([43.87365328, 11.06577846]);
+        popupList.push([""]);
+      
+        markerList.push([43.87365318, 11.06577836]);
+        popupList.push([""]);
+      
+        markerList.push([43.87365308, 11.06577826]);
+        popupList.push([""]);
+      
+        markerList.push([43.87365298, 11.06577816]);
+        popupList.push([""]);
+      
+        markerList.push([43.96492315, 11.10583689]);
+        popupList.push([""]);
+      
+        markerList.push([43.8782235, 11.05487501]);
+        popupList.push([""]);
+      
+        markerList.push([43.880337, 11.099176]);
+        popupList.push([""]);
+      
+        markerList.push([43.87822122, 11.08959859]);
+        popupList.push([""]);
+      
+        markerList.push([43.87514358, 11.08743743]);
+        popupList.push([""]);
+      
+        markerList.push([43.880437, 11.099276]);
+        popupList.push([""]);
+      
+        markerList.push([43.81414618, 11.05806127]);
+        popupList.push([""]);
+      
+        markerList.push([43.92727929, 11.03694988]);
+        popupList.push([""]);
+      
+        markerList.push([43.92727829, 11.03694888]);
+        popupList.push([""]);
+      
+        markerList.push([43.96622163, 11.12564278]);
+        popupList.push([""]);
+      
+        markerList.push([43.86027722, 11.10611371]);
+        popupList.push([""]);
+      
+        markerList.push([43.78313964, 11.03690729]);
+        popupList.push([""]);
+      
+        markerList.push([43.880537, 11.099376]);
+        popupList.push([""]);
+      
+        markerList.push([43.92727729, 11.03694788]);
+        popupList.push([""]);
+      
+        markerList.push([43.82958391, 11.02107648]);
+        popupList.push([""]);
+      
+        markerList.push([44.02823191, 11.10716969]);
+        popupList.push([""]);
+      
+        markerList.push([43.968758, 11.12389]);
+        popupList.push([""]);
+      
+        markerList.push([43.815927, 11.057898]);
+        popupList.push([""]);
+      
+        markerList.push([44.02823191, 11.10716969]);
+        popupList.push([""]);
+      
+        markerList.push([44.00192792, 11.13950415]);
+        popupList.push([""]);
+      
+        markerList.push([43.962411, 11.128315]);
+        popupList.push([""]);
+      
+        markerList.push([43.78313964, 11.03690729]);
+        popupList.push([""]);
+      
+        markerList.push([43.85520427, 11.08001075]);
+        popupList.push([""]);
+      
+        markerList.push([43.878113, 11.101453]);
+        popupList.push([""]);
+      
+        markerList.push([43.81413564, 11.01825115]);
+        popupList.push([""]);
+      
+        markerList.push([44.05356448, 11.15600485]);
+        popupList.push([""]);
+      
+        markerList.push([43.86666696, 11.11130835]);
+        popupList.push([""]);
+      
+        markerList.push([44.09074999, 11.15438946]);
+        popupList.push([""]);
+      
+        markerList.push([44.02164768, 11.0773934]);
+        popupList.push([""]);
+      
+        markerList.push([43.815827, 11.057798]);
+        popupList.push([""]);
+      
+        markerList.push([43.86477352, 11.10839833]);
+        popupList.push([""]);
+      
+        markerList.push([43.86477452, 11.10839733]);
+        popupList.push([""]);
+      
+        markerList.push([43.86477552, 11.10839633]);
+        popupList.push([""]);
+      
+        markerList.push([43.814078, 11.019303]);
+        popupList.push([""]);
+      
+        markerList.push([43.880027, 11.095203]);
+        popupList.push([""]);
+      
+        markerList.push([43.854121, 11.060022]);
+        popupList.push([""]);
+      
+        markerList.push([43.880086, 11.09691601]);
+        popupList.push([""]);
+      
+        markerList.push([43.88568, 11.05345]);
+        popupList.push([""]);
+      
+        markerList.push([43.898534, 11.075656]);
+        popupList.push([""]);
+      
+        markerList.push([43.898534, 11.075656]);
+        popupList.push([""]);
+      
+        markerList.push([43.898534, 11.075656]);
+        popupList.push([""]);
+      
+        markerList.push([43.898534, 11.075656]);
+        popupList.push([""]);
+      
+        markerList.push([43.898534, 11.075656]);
+        popupList.push([""]);
+      
+        markerList.push([43.898534, 11.075656]);
+        popupList.push([""]);
+      
+        markerList.push([43.898534, 11.075656]);
+        popupList.push([""]);
+      
+        markerList.push([43.877976, 11.061297]);
+        popupList.push([""]);
+      
+        markerList.push([43.877976, 11.061297]);
+        popupList.push([""]);
+      
+        markerList.push([43.877976, 11.061297]);
+        popupList.push([""]);
+      
+        markerList.push([43.93021, 11.031386]);
+        popupList.push([""]);
+      
+        markerList.push([43.827881, 11.038032]);
+        popupList.push([""]);
+      
+        markerList.push([43.908595, 11.028984]);
+        popupList.push([""]);
+      
+        markerList.push([44.052467, 11.15579]);
+        popupList.push([""]);
+      
+        markerList.push([43.828143, 11.016131]);
+        popupList.push([""]);
+      
+        markerList.push([43.880086, 11.09691601]);
+        popupList.push([""]);
+      
+        markerList.push([44.05519, 11.17915]);
+        popupList.push([""]);
+      
+        markerList.push([44.0528, 11.1634]);
+        popupList.push([""]);
+      
+        markerList.push([44.0099, 11.1769]);
+        popupList.push([""]);
+      
+        markerList.push([43.86816, 11.10081]);
+        popupList.push([""]);
+      
+        markerList.push([43.87975, 11.09621]);
+        popupList.push([""]);
+      
+        markerList.push([43.88606, 11.0982]);
+        popupList.push([""]);
+      
+        markerList.push([43.85068, 11.1107]);
+        popupList.push([""]);
+      
+        markerList.push([43.88237, 11.0672]);
+        popupList.push([""]);
+      
+        markerList.push([43.96277, 11.12774]);
+        popupList.push([""]);
+      
+        markerList.push([43.96277, 11.12774]);
+        popupList.push([""]);
+      
+        markerList.push([43.87169, 11.0726]);
+        popupList.push([""]);
+      
+        markerList.push([43.87169, 11.0726]);
+        popupList.push([""]);
+      
+        markerList.push([43.8846995, 11.098517]);
+        popupList.push([""]);
+      
+        markerList.push([43.8790819, 11.0980106]);
+        popupList.push([""]);
+      
+        markerList.push([43.884012, 11.0959864]);
+        popupList.push([""]);
+      
+        markerList.push([43.8777732, 11.1017205]);
+        popupList.push([""]);
+      
+        markerList.push([43.9095956, 11.0882069]);
+        popupList.push([""]);
+      
+        markerList.push([43.9089499, 11.0873436]);
+        popupList.push([""]);
+      
+        markerList.push([43.9084667, 11.0862629]);
+        popupList.push([""]);
+      
+        markerList.push([43.8812481, 11.1008141]);
+        popupList.push([""]);
+      
+        markerList.push([43.8801742, 11.1018069]);
+        popupList.push([""]);
+      
+        markerList.push([43.8795015, 11.1026995]);
+        popupList.push([""]);
+      
+        markerList.push([43.8817116, 11.0942875]);
+        popupList.push([""]);
+      
+        markerList.push([43.8822432, 11.0973993]);
+        popupList.push([""]);
+      
+        markerList.push([43.8439418, 11.0603118]);
+        popupList.push([""]);
+      
+        markerList.push([43.8461176, 11.0619422]);
+        popupList.push([""]);
+      
+        markerList.push([43.8784412, 11.098942]);
+        popupList.push([""]);
+      
+        markerList.push([43.8771201, 11.0898656]);
+        popupList.push([""]);
+      
+        markerList.push([43.8798162, 11.0931736]);
+        popupList.push([""]);
+      
+        markerList.push([43.893056, 11.090522]);
+        popupList.push([""]);
+      
+        markerList.push([43.883097, 11.1052381]);
+        popupList.push([""]);
+      
+        markerList.push([43.8797437, 11.099377]);
+        popupList.push([""]);
+      
+        markerList.push([43.8768346, 11.0985898]);
+        popupList.push([""]);
+      
+        markerList.push([43.8805715, 11.096517]);
+        popupList.push([""]);
+      
+        markerList.push([43.8808556, 11.0967299]);
+        popupList.push([""]);
+      
+        markerList.push([43.8906758, 11.0643358]);
+        popupList.push([""]);
+      
+    
+
+    //create the markers for a dataset
+     
+    {
+      for (var i=0; i<markerList.length; i++) {
+              var lat = markerList[i][0];
+              var lon = markerList[i][1];
+              var popup = popupList[i];
+
+              if (!isNaN(lat) && !isNaN(lon)) {
+                var markerLocation = new L.LatLng(lat, lon);
+                var marker = new L.Marker(markerLocation, {icon: Marker});
+                
+                {
+                  map.addLayer(marker);
+                }
+                if(popup != "")
+                {
+                  marker.bindPopup(''+popup);
+                }
+                sumLat += lat;
+                sumLon += lon;
+                countMarkers++;
+              }
+      }
+  }
+
+    //create clusters
+    
+
+    //set the map view for dataset
+    
+    {
+      center_map=[sumLat / countMarkers, sumLon / countMarkers];
+    }
+
+    //set the map for the view
+    
+
+    map.addLayer(style).setView(center_map,zoom_map);
+
+    //set streetview with Mapillary
+    
+
+//manages post mapping
+function JekyllMapPosts() {
+
+    this.map;
+
+    var center_map1 = [0,0];
+    var lat1=0;
+    var lon1=0;
+    var sumLat1 = 0.;
+    var sumLon1 = 0.;
+    var countMarkers1 = 0;
+
+    this.data = {
+      type: 'FeatureCollection',
+      features: [
+        
+          
+          
+          
+          
+      ]
+    };
+
+    
+      
+    
+      
+    
+
+  var myPostLayer = L.geoJSON(data, {onEachFeature: function (features, layer) {
+    layer.bindPopup('<a href='+features.link+' itemprop="url">'+features.properties+'</a>');
+  }}).addTo(map);
+
+  center_map1=[lat1 , lon1];
+  myPostLayer.addData(this.data);
+  return center_map1;
+}
+</script>
+</article>
+        </section>
+      </article>
+    </main>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/jmap/assets/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/jmap/assets/js/index.js"></script>
+<script type="text/javascript" src="/jmap/assets/js/readingTime.min.js"></script>
+<script>
+(function ($) {
+  "use strict";
+  $(document).ready(function(){
+
+    var $window = $(window),
+    $image = $('.post-image-image, .teaserimage-image');
+    
+      $window.on('scroll', function() {
+        var top = $window.scrollTop();
+
+        if (top < 0 || top > 1500) { return; }
+        $image
+          .css('transform', 'translate3d(0px, '+top/3+'px, 0px)')
+          .css('opacity', 1-Math.max(top/700, 0));
+      });
+      $window.trigger('scroll');
+
+      var height = $('.article-image').height();
+      $('.post-content').css('padding-top', height + 'px');
+
+      $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+         && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+          if (target.length) {
+            $('html,body').animate({ scrollTop: target.offset().top }, 500);
+            return false;
+          }
+        }
+      });
+
+  });
+}(jQuery));
+</script>
+
+<!-- Google Analytics -->
+<script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-47474515-6', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,3258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- (1) force latest IE rendering engine: bit.ly/1c8EiC9 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Chicago Crimes 2017</title>
+  <meta name="description" content="" />
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@il_tempe" />
+    <meta name="twitter:title" content="Chicago Crimes 2017" />
+    <meta name="twitter:image" content="https://iltempe.github.io/jmap/assets/images/logo.jpg" />
+    
+    <meta name="twitter:description"  content="" />
+    
+  
+
+  <meta property="og:site_name" content="JMAP" />
+  <meta property="og:title" content="Chicago Crimes 2017"/>
+  
+  <meta property="og:description" content="" />
+  
+  <meta property="og:image" content="https://iltempe.github.io/jmap/assets/images/logo.jpg" />
+  <meta property="og:url" content="https://iltempe.github.io/jmap/maps/2017-08-15-map3" >
+  <meta property="og:type" content="blog" />
+  <meta property="article:published_time" content="2017-08-15T20:50:24+00:00">
+
+  <link rel="canonical" href="https://iltempe.github.io/jmap/maps/2017-08-15-map3"/>
+  <link rel="shortcut icon" href="/jmap/assets/images/favicon.png" type="image/png"/>
+
+  <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
+  <link rel="stylesheet" href="/jmap/assets/css/font-awesome-4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/jmap/css/main.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="/jmap/css/print.css" />
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+</head>
+
+  <body itemscope itemtype="http://schema.org/Article">
+    <!-- header start -->
+
+
+  <a href="https://iltempe.github.io/jmap" class="logo-readium"><span class="logo" style="background-image: url(/jmap/assets/images/logo.jpg)"></span></a>
+
+<!-- header end -->
+
+    <style>
+    .content{
+      max-width: 1300px;
+    }
+    </style>
+    
+    <main class="content" role="main">
+      <article class="post">
+        
+        <div class="noarticleimage">
+          <div class="post-meta">
+            <h1 class="post-title">Chicago Crimes 2017</h1>
+            <div class="cf post-meta-text">
+              <h4> <a href=https://data.world/cityofchicago/crimes-2017/workspace/file?filename=Crimes+-+2017.csv>Data Source</a> </h4>
+              <h4 class="description-name" itemprop="author" itemscope itemtype="http://schema.org/Person">All Crimes Map in Chicago during the 2017</h4>
+              <time datetime="15 August 2017">15 August 2017</time>
+            </div>
+          </div>
+        </div>
+        
+        <section class="post-content">
+          <a name="topofpage"></a>
+          <link href='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.css' rel='stylesheet' />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="" />
+
+<script type="text/javascript" src='https://unpkg.com/mapillary-js@2.7.0/dist/mapillary.min.js'></script>
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" integrity="sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA==" crossorigin=""></script>
+
+<link rel="stylesheet" href="/jmap/assets/css/leaflet.awesome-markers.css">
+<script type="text/javascript" src="/jmap/assets/js/leaflet.awesome-markers.js"></script>
+
+<link rel="stylesheet" href="/jmap/assets/css/gh-fork-ribbon.css">
+<script type="text/javascript" src="/jmap/assets/js/leaflet-providers.js"></script>
+
+<link rel="stylesheet" href="/jmap/assets/css/MarkerCluster.css">
+<link rel="stylesheet" href="/jmap/assets/css/MarkerCluster.Default.css">
+<script type="text/javascript" src="/jmap/assets/js/leaflet.markercluster-src.js"></script>
+
+
+
+<style>
+  #map{
+    height: 800px;
+    
+    width: 100%;
+    
+  }
+  #mly{
+      height: 800px;
+      width: 60%;
+      float:left;
+    }
+</style>
+
+<article>
+  
+  <div id="map"></div>
+
+
+  <script>
+    //setting icons
+    var Marker = L.AwesomeMarkers.icon({
+    icon: 'star',
+    prefix: 'fa',
+    markerColor: 'green'});
+
+    var markerList=[];
+    var popupList=[];
+
+    // init map default values
+    var map = L.map('map', {
+        minZoom: 1,
+        maxZoom: 20
+    });
+    var markers = L.markerClusterGroup();
+    var sumLat = 0.;
+    var sumLon = 0.;
+    var countMarkers=0;
+    var center_map=[40.737,-73.923];
+    var zoom_map = 7;
+
+    // create the style tile layer
+    var style = L.tileLayer.provider('Stamen.Watercolor').addTo(map);
+
+    //any post to be mapped?
+    center_map=JekyllMapPosts();
+
+    //any dataset to be mapped?
+    
+      //find the dataset
+      
+      //find the coordinates in the dataset
+      
+        markerList.push([41.88309196, -87.67993916]);
+        popupList.push([""]);
+      
+        markerList.push([41.88814198, -87.74556032]);
+        popupList.push([""]);
+      
+        markerList.push([41.89489856, -87.75972002]);
+        popupList.push([""]);
+      
+        markerList.push([41.80865964, -87.66096953]);
+        popupList.push([""]);
+      
+        markerList.push([41.78986746, -87.76585706]);
+        popupList.push([""]);
+      
+        markerList.push([41.80863408, -87.6455275]);
+        popupList.push([""]);
+      
+        markerList.push([41.74932114, -87.61318673]);
+        popupList.push([""]);
+      
+        markerList.push([41.88643994, -87.63246797]);
+        popupList.push([""]);
+      
+        markerList.push([41.948086, -87.73580162]);
+        popupList.push([""]);
+      
+        markerList.push([41.82965153, -87.6144519]);
+        popupList.push([""]);
+      
+        markerList.push([41.74833709, -87.67947146]);
+        popupList.push([""]);
+      
+        markerList.push([41.70662559, -87.65012058]);
+        popupList.push([""]);
+      
+        markerList.push([41.87903266, -87.62610818]);
+        popupList.push([""]);
+      
+        markerList.push([41.88193185, -87.70214574]);
+        popupList.push([""]);
+      
+        markerList.push([41.65898611, -87.63406146]);
+        popupList.push([""]);
+      
+        markerList.push([41.90695409, -87.63218118]);
+        popupList.push([""]);
+      
+        markerList.push([41.88171846, -87.62776043]);
+        popupList.push([""]);
+      
+        markerList.push([41.91273399, -87.66212315]);
+        popupList.push([""]);
+      
+        markerList.push([41.92847395, -87.69665257]);
+        popupList.push([""]);
+      
+        markerList.push([41.92136903, -87.69366973]);
+        popupList.push([""]);
+      
+        markerList.push([41.9400715, -87.83373031]);
+        popupList.push([""]);
+      
+        markerList.push([41.92187318, -87.71813311]);
+        popupList.push([""]);
+      
+        markerList.push([41.92373899, -87.71044998]);
+        popupList.push([""]);
+      
+        markerList.push([41.89005249, -87.68790401]);
+        popupList.push([""]);
+      
+        markerList.push([42.01939827, -87.67488021]);
+        popupList.push([""]);
+      
+        markerList.push([41.79605084, -87.76484535]);
+        popupList.push([""]);
+      
+        markerList.push([41.7532926, -87.65381117]);
+        popupList.push([""]);
+      
+        markerList.push([41.91572961, -87.74605678]);
+        popupList.push([""]);
+      
+        markerList.push([42.00789172, -87.66676432]);
+        popupList.push([""]);
+      
+        markerList.push([41.95394487, -87.70395399]);
+        popupList.push([""]);
+      
+        markerList.push([41.91173984, -87.78153557]);
+        popupList.push([""]);
+      
+        markerList.push([41.91720095, -87.68250867]);
+        popupList.push([""]);
+      
+        markerList.push([41.80494014, -87.71859283]);
+        popupList.push([""]);
+      
+        markerList.push([41.8651475, -87.6257803]);
+        popupList.push([""]);
+      
+        markerList.push([41.94495301, -87.64941621]);
+        popupList.push([""]);
+      
+        markerList.push([41.7693292, -87.72252173]);
+        popupList.push([""]);
+      
+        markerList.push([41.91144837, -87.68481553]);
+        popupList.push([""]);
+      
+        markerList.push([41.7809464, -87.62199537]);
+        popupList.push([""]);
+      
+        markerList.push([41.77490155, -87.69206234]);
+        popupList.push([""]);
+      
+        markerList.push([41.77742383, -87.64836878]);
+        popupList.push([""]);
+      
+        markerList.push([41.75725956, -87.63122911]);
+        popupList.push([""]);
+      
+        markerList.push([, ]);
+        popupList.push([""]);
+      
+        markerList.push([41.76166094, -87.69661824]);
+        popupList.push([""]);
+      
+        markerList.push([41.97305728, -87.68698208]);
+        popupList.push([""]);
+      
+        markerList.push([41.76783088, -87.65782565]);
+        popupList.push([""]);
+      
+        markerList.push([41.73521843, -87.65332025]);
+        popupList.push([""]);
+      
+        markerList.push([41.77232486, -87.65483109]);
+        popupList.push([""]);
+      
+        markerList.push([41.79875882, -87.59662512]);
+        popupList.push([""]);
+      
+        markerList.push([41.76035392, -87.68180154]);
+        popupList.push([""]);
+      
+        markerList.push([41.89744132, -87.67221901]);
+        popupList.push([""]);
+      
+        markerList.push([41.96741722, -87.67765881]);
+        popupList.push([""]);
+      
+        markerList.push([41.85826628, -87.7200316]);
+        popupList.push([""]);
+      
+        markerList.push([41.86982616, -87.72384228]);
+        popupList.push([""]);
+      
+        markerList.push([41.87419281, -87.66711992]);
+        popupList.push([""]);
+      
+        markerList.push([41.87884043, -87.63958293]);
+        popupList.push([""]);
+      
+        markerList.push([41.98186128, -87.78406048]);
+        popupList.push([""]);
+      
+        markerList.push([41.87594446, -87.74354976]);
+        popupList.push([""]);
+      
+        markerList.push([41.80591763, -87.67462426]);
+        popupList.push([""]);
+      
+        markerList.push([41.91074006, -87.6324557]);
+        popupList.push([""]);
+      
+        markerList.push([41.83980157, -87.7244282]);
+        popupList.push([""]);
+      
+        markerList.push([41.7809464, -87.62199537]);
+        popupList.push([""]);
+      
+        markerList.push([41.95393251, -87.7062077]);
+        popupList.push([""]);
+      
+        markerList.push([41.69266932, -87.61699709]);
+        popupList.push([""]);
+      
+        markerList.push([41.93930054, -87.71179449]);
+        popupList.push([""]);
+      
+        markerList.push([41.95877635, -87.66917723]);
+        popupList.push([""]);
+      
+        markerList.push([41.74806235, -87.68280166]);
+        popupList.push([""]);
+      
+        markerList.push([41.85482707, -87.71123655]);
+        popupList.push([""]);
+      
+        markerList.push([41.87796462, -87.72676496]);
+        popupList.push([""]);
+      
+        markerList.push([41.88113202, -87.68858133]);
+        popupList.push([""]);
+      
+        markerList.push([41.75033427, -87.66504531]);
+        popupList.push([""]);
+      
+        markerList.push([41.809861, -87.64556572]);
+        popupList.push([""]);
+      
+        markerList.push([41.83031892, -87.6101661]);
+        popupList.push([""]);
+      
+        markerList.push([41.81639798, -87.63286899]);
+        popupList.push([""]);
+      
+        markerList.push([42.01690659, -87.67536591]);
+        popupList.push([""]);
+      
+        markerList.push([41.86821682, -87.6304532]);
+        popupList.push([""]);
+      
+        markerList.push([41.72055918, -87.64197304]);
+        popupList.push([""]);
+      
+        markerList.push([41.85649503, -87.70961627]);
+        popupList.push([""]);
+      
+        markerList.push([41.74932776, -87.55527466]);
+        popupList.push([""]);
+      
+        markerList.push([41.67715727, -87.63827573]);
+        popupList.push([""]);
+      
+        markerList.push([41.76212625, -87.69540774]);
+        popupList.push([""]);
+      
+        markerList.push([41.68084545, -87.62520382]);
+        popupList.push([""]);
+      
+        markerList.push([41.73586427, -87.64380572]);
+        popupList.push([""]);
+      
+        markerList.push([41.68800416, -87.62633716]);
+        popupList.push([""]);
+      
+        markerList.push([41.91802901, -87.80533478]);
+        popupList.push([""]);
+      
+        markerList.push([41.89055166, -87.72350206]);
+        popupList.push([""]);
+      
+        markerList.push([41.74660021, -87.57877115]);
+        popupList.push([""]);
+      
+        markerList.push([41.77675304, -87.6654127]);
+        popupList.push([""]);
+      
+        markerList.push([41.87005932, -87.70448014]);
+        popupList.push([""]);
+      
+        markerList.push([41.76814468, -87.65055695]);
+        popupList.push([""]);
+      
+        markerList.push([42.02115699, -87.67101258]);
+        popupList.push([""]);
+      
+        markerList.push([41.78078628, -87.63843001]);
+        popupList.push([""]);
+      
+        markerList.push([41.87167643, -87.72138308]);
+        popupList.push([""]);
+      
+        markerList.push([41.7727814, -87.58263257]);
+        popupList.push([""]);
+      
+        markerList.push([41.8960911, -87.72121618]);
+        popupList.push([""]);
+      
+        markerList.push([41.7900866, -87.65355473]);
+        popupList.push([""]);
+      
+        markerList.push([41.74640331, -87.65362731]);
+        popupList.push([""]);
+      
+        markerList.push([41.79383609, -87.68163125]);
+        popupList.push([""]);
+      
+        markerList.push([41.78221201, -87.6934781]);
+        popupList.push([""]);
+      
+        markerList.push([41.78438506, -87.63814549]);
+        popupList.push([""]);
+      
+        markerList.push([41.79959216, -87.72334567]);
+        popupList.push([""]);
+      
+        markerList.push([41.78044022, -87.70560217]);
+        popupList.push([""]);
+      
+        markerList.push([41.79166818, -87.65602428]);
+        popupList.push([""]);
+      
+        markerList.push([41.89941016, -87.62413127]);
+        popupList.push([""]);
+      
+        markerList.push([41.87610805, -87.73118141]);
+        popupList.push([""]);
+      
+        markerList.push([41.69986568, -87.62375017]);
+        popupList.push([""]);
+      
+        markerList.push([41.89592288, -87.67637046]);
+        popupList.push([""]);
+      
+        markerList.push([41.961933, -87.72167472]);
+        popupList.push([""]);
+      
+        markerList.push([41.79591765, -87.72078408]);
+        popupList.push([""]);
+      
+        markerList.push([42.01220497, -87.69366559]);
+        popupList.push([""]);
+      
+        markerList.push([41.65578629, -87.59630267]);
+        popupList.push([""]);
+      
+        markerList.push([41.74433449, -87.56855587]);
+        popupList.push([""]);
+      
+        markerList.push([41.89349153, -87.76207589]);
+        popupList.push([""]);
+      
+        markerList.push([41.99635883, -87.70688393]);
+        popupList.push([""]);
+      
+        markerList.push([41.8550192, -87.71124203]);
+        popupList.push([""]);
+      
+        markerList.push([41.96638917, -87.65376858]);
+        popupList.push([""]);
+      
+        markerList.push([41.9174021, -87.63545446]);
+        popupList.push([""]);
+      
+        markerList.push([41.88239406, -87.6278448]);
+        popupList.push([""]);
+      
+        markerList.push([41.85385617, -87.6318034]);
+        popupList.push([""]);
+      
+        markerList.push([41.91879414, -87.74322885]);
+        popupList.push([""]);
+      
+        markerList.push([41.95752862, -87.75179092]);
+        popupList.push([""]);
+      
+        markerList.push([41.75933411, -87.61390678]);
+        popupList.push([""]);
+      
+        markerList.push([41.78063171, -87.66181603]);
+        popupList.push([""]);
+      
+        markerList.push([41.93962778, -87.75553355]);
+        popupList.push([""]);
+      
+        markerList.push([41.97307675, -87.77095603]);
+        popupList.push([""]);
+      
+        markerList.push([41.77178244, -87.64943693]);
+        popupList.push([""]);
+      
+        markerList.push([41.874806, -87.75824006]);
+        popupList.push([""]);
+      
+        markerList.push([41.86508937, -87.73370783]);
+        popupList.push([""]);
+      
+        markerList.push([41.78189941, -87.65710971]);
+        popupList.push([""]);
+      
+        markerList.push([41.71132756, -87.53648688]);
+        popupList.push([""]);
+      
+        markerList.push([41.69311072, -87.65537864]);
+        popupList.push([""]);
+      
+        markerList.push([41.72464445, -87.61058673]);
+        popupList.push([""]);
+      
+        markerList.push([41.73721584, -87.56445612]);
+        popupList.push([""]);
+      
+        markerList.push([41.89789513, -87.62409661]);
+        popupList.push([""]);
+      
+        markerList.push([41.79269722, -87.6061813]);
+        popupList.push([""]);
+      
+        markerList.push([41.80352098, -87.58192542]);
+        popupList.push([""]);
+      
+        markerList.push([41.6773504, -87.67145644]);
+        popupList.push([""]);
+      
+        markerList.push([41.83045031, -87.61932306]);
+        popupList.push([""]);
+      
+        markerList.push([41.70560625, -87.60610147]);
+        popupList.push([""]);
+      
+        markerList.push([41.86625461, -87.71896767]);
+        popupList.push([""]);
+      
+        markerList.push([41.93169878, -87.78328196]);
+        popupList.push([""]);
+      
+        markerList.push([41.90902543, -87.73017047]);
+        popupList.push([""]);
+      
+        markerList.push([41.72735685, -87.58544391]);
+        popupList.push([""]);
+      
+        markerList.push([41.89670563, -87.71147674]);
+        popupList.push([""]);
+      
+        markerList.push([41.75033427, -87.66504531]);
+        popupList.push([""]);
+      
+        markerList.push([41.91545528, -87.67858775]);
+        popupList.push([""]);
+      
+        markerList.push([41.8805215, -87.6448636]);
+        popupList.push([""]);
+      
+        markerList.push([41.90524807, -87.70686438]);
+        popupList.push([""]);
+      
+        markerList.push([41.91690197, -87.68983806]);
+        popupList.push([""]);
+      
+        markerList.push([41.93773182, -87.72065641]);
+        popupList.push([""]);
+      
+        markerList.push([41.70701314, -87.61863603]);
+        popupList.push([""]);
+      
+        markerList.push([41.72953018, -87.65436939]);
+        popupList.push([""]);
+      
+        markerList.push([42.00028952, -87.68143824]);
+        popupList.push([""]);
+      
+        markerList.push([41.92723987, -87.75872115]);
+        popupList.push([""]);
+      
+        markerList.push([41.90389886, -87.63835295]);
+        popupList.push([""]);
+      
+        markerList.push([41.80898136, -87.60655105]);
+        popupList.push([""]);
+      
+        markerList.push([42.00789172, -87.66676432]);
+        popupList.push([""]);
+      
+        markerList.push([41.69939212, -87.61598873]);
+        popupList.push([""]);
+      
+        markerList.push([41.79307586, -87.66821363]);
+        popupList.push([""]);
+      
+        markerList.push([41.87263633, -87.71665583]);
+        popupList.push([""]);
+      
+        markerList.push([41.96375202, -87.69242602]);
+        popupList.push([""]);
+      
+        markerList.push([41.8945635, -87.62274511]);
+        popupList.push([""]);
+      
+        markerList.push([41.97629041, -87.90522722]);
+        popupList.push([""]);
+      
+        markerList.push([41.74252778, -87.54887474]);
+        popupList.push([""]);
+      
+        markerList.push([41.88036208, -87.75584744]);
+        popupList.push([""]);
+      
+        markerList.push([41.93480422, -87.80111325]);
+        popupList.push([""]);
+      
+        markerList.push([41.86645197, -87.701226]);
+        popupList.push([""]);
+      
+        markerList.push([41.8546303, -87.70533607]);
+        popupList.push([""]);
+      
+        markerList.push([41.86622745, -87.72107526]);
+        popupList.push([""]);
+      
+        markerList.push([41.86094656, -87.68587673]);
+        popupList.push([""]);
+      
+        markerList.push([41.74091899, -87.63196775]);
+        popupList.push([""]);
+      
+        markerList.push([41.89652866, -87.63893974]);
+        popupList.push([""]);
+      
+        markerList.push([41.93344293, -87.78821374]);
+        popupList.push([""]);
+      
+        markerList.push([41.96542634, -87.65522754]);
+        popupList.push([""]);
+      
+        markerList.push([41.87658369, -87.76031711]);
+        popupList.push([""]);
+      
+        markerList.push([41.91723478, -87.7754919]);
+        popupList.push([""]);
+      
+        markerList.push([41.96695496, -87.72065594]);
+        popupList.push([""]);
+      
+        markerList.push([41.79648858, -87.69509643]);
+        popupList.push([""]);
+      
+        markerList.push([41.79295783, -87.66820751]);
+        popupList.push([""]);
+      
+        markerList.push([41.93128669, -87.68438309]);
+        popupList.push([""]);
+      
+        markerList.push([41.75078272, -87.62581362]);
+        popupList.push([""]);
+      
+        markerList.push([41.93854522, -87.78606793]);
+        popupList.push([""]);
+      
+        markerList.push([41.88106593, -87.63233942]);
+        popupList.push([""]);
+      
+        markerList.push([41.98365986, -87.77802038]);
+        popupList.push([""]);
+      
+        markerList.push([41.89671455, -87.62534014]);
+        popupList.push([""]);
+      
+        markerList.push([41.95573672, -87.75234765]);
+        popupList.push([""]);
+      
+        markerList.push([41.82606905, -87.62485689]);
+        popupList.push([""]);
+      
+        markerList.push([41.78745451, -87.62000936]);
+        popupList.push([""]);
+      
+        markerList.push([41.89892268, -87.73203234]);
+        popupList.push([""]);
+      
+        markerList.push([41.88062827, -87.7338894]);
+        popupList.push([""]);
+      
+        markerList.push([41.78516123, -87.62060312]);
+        popupList.push([""]);
+      
+        markerList.push([41.82469598, -87.69047969]);
+        popupList.push([""]);
+      
+        markerList.push([42.01513021, -87.6902177]);
+        popupList.push([""]);
+      
+        markerList.push([41.8827793, -87.70756498]);
+        popupList.push([""]);
+      
+        markerList.push([41.80885591, -87.66497662]);
+        popupList.push([""]);
+      
+        markerList.push([41.95752696, -87.65310905]);
+        popupList.push([""]);
+      
+        markerList.push([41.95742199, -87.65345576]);
+        popupList.push([""]);
+      
+        markerList.push([41.90285778, -87.76932452]);
+        popupList.push([""]);
+      
+        markerList.push([41.95492816, -87.68975347]);
+        popupList.push([""]);
+      
+        markerList.push([42.02206269, -87.67484904]);
+        popupList.push([""]);
+      
+        markerList.push([41.75822878, -87.68306918]);
+        popupList.push([""]);
+      
+        markerList.push([41.83773043, -87.62190999]);
+        popupList.push([""]);
+      
+        markerList.push([41.93856875, -87.76715018]);
+        popupList.push([""]);
+      
+        markerList.push([41.80237136, -87.72371909]);
+        popupList.push([""]);
+      
+        markerList.push([41.90019049, -87.6282991]);
+        popupList.push([""]);
+      
+        markerList.push([41.75482364, -87.55109257]);
+        popupList.push([""]);
+      
+        markerList.push([41.93931514, -87.70942733]);
+        popupList.push([""]);
+      
+        markerList.push([41.87270252, -87.64705138]);
+        popupList.push([""]);
+      
+        markerList.push([41.96693197, -87.7614129]);
+        popupList.push([""]);
+      
+        markerList.push([41.87227445, -87.76458166]);
+        popupList.push([""]);
+      
+        markerList.push([42.01317793, -87.68029103]);
+        popupList.push([""]);
+      
+        markerList.push([41.76609575, -87.57419539]);
+        popupList.push([""]);
+      
+        markerList.push([41.90585359, -87.7575317]);
+        popupList.push([""]);
+      
+        markerList.push([41.99466028, -87.68856609]);
+        popupList.push([""]);
+      
+        markerList.push([41.90843054, -87.63850953]);
+        popupList.push([""]);
+      
+        markerList.push([41.88015594, -87.69710307]);
+        popupList.push([""]);
+      
+        markerList.push([41.73469516, -87.56959351]);
+        popupList.push([""]);
+      
+        markerList.push([41.89250535, -87.62630482]);
+        popupList.push([""]);
+      
+        markerList.push([41.9176643, -87.72290597]);
+        popupList.push([""]);
+      
+        markerList.push([41.7948982, -87.68406653]);
+        popupList.push([""]);
+      
+        markerList.push([41.90690686, -87.74604948]);
+        popupList.push([""]);
+      
+        markerList.push([41.75043771, -87.63671986]);
+        popupList.push([""]);
+      
+        markerList.push([41.80842754, -87.68504133]);
+        popupList.push([""]);
+      
+        markerList.push([41.87808773, -87.74141867]);
+        popupList.push([""]);
+      
+        markerList.push([41.72781364, -87.6616117]);
+        popupList.push([""]);
+      
+        markerList.push([41.8978375, -87.62409724]);
+        popupList.push([""]);
+      
+        markerList.push([41.70148574, -87.64054051]);
+        popupList.push([""]);
+      
+        markerList.push([41.72257838, -87.66270655]);
+        popupList.push([""]);
+      
+        markerList.push([41.89941016, -87.62413127]);
+        popupList.push([""]);
+      
+        markerList.push([41.86978639, -87.77428182]);
+        popupList.push([""]);
+      
+        markerList.push([41.77652835, -87.67978644]);
+        popupList.push([""]);
+      
+        markerList.push([41.90843054, -87.63850953]);
+        popupList.push([""]);
+      
+        markerList.push([41.78182228, -87.69347098]);
+        popupList.push([""]);
+      
+        markerList.push([41.78506973, -87.6173628]);
+        popupList.push([""]);
+      
+        markerList.push([41.95984436, -87.72939364]);
+        popupList.push([""]);
+      
+        markerList.push([41.75932713, -87.58615404]);
+        popupList.push([""]);
+      
+        markerList.push([41.85734892, -87.70717424]);
+        popupList.push([""]);
+      
+        markerList.push([41.89789513, -87.62409661]);
+        popupList.push([""]);
+      
+        markerList.push([41.86645197, -87.701226]);
+        popupList.push([""]);
+      
+        markerList.push([41.7662476, -87.57599706]);
+        popupList.push([""]);
+      
+        markerList.push([41.80865964, -87.66096953]);
+        popupList.push([""]);
+      
+        markerList.push([41.87294087, -87.75515053]);
+        popupList.push([""]);
+      
+        markerList.push([41.90985238, -87.77767229]);
+        popupList.push([""]);
+      
+        markerList.push([41.9307713, -87.70922762]);
+        popupList.push([""]);
+      
+        markerList.push([41.90985238, -87.77767229]);
+        popupList.push([""]);
+      
+        markerList.push([41.92723261, -87.64146586]);
+        popupList.push([""]);
+      
+        markerList.push([41.9210632, -87.78292871]);
+        popupList.push([""]);
+      
+        markerList.push([41.70698746, -87.62024403]);
+        popupList.push([""]);
+      
+        markerList.push([41.87255873, -87.72370984]);
+        popupList.push([""]);
+      
+        markerList.push([41.77753215, -87.63175594]);
+        popupList.push([""]);
+      
+        markerList.push([41.86315933, -87.62245416]);
+        popupList.push([""]);
+      
+        markerList.push([41.77990731, -87.6995102]);
+        popupList.push([""]);
+      
+        markerList.push([41.8653677, -87.62410746]);
+        popupList.push([""]);
+      
+        markerList.push([41.88336939, -87.63386027]);
+        popupList.push([""]);
+      
+        markerList.push([41.81122226, -87.61509084]);
+        popupList.push([""]);
+      
+        markerList.push([41.8814934, -87.62775556]);
+        popupList.push([""]);
+      
+        markerList.push([41.83415513, -87.62331829]);
+        popupList.push([""]);
+      
+        markerList.push([41.87528403, -87.72427511]);
+        popupList.push([""]);
+      
+        markerList.push([42.00916538, -87.81096207]);
+        popupList.push([""]);
+      
+        markerList.push([41.97468239, -87.65149598]);
+        popupList.push([""]);
+      
+        markerList.push([41.76752094, -87.572672]);
+        popupList.push([""]);
+      
+        markerList.push([42.01449362, -87.69022779]);
+        popupList.push([""]);
+      
+        markerList.push([41.78551967, -87.73856753]);
+        popupList.push([""]);
+      
+        markerList.push([42.0193989, -87.67546902]);
+        popupList.push([""]);
+      
+        markerList.push([41.75972279, -87.57491925]);
+        popupList.push([""]);
+      
+        markerList.push([41.83467556, -87.72551893]);
+        popupList.push([""]);
+      
+        markerList.push([41.75046679, -87.59181613]);
+        popupList.push([""]);
+      
+        markerList.push([41.69478911, -87.64732396]);
+        popupList.push([""]);
+      
+        markerList.push([41.68041843, -87.66243795]);
+        popupList.push([""]);
+      
+        markerList.push([41.9252092, -87.6639951]);
+        popupList.push([""]);
+      
+        markerList.push([41.86152659, -87.72625588]);
+        popupList.push([""]);
+      
+        markerList.push([41.80003459, -87.65866848]);
+        popupList.push([""]);
+      
+        markerList.push([41.73176329, -87.63863258]);
+        popupList.push([""]);
+      
+        markerList.push([41.81316473, -87.59467729]);
+        popupList.push([""]);
+      
+        markerList.push([41.76411625, -87.72069078]);
+        popupList.push([""]);
+      
+        markerList.push([41.72396651, -87.67448025]);
+        popupList.push([""]);
+      
+        markerList.push([41.8160625, -87.60669477]);
+        popupList.push([""]);
+      
+        markerList.push([41.74036996, -87.7202167]);
+        popupList.push([""]);
+      
+        markerList.push([41.80627315, -87.6649081]);
+        popupList.push([""]);
+      
+        markerList.push([41.68816477, -87.61814175]);
+        popupList.push([""]);
+      
+        markerList.push([42.01345586, -87.69260065]);
+        popupList.push([""]);
+      
+        markerList.push([41.75987573, -87.59204502]);
+        popupList.push([""]);
+      
+        markerList.push([41.92617286, -87.80510962]);
+        popupList.push([""]);
+      
+        markerList.push([41.76517539, -87.58365228]);
+        popupList.push([""]);
+      
+        markerList.push([41.92094629, -87.75359666]);
+        popupList.push([""]);
+      
+        markerList.push([41.87485061, -87.73527258]);
+        popupList.push([""]);
+      
+        markerList.push([41.7981214, -87.73065777]);
+        popupList.push([""]);
+      
+        markerList.push([41.74006851, -87.5745643]);
+        popupList.push([""]);
+      
+        markerList.push([41.89654309, -87.6376981]);
+        popupList.push([""]);
+      
+        markerList.push([41.974762, -87.67548729]);
+        popupList.push([""]);
+      
+        markerList.push([41.7900866, -87.65355473]);
+        popupList.push([""]);
+      
+        markerList.push([41.93824739, -87.68559524]);
+        popupList.push([""]);
+      
+        markerList.push([41.75845922, -87.61224159]);
+        popupList.push([""]);
+      
+        markerList.push([41.8984025, -87.7718431]);
+        popupList.push([""]);
+      
+        markerList.push([41.87536742, -87.62762099]);
+        popupList.push([""]);
+      
+        markerList.push([41.7722776, -87.62029119]);
+        popupList.push([""]);
+      
+        markerList.push([41.99843414, -87.67704987]);
+        popupList.push([""]);
+      
+        markerList.push([41.82592136, -87.66665933]);
+        popupList.push([""]);
+      
+        markerList.push([41.9083197, -87.670832]);
+        popupList.push([""]);
+      
+        markerList.push([41.80711231, -87.61261689]);
+        popupList.push([""]);
+      
+        markerList.push([42.00175069, -87.80918317]);
+        popupList.push([""]);
+      
+        markerList.push([41.82188187, -87.69567346]);
+        popupList.push([""]);
+      
+        markerList.push([41.76456916, -87.62834165]);
+        popupList.push([""]);
+      
+        markerList.push([41.94278942, -87.72323243]);
+        popupList.push([""]);
+      
+        markerList.push([41.75459296, -87.74152854]);
+        popupList.push([""]);
+      
+        markerList.push([41.73781123, -87.59029829]);
+        popupList.push([""]);
+      
+        markerList.push([41.88589267, -87.67493081]);
+        popupList.push([""]);
+      
+        markerList.push([41.9650299, -87.76855221]);
+        popupList.push([""]);
+      
+        markerList.push([41.75124141, -87.6719476]);
+        popupList.push([""]);
+      
+        markerList.push([41.89960948, -87.71767099]);
+        popupList.push([""]);
+      
+        markerList.push([41.85679041, -87.70842407]);
+        popupList.push([""]);
+      
+        markerList.push([41.86769734, -87.69715686]);
+        popupList.push([""]);
+      
+        markerList.push([41.72189198, -87.55797573]);
+        popupList.push([""]);
+      
+        markerList.push([41.80615947, -87.64381907]);
+        popupList.push([""]);
+      
+        markerList.push([41.85391053, -87.68155399]);
+        popupList.push([""]);
+      
+        markerList.push([41.81095287, -87.70040372]);
+        popupList.push([""]);
+      
+        markerList.push([41.99138784, -87.65825533]);
+        popupList.push([""]);
+      
+        markerList.push([41.95452891, -87.76211937]);
+        popupList.push([""]);
+      
+        markerList.push([41.80568241, -87.70513943]);
+        popupList.push([""]);
+      
+        markerList.push([41.90453669, -87.67487154]);
+        popupList.push([""]);
+      
+        markerList.push([41.87137115, -87.62751442]);
+        popupList.push([""]);
+      
+        markerList.push([41.96964374, -87.69684951]);
+        popupList.push([""]);
+      
+        markerList.push([41.92657819, -87.76972933]);
+        popupList.push([""]);
+      
+        markerList.push([41.86398049, -87.71657014]);
+        popupList.push([""]);
+      
+        markerList.push([41.87286591, -87.69736262]);
+        popupList.push([""]);
+      
+        markerList.push([41.9752032, -87.67298937]);
+        popupList.push([""]);
+      
+        markerList.push([41.80352098, -87.58192542]);
+        popupList.push([""]);
+      
+        markerList.push([41.74217311, -87.66323188]);
+        popupList.push([""]);
+      
+        markerList.push([41.84224139, -87.69514106]);
+        popupList.push([""]);
+      
+        markerList.push([41.91108426, -87.66770267]);
+        popupList.push([""]);
+      
+        markerList.push([41.81062065, -87.7469078]);
+        popupList.push([""]);
+      
+        markerList.push([41.7344873, -87.58051402]);
+        popupList.push([""]);
+      
+        markerList.push([41.65477967, -87.54230357]);
+        popupList.push([""]);
+      
+        markerList.push([41.89275303, -87.6241939]);
+        popupList.push([""]);
+      
+        markerList.push([41.91067631, -87.64918707]);
+        popupList.push([""]);
+      
+        markerList.push([41.69613089, -87.63138539]);
+        popupList.push([""]);
+      
+        markerList.push([41.69863326, -87.56196086]);
+        popupList.push([""]);
+      
+        markerList.push([41.84334951, -87.63423394]);
+        popupList.push([""]);
+      
+        markerList.push([41.88449383, -87.62702113]);
+        popupList.push([""]);
+      
+        markerList.push([41.76624999, -87.57552784]);
+        popupList.push([""]);
+      
+        markerList.push([41.74995315, -87.68863871]);
+        popupList.push([""]);
+      
+        markerList.push([41.80046498, -87.7233704]);
+        popupList.push([""]);
+      
+        markerList.push([41.80008421, -87.71477368]);
+        popupList.push([""]);
+      
+        markerList.push([41.78962943, -87.6583999]);
+        popupList.push([""]);
+      
+        markerList.push([41.82467571, -87.61701343]);
+        popupList.push([""]);
+      
+        markerList.push([41.83221747, -87.62328466]);
+        popupList.push([""]);
+      
+        markerList.push([41.80347488, -87.58369012]);
+        popupList.push([""]);
+      
+        markerList.push([41.90856054, -87.67740914]);
+        popupList.push([""]);
+      
+        markerList.push([41.95885623, -87.65328978]);
+        popupList.push([""]);
+      
+        markerList.push([41.86709647, -87.72400038]);
+        popupList.push([""]);
+      
+        markerList.push([41.8997028, -87.71767376]);
+        popupList.push([""]);
+      
+        markerList.push([41.78547317, -87.73965696]);
+        popupList.push([""]);
+      
+        markerList.push([41.74918593, -87.57594111]);
+        popupList.push([""]);
+      
+        markerList.push([41.86409964, -87.71372384]);
+        popupList.push([""]);
+      
+        markerList.push([41.74498289, -87.71811343]);
+        popupList.push([""]);
+      
+        markerList.push([41.82300695, -87.68341942]);
+        popupList.push([""]);
+      
+        markerList.push([41.92354885, -87.72307771]);
+        popupList.push([""]);
+      
+        markerList.push([41.88220994, -87.76706412]);
+        popupList.push([""]);
+      
+        markerList.push([41.89317725, -87.76788547]);
+        popupList.push([""]);
+      
+        markerList.push([41.86625461, -87.71896767]);
+        popupList.push([""]);
+      
+        markerList.push([41.78999689, -87.69681462]);
+        popupList.push([""]);
+      
+        markerList.push([41.74988027, -87.66342658]);
+        popupList.push([""]);
+      
+        markerList.push([41.72641506, -87.62878824]);
+        popupList.push([""]);
+      
+        markerList.push([41.87927977, -87.76276798]);
+        popupList.push([""]);
+      
+        markerList.push([41.86049871, -87.62399607]);
+        popupList.push([""]);
+      
+        markerList.push([41.873185, -87.74379543]);
+        popupList.push([""]);
+      
+        markerList.push([41.89451692, -87.72605743]);
+        popupList.push([""]);
+      
+        markerList.push([41.7900866, -87.65355473]);
+        popupList.push([""]);
+      
+        markerList.push([41.7224781, -87.57465773]);
+        popupList.push([""]);
+      
+        markerList.push([41.77107343, -87.68088292]);
+        popupList.push([""]);
+      
+        markerList.push([41.70456844, -87.56553002]);
+        popupList.push([""]);
+      
+        markerList.push([41.88811975, -87.76513525]);
+        popupList.push([""]);
+      
+        markerList.push([41.88653042, -87.74435583]);
+        popupList.push([""]);
+      
+        markerList.push([41.77095724, -87.5739841]);
+        popupList.push([""]);
+      
+        markerList.push([41.754242, -87.64686349]);
+        popupList.push([""]);
+      
+        markerList.push([41.80901226, -87.72729849]);
+        popupList.push([""]);
+      
+        markerList.push([41.83583461, -87.6758698]);
+        popupList.push([""]);
+      
+        markerList.push([41.78785987, -87.59086468]);
+        popupList.push([""]);
+      
+        markerList.push([41.78468543, -87.62220704]);
+        popupList.push([""]);
+      
+        markerList.push([41.83197773, -87.6461326]);
+        popupList.push([""]);
+      
+        markerList.push([41.98216127, -87.66850026]);
+        popupList.push([""]);
+      
+        markerList.push([41.77223912, -87.66078546]);
+        popupList.push([""]);
+      
+        markerList.push([41.718729, -87.53649069]);
+        popupList.push([""]);
+      
+        markerList.push([41.89275303, -87.6241939]);
+        popupList.push([""]);
+      
+        markerList.push([41.81607605, -87.6006197]);
+        popupList.push([""]);
+      
+        markerList.push([41.91956717, -87.69189832]);
+        popupList.push([""]);
+      
+        markerList.push([41.70222384, -87.65850544]);
+        popupList.push([""]);
+      
+        markerList.push([41.84585638, -87.72460935]);
+        popupList.push([""]);
+      
+        markerList.push([41.87376503, -87.69916754]);
+        popupList.push([""]);
+      
+        markerList.push([41.8810143, -87.7024669]);
+        popupList.push([""]);
+      
+        markerList.push([41.87886004, -87.72639663]);
+        popupList.push([""]);
+      
+        markerList.push([41.8822275, -87.73797999]);
+        popupList.push([""]);
+      
+        markerList.push([41.87802274, -87.7405233]);
+        popupList.push([""]);
+      
+        markerList.push([41.78024093, -87.69830067]);
+        popupList.push([""]);
+      
+        markerList.push([41.7796184, -87.65376796]);
+        popupList.push([""]);
+      
+        markerList.push([41.92143993, -87.72179337]);
+        popupList.push([""]);
+      
+        markerList.push([41.90966425, -87.74272882]);
+        popupList.push([""]);
+      
+        markerList.push([41.93558362, -87.76393866]);
+        popupList.push([""]);
+      
+        markerList.push([41.89264127, -87.71500901]);
+        popupList.push([""]);
+      
+        markerList.push([41.8924816, -87.62735183]);
+        popupList.push([""]);
+      
+        markerList.push([41.88548629, -87.65788037]);
+        popupList.push([""]);
+      
+        markerList.push([41.89200307, -87.62807696]);
+        popupList.push([""]);
+      
+        markerList.push([41.89101002, -87.70518553]);
+        popupList.push([""]);
+      
+        markerList.push([41.95815572, -87.71427314]);
+        popupList.push([""]);
+      
+        markerList.push([41.97572942, -87.65498954]);
+        popupList.push([""]);
+      
+        markerList.push([41.90588885, -87.67044936]);
+        popupList.push([""]);
+      
+        markerList.push([41.88852595, -87.64432226]);
+        popupList.push([""]);
+      
+        markerList.push([41.91072362, -87.67800053]);
+        popupList.push([""]);
+      
+        markerList.push([41.72750574, -87.60607434]);
+        popupList.push([""]);
+      
+        markerList.push([41.74977351, -87.64765503]);
+        popupList.push([""]);
+      
+        markerList.push([41.88677684, -87.64919974]);
+        popupList.push([""]);
+      
+        markerList.push([41.721111, -87.65072907]);
+        popupList.push([""]);
+      
+        markerList.push([41.68438804, -87.63006331]);
+        popupList.push([""]);
+      
+        markerList.push([41.70420251, -87.62343516]);
+        popupList.push([""]);
+      
+        markerList.push([41.89231785, -87.71866288]);
+        popupList.push([""]);
+      
+        markerList.push([41.87183974, -87.70889801]);
+        popupList.push([""]);
+      
+        markerList.push([41.79102348, -87.62511459]);
+        popupList.push([""]);
+      
+        markerList.push([41.9986632, -87.68016354]);
+        popupList.push([""]);
+      
+        markerList.push([41.83697438, -87.7191634]);
+        popupList.push([""]);
+      
+        markerList.push([41.8843504, -87.65698526]);
+        popupList.push([""]);
+      
+        markerList.push([41.97480922, -87.69503286]);
+        popupList.push([""]);
+      
+        markerList.push([41.82769187, -87.6691066]);
+        popupList.push([""]);
+      
+        markerList.push([41.86946565, -87.65373873]);
+        popupList.push([""]);
+      
+        markerList.push([41.73014709, -87.54510175]);
+        popupList.push([""]);
+      
+        markerList.push([41.97964955, -87.68079923]);
+        popupList.push([""]);
+      
+        markerList.push([41.88465375, -87.62625185]);
+        popupList.push([""]);
+      
+        markerList.push([41.91083489, -87.6835763]);
+        popupList.push([""]);
+      
+        markerList.push([41.75802917, -87.63142597]);
+        popupList.push([""]);
+      
+        markerList.push([41.76660948, -87.67481024]);
+        popupList.push([""]);
+      
+        markerList.push([41.87639828, -87.74267903]);
+        popupList.push([""]);
+      
+        markerList.push([41.70698746, -87.62024403]);
+        popupList.push([""]);
+      
+        markerList.push([41.88350019, -87.6278767]);
+        popupList.push([""]);
+      
+        markerList.push([41.75017189, -87.65979552]);
+        popupList.push([""]);
+      
+        markerList.push([41.86775223, -87.69715631]);
+        popupList.push([""]);
+      
+        markerList.push([41.89551329, -87.71072433]);
+        popupList.push([""]);
+      
+        markerList.push([41.94086729, -87.73080407]);
+        popupList.push([""]);
+      
+        markerList.push([41.88453308, -87.73859023]);
+        popupList.push([""]);
+      
+        markerList.push([41.94319907, -87.6799801]);
+        popupList.push([""]);
+      
+        markerList.push([41.86775223, -87.69715631]);
+        popupList.push([""]);
+      
+        markerList.push([41.86540982, -87.70685696]);
+        popupList.push([""]);
+      
+        markerList.push([41.90013879, -87.65665338]);
+        popupList.push([""]);
+      
+        markerList.push([41.86641947, -87.70480585]);
+        popupList.push([""]);
+      
+        markerList.push([41.67525343, -87.60169569]);
+        popupList.push([""]);
+      
+        markerList.push([41.68368737, -87.64533688]);
+        popupList.push([""]);
+      
+        markerList.push([41.6544121, -87.60589456]);
+        popupList.push([""]);
+      
+        markerList.push([41.90751849, -87.67418699]);
+        popupList.push([""]);
+      
+        markerList.push([41.92958063, -87.7570648]);
+        popupList.push([""]);
+      
+        markerList.push([41.69083514, -87.53166896]);
+        popupList.push([""]);
+      
+        markerList.push([41.90755939, -87.67414248]);
+        popupList.push([""]);
+      
+        markerList.push([41.84912076, -87.70150309]);
+        popupList.push([""]);
+      
+        markerList.push([41.89500282, -87.62145471]);
+        popupList.push([""]);
+      
+        markerList.push([41.90624285, -87.63300083]);
+        popupList.push([""]);
+      
+        markerList.push([41.74950402, -87.60087518]);
+        popupList.push([""]);
+      
+        markerList.push([41.74153308, -87.60495973]);
+        popupList.push([""]);
+      
+        markerList.push([41.85582341, -87.67675899]);
+        popupList.push([""]);
+      
+        markerList.push([41.74966755, -87.64279317]);
+        popupList.push([""]);
+      
+        markerList.push([41.67906404, -87.62515014]);
+        popupList.push([""]);
+      
+        markerList.push([41.79142804, -87.67179868]);
+        popupList.push([""]);
+      
+        markerList.push([41.90354124, -87.69196691]);
+        popupList.push([""]);
+      
+        markerList.push([41.88108866, -87.72076449]);
+        popupList.push([""]);
+      
+        markerList.push([41.65706187, -87.61661236]);
+        popupList.push([""]);
+      
+        markerList.push([41.71000315, -87.61140266]);
+        popupList.push([""]);
+      
+        markerList.push([41.72752629, -87.5620879]);
+        popupList.push([""]);
+      
+        markerList.push([41.70275778, -87.54294988]);
+        popupList.push([""]);
+      
+        markerList.push([41.8020092, -87.6220632]);
+        popupList.push([""]);
+      
+        markerList.push([41.76779361, -87.67360679]);
+        popupList.push([""]);
+      
+        markerList.push([41.80086334, -87.66476628]);
+        popupList.push([""]);
+      
+        markerList.push([41.79113191, -87.70961959]);
+        popupList.push([""]);
+      
+        markerList.push([41.7983264, -87.68904529]);
+        popupList.push([""]);
+      
+        markerList.push([41.80865964, -87.66096953]);
+        popupList.push([""]);
+      
+        markerList.push([41.94153376, -87.66810649]);
+        popupList.push([""]);
+      
+        markerList.push([41.92488647, -87.68913314]);
+        popupList.push([""]);
+      
+        markerList.push([41.88646901, -87.68167487]);
+        popupList.push([""]);
+      
+        markerList.push([41.88188393, -87.64006044]);
+        popupList.push([""]);
+      
+        markerList.push([41.75299661, -87.702487]);
+        popupList.push([""]);
+      
+        markerList.push([41.79122034, -87.68884876]);
+        popupList.push([""]);
+      
+        markerList.push([41.89000593, -87.71230564]);
+        popupList.push([""]);
+      
+        markerList.push([41.9350769, -87.69770785]);
+        popupList.push([""]);
+      
+        markerList.push([41.89313783, -87.63775342]);
+        popupList.push([""]);
+      
+        markerList.push([41.7050135, -87.60394018]);
+        popupList.push([""]);
+      
+        markerList.push([41.85496367, -87.62713324]);
+        popupList.push([""]);
+      
+        markerList.push([41.77421621, -87.59016054]);
+        popupList.push([""]);
+      
+        markerList.push([41.93009346, -87.71633425]);
+        popupList.push([""]);
+      
+        markerList.push([41.94502313, -87.65476009]);
+        popupList.push([""]);
+      
+        markerList.push([41.88543115, -87.66157905]);
+        popupList.push([""]);
+      
+        markerList.push([41.90426513, -87.6344955]);
+        popupList.push([""]);
+      
+        markerList.push([41.78455053, -87.65341155]);
+        popupList.push([""]);
+      
+        markerList.push([41.90316534, -87.62921044]);
+        popupList.push([""]);
+      
+        markerList.push([41.90758808, -87.76416179]);
+        popupList.push([""]);
+      
+        markerList.push([41.74134369, -87.60495454]);
+        popupList.push([""]);
+      
+        markerList.push([41.88156463, -87.63086878]);
+        popupList.push([""]);
+      
+        markerList.push([41.68438804, -87.63006331]);
+        popupList.push([""]);
+      
+        markerList.push([41.9758451, -87.69526892]);
+        popupList.push([""]);
+      
+        markerList.push([41.77492256, -87.66777065]);
+        popupList.push([""]);
+      
+        markerList.push([41.75190133, -87.55356879]);
+        popupList.push([""]);
+      
+        markerList.push([41.68450057, -87.63006574]);
+        popupList.push([""]);
+      
+        markerList.push([42.02004327, -87.66681775]);
+        popupList.push([""]);
+      
+        markerList.push([41.90819554, -87.68077799]);
+        popupList.push([""]);
+      
+        markerList.push([41.90705657, -87.63458629]);
+        popupList.push([""]);
+      
+        markerList.push([41.91364408, -87.68730633]);
+        popupList.push([""]);
+      
+        markerList.push([41.87288399, -87.76022899]);
+        popupList.push([""]);
+      
+        markerList.push([41.7469273, -87.61965565]);
+        popupList.push([""]);
+      
+        markerList.push([41.755709, -87.61260955]);
+        popupList.push([""]);
+      
+        markerList.push([41.77712815, -87.65079163]);
+        popupList.push([""]);
+      
+        markerList.push([41.98364701, -87.65881525]);
+        popupList.push([""]);
+      
+        markerList.push([41.95117143, -87.80721192]);
+        popupList.push([""]);
+      
+        markerList.push([41.8796336, -87.73628186]);
+        popupList.push([""]);
+      
+        markerList.push([41.78303124, -87.79081325]);
+        popupList.push([""]);
+      
+        markerList.push([41.67797931, -87.62681661]);
+        popupList.push([""]);
+      
+        markerList.push([41.75299661, -87.702487]);
+        popupList.push([""]);
+      
+        markerList.push([41.99991151, -87.81753852]);
+        popupList.push([""]);
+      
+        markerList.push([41.8093468, -87.61887154]);
+        popupList.push([""]);
+      
+        markerList.push([41.80121961, -87.6226294]);
+        popupList.push([""]);
+      
+        markerList.push([41.81247191, -87.60826133]);
+        popupList.push([""]);
+      
+        markerList.push([41.88225447, -87.76386155]);
+        popupList.push([""]);
+      
+        markerList.push([41.73156466, -87.66294281]);
+        popupList.push([""]);
+      
+        markerList.push([41.69233585, -87.64414265]);
+        popupList.push([""]);
+      
+        markerList.push([41.99391868, -87.67014365]);
+        popupList.push([""]);
+      
+        markerList.push([41.77615723, -87.61312488]);
+        popupList.push([""]);
+      
+        markerList.push([41.76501555, -87.62328935]);
+        popupList.push([""]);
+      
+        markerList.push([41.75129118, -87.60485675]);
+        popupList.push([""]);
+      
+        markerList.push([41.91489635, -87.67634125]);
+        popupList.push([""]);
+      
+        markerList.push([41.90758392, -87.67411284]);
+        popupList.push([""]);
+      
+        markerList.push([41.93748269, -87.72231271]);
+        popupList.push([""]);
+      
+        markerList.push([41.7859813, -87.67287035]);
+        popupList.push([""]);
+      
+        markerList.push([41.77020837, -87.62829091]);
+        popupList.push([""]);
+      
+        markerList.push([41.76930663, -87.68826534]);
+        popupList.push([""]);
+      
+        markerList.push([41.89260531, -87.61983959]);
+        popupList.push([""]);
+      
+        markerList.push([41.95745418, -87.65333042]);
+        popupList.push([""]);
+      
+        markerList.push([41.91749624, -87.69650818]);
+        popupList.push([""]);
+      
+        markerList.push([41.82763777, -87.67400539]);
+        popupList.push([""]);
+      
+        markerList.push([41.90928147, -87.68597265]);
+        popupList.push([""]);
+      
+        markerList.push([41.76480209, -87.57694143]);
+        popupList.push([""]);
+      
+        markerList.push([41.9285998, -87.71465453]);
+        popupList.push([""]);
+      
+        markerList.push([41.91123553, -87.68066988]);
+        popupList.push([""]);
+      
+        markerList.push([41.77576729, -87.71533001]);
+        popupList.push([""]);
+      
+        markerList.push([41.89044554, -87.74900989]);
+        popupList.push([""]);
+      
+        markerList.push([41.68403173, -87.53163626]);
+        popupList.push([""]);
+      
+        markerList.push([41.92057814, -87.70902566]);
+        popupList.push([""]);
+      
+        markerList.push([41.94983736, -87.6586351]);
+        popupList.push([""]);
+      
+        markerList.push([41.76035526, -87.55988063]);
+        popupList.push([""]);
+      
+        markerList.push([41.86391976, -87.72266487]);
+        popupList.push([""]);
+      
+        markerList.push([41.90159447, -87.72505]);
+        popupList.push([""]);
+      
+        markerList.push([41.86407079, -87.7043773]);
+        popupList.push([""]);
+      
+        markerList.push([41.9386178, -87.76319863]);
+        popupList.push([""]);
+      
+        markerList.push([41.94763951, -87.77240743]);
+        popupList.push([""]);
+      
+        markerList.push([41.87357813, -87.76461417]);
+        popupList.push([""]);
+      
+        markerList.push([41.72245816, -87.57621112]);
+        popupList.push([""]);
+      
+        markerList.push([41.75126489, -87.56501044]);
+        popupList.push([""]);
+      
+        markerList.push([41.70951636, -87.62357081]);
+        popupList.push([""]);
+      
+        markerList.push([41.76172759, -87.564816]);
+        popupList.push([""]);
+      
+        markerList.push([41.7240935, -87.65666484]);
+        popupList.push([""]);
+      
+        markerList.push([41.68041843, -87.66243795]);
+        popupList.push([""]);
+      
+        markerList.push([41.8860399, -87.62452154]);
+        popupList.push([""]);
+      
+        markerList.push([41.82245527, -87.61696114]);
+        popupList.push([""]);
+      
+        markerList.push([41.97427543, -87.76085442]);
+        popupList.push([""]);
+      
+        markerList.push([41.91799983, -87.63582272]);
+        popupList.push([""]);
+      
+        markerList.push([41.73598164, -87.65013196]);
+        popupList.push([""]);
+      
+        markerList.push([41.81406581, -87.62133922]);
+        popupList.push([""]);
+      
+        markerList.push([41.90643249, -87.72711272]);
+        popupList.push([""]);
+      
+        markerList.push([41.89089749, -87.70518296]);
+        popupList.push([""]);
+      
+        markerList.push([41.99836677, -87.68015186]);
+        popupList.push([""]);
+      
+        markerList.push([41.87399102, -87.67976015]);
+        popupList.push([""]);
+      
+        markerList.push([41.9991336, -87.67412161]);
+        popupList.push([""]);
+      
+        markerList.push([41.95934214, -87.71139755]);
+        popupList.push([""]);
+      
+        markerList.push([41.99837167, -87.66056911]);
+        popupList.push([""]);
+      
+        markerList.push([41.74819024, -87.59541527]);
+        popupList.push([""]);
+      
+        markerList.push([41.80295337, -87.61943037]);
+        popupList.push([""]);
+      
+        markerList.push([41.74485878, -87.60015114]);
+        popupList.push([""]);
+      
+        markerList.push([41.74705962, -87.60142699]);
+        popupList.push([""]);
+      
+        markerList.push([41.8081478, -87.66496197]);
+        popupList.push([""]);
+      
+        markerList.push([41.89399011, -87.70215558]);
+        popupList.push([""]);
+      
+        markerList.push([41.77223912, -87.66078546]);
+        popupList.push([""]);
+      
+        markerList.push([41.78405799, -87.68498989]);
+        popupList.push([""]);
+      
+        markerList.push([41.88549579, -87.61864438]);
+        popupList.push([""]);
+      
+        markerList.push([41.77450068, -87.60457951]);
+        popupList.push([""]);
+      
+        markerList.push([41.91712701, -87.68739612]);
+        popupList.push([""]);
+      
+        markerList.push([41.75226713, -87.55166967]);
+        popupList.push([""]);
+      
+        markerList.push([41.69307545, -87.54011]);
+        popupList.push([""]);
+      
+        markerList.push([41.7636479, -87.627582]);
+        popupList.push([""]);
+      
+        markerList.push([41.80266155, -87.66724893]);
+        popupList.push([""]);
+      
+        markerList.push([41.78149084, -87.62039811]);
+        popupList.push([""]);
+      
+        markerList.push([41.88360497, -87.70750184]);
+        popupList.push([""]);
+      
+        markerList.push([41.74770566, -87.55039478]);
+        popupList.push([""]);
+      
+        markerList.push([41.72734563, -87.55119521]);
+        popupList.push([""]);
+      
+        markerList.push([41.76040541, -87.6855689]);
+        popupList.push([""]);
+      
+        markerList.push([41.79424717, -87.72196249]);
+        popupList.push([""]);
+      
+        markerList.push([41.88080179, -87.62551582]);
+        popupList.push([""]);
+      
+        markerList.push([41.85600927, -87.72237673]);
+        popupList.push([""]);
+      
+        markerList.push([41.65732309, -87.60577397]);
+        popupList.push([""]);
+      
+        markerList.push([41.6544121, -87.60589456]);
+        popupList.push([""]);
+      
+        markerList.push([41.87856763, -87.6276886]);
+        popupList.push([""]);
+      
+        markerList.push([41.83207129, -87.61697868]);
+        popupList.push([""]);
+      
+        markerList.push([41.77999793, -87.62929459]);
+        popupList.push([""]);
+      
+        markerList.push([41.71987677, -87.56232956]);
+        popupList.push([""]);
+      
+        markerList.push([41.76139623, -87.55797683]);
+        popupList.push([""]);
+      
+        markerList.push([41.87859039, -87.74578372]);
+        popupList.push([""]);
+      
+        markerList.push([41.7832343, -87.61086776]);
+        popupList.push([""]);
+      
+        markerList.push([41.66504171, -87.62002633]);
+        popupList.push([""]);
+      
+        markerList.push([42.01848129, -87.68298945]);
+        popupList.push([""]);
+      
+        markerList.push([41.74870871, -87.60268353]);
+        popupList.push([""]);
+      
+        markerList.push([41.76565799, -87.67112509]);
+        popupList.push([""]);
+      
+        markerList.push([41.69225873, -87.65053259]);
+        popupList.push([""]);
+      
+        markerList.push([41.69225873, -87.65053259]);
+        popupList.push([""]);
+      
+        markerList.push([41.89538698, -87.75806281]);
+        popupList.push([""]);
+      
+        markerList.push([41.88362642, -87.73679921]);
+        popupList.push([""]);
+      
+        markerList.push([41.93877936, -87.80919563]);
+        popupList.push([""]);
+      
+        markerList.push([41.89887597, -87.73464808]);
+        popupList.push([""]);
+      
+        markerList.push([41.97030845, -87.77107967]);
+        popupList.push([""]);
+      
+        markerList.push([41.92946402, -87.70001998]);
+        popupList.push([""]);
+      
+        markerList.push([41.68393606, -87.72184736]);
+        popupList.push([""]);
+      
+        markerList.push([41.65916065, -87.54765138]);
+        popupList.push([""]);
+      
+        markerList.push([41.90676324, -87.75342743]);
+        popupList.push([""]);
+      
+        markerList.push([41.68840754, -87.62099843]);
+        popupList.push([""]);
+      
+        markerList.push([41.88764063, -87.61934028]);
+        popupList.push([""]);
+      
+        markerList.push([41.83996084, -87.72808181]);
+        popupList.push([""]);
+      
+        markerList.push([41.83991693, -87.72808223]);
+        popupList.push([""]);
+      
+        markerList.push([41.85065629, -87.62374879]);
+        popupList.push([""]);
+      
+        markerList.push([42.01939924, -87.67504949]);
+        popupList.push([""]);
+      
+        markerList.push([41.76505937, -87.60920595]);
+        popupList.push([""]);
+      
+        markerList.push([41.74868798, -87.61243523]);
+        popupList.push([""]);
+      
+        markerList.push([41.76630317, -87.64319397]);
+        popupList.push([""]);
+      
+        markerList.push([41.76073693, -87.64672463]);
+        popupList.push([""]);
+      
+        markerList.push([41.74237082, -87.65716185]);
+        popupList.push([""]);
+      
+        markerList.push([41.69590816, -87.59582281]);
+        popupList.push([""]);
+      
+        markerList.push([41.74424043, -87.73709082]);
+        popupList.push([""]);
+      
+        markerList.push([41.91881729, -87.64853428]);
+        popupList.push([""]);
+      
+        markerList.push([41.73614812, -87.62907024]);
+        popupList.push([""]);
+      
+        markerList.push([41.89166512, -87.75793093]);
+        popupList.push([""]);
+      
+        markerList.push([41.85712588, -87.71718296]);
+        popupList.push([""]);
+      
+        markerList.push([41.9495125, -87.66408279]);
+        popupList.push([""]);
+      
+        markerList.push([41.98362266, -87.68946089]);
+        popupList.push([""]);
+      
+        markerList.push([41.78345201, -87.64087249]);
+        popupList.push([""]);
+      
+        markerList.push([41.88728587, -87.75694927]);
+        popupList.push([""]);
+      
+        markerList.push([41.78482648, -87.64491302]);
+        popupList.push([""]);
+      
+        markerList.push([41.8811207, -87.7648888]);
+        popupList.push([""]);
+      
+        markerList.push([41.72873763, -87.6029978]);
+        popupList.push([""]);
+      
+        markerList.push([41.70396217, -87.67670962]);
+        popupList.push([""]);
+      
+        markerList.push([41.92694092, -87.71338438]);
+        popupList.push([""]);
+      
+        markerList.push([41.92439344, -87.73442428]);
+        popupList.push([""]);
+      
+        markerList.push([41.90843054, -87.63850953]);
+        popupList.push([""]);
+      
+        markerList.push([41.90752362, -87.69205563]);
+        popupList.push([""]);
+      
+        markerList.push([41.92149065, -87.74623177]);
+        popupList.push([""]);
+      
+        markerList.push([41.77346127, -87.57583522]);
+        popupList.push([""]);
+      
+        markerList.push([41.74888696, -87.69626076]);
+        popupList.push([""]);
+      
+        markerList.push([41.89865054, -87.74895347]);
+        popupList.push([""]);
+      
+        markerList.push([41.97427543, -87.76085442]);
+        popupList.push([""]);
+      
+        markerList.push([41.87961374, -87.70931806]);
+        popupList.push([""]);
+      
+        markerList.push([41.72580343, -87.66278657]);
+        popupList.push([""]);
+      
+        markerList.push([41.84110344, -87.62685262]);
+        popupList.push([""]);
+      
+        markerList.push([41.96331306, -87.67642502]);
+        popupList.push([""]);
+      
+        markerList.push([41.86761064, -87.71545587]);
+        popupList.push([""]);
+      
+        markerList.push([41.94312232, -87.64936594]);
+        popupList.push([""]);
+      
+        markerList.push([41.89551339, -87.71074269]);
+        popupList.push([""]);
+      
+        markerList.push([41.91943676, -87.75355521]);
+        popupList.push([""]);
+      
+        markerList.push([41.89887597, -87.73464808]);
+        popupList.push([""]);
+      
+        markerList.push([41.88034905, -87.75707771]);
+        popupList.push([""]);
+      
+        markerList.push([41.809861, -87.64556572]);
+        popupList.push([""]);
+      
+        markerList.push([41.96004678, -87.64676205]);
+        popupList.push([""]);
+      
+        markerList.push([41.80050732, -87.6696258]);
+        popupList.push([""]);
+      
+        markerList.push([41.85799062, -87.65398137]);
+        popupList.push([""]);
+      
+        markerList.push([41.88866266, -87.74864419]);
+        popupList.push([""]);
+      
+        markerList.push([41.81507915, -87.64121057]);
+        popupList.push([""]);
+      
+        markerList.push([41.86549556, -87.73004746]);
+        popupList.push([""]);
+      
+        markerList.push([41.91013421, -87.75690542]);
+        popupList.push([""]);
+      
+        markerList.push([41.77448567, -87.72509404]);
+        popupList.push([""]);
+      
+        markerList.push([41.65373416, -87.59554666]);
+        popupList.push([""]);
+      
+        markerList.push([41.75423584, -87.64721172]);
+        popupList.push([""]);
+      
+        markerList.push([41.77865641, -87.68484632]);
+        popupList.push([""]);
+      
+        markerList.push([41.81285479, -87.72377009]);
+        popupList.push([""]);
+      
+        markerList.push([41.77289487, -87.57525533]);
+        popupList.push([""]);
+      
+        markerList.push([41.77411866, -87.61188291]);
+        popupList.push([""]);
+      
+        markerList.push([41.92959734, -87.67877389]);
+        popupList.push([""]);
+      
+        markerList.push([41.920358, -87.6631566]);
+        popupList.push([""]);
+      
+        markerList.push([41.77299898, -87.57647854]);
+        popupList.push([""]);
+      
+        markerList.push([41.8683166, -87.69748114]);
+        popupList.push([""]);
+      
+        markerList.push([41.76575557, -87.57629243]);
+        popupList.push([""]);
+      
+        markerList.push([41.76799595, -87.57478515]);
+        popupList.push([""]);
+      
+        markerList.push([41.89421991, -87.61955717]);
+        popupList.push([""]);
+      
+        markerList.push([41.74988027, -87.66342658]);
+        popupList.push([""]);
+      
+        markerList.push([41.84917954, -87.71126558]);
+        popupList.push([""]);
+      
+        markerList.push([41.85710806, -87.67108184]);
+        popupList.push([""]);
+      
+        markerList.push([41.99456782, -87.65909724]);
+        popupList.push([""]);
+      
+        markerList.push([41.86741335, -87.69592609]);
+        popupList.push([""]);
+      
+        markerList.push([41.72587535, -87.59313934]);
+        popupList.push([""]);
+      
+        markerList.push([41.88108608, -87.69509619]);
+        popupList.push([""]);
+      
+        markerList.push([41.69283384, -87.60431945]);
+        popupList.push([""]);
+      
+        markerList.push([41.75124206, -87.66588978]);
+        popupList.push([""]);
+      
+        markerList.push([41.90351448, -87.66749844]);
+        popupList.push([""]);
+      
+        markerList.push([41.7535838, -87.56336658]);
+        popupList.push([""]);
+      
+        markerList.push([41.74740466, -87.57590708]);
+        popupList.push([""]);
+      
+        markerList.push([41.75055565, -87.6100616]);
+        popupList.push([""]);
+      
+        markerList.push([41.8975286, -87.70236683]);
+        popupList.push([""]);
+      
+        markerList.push([41.76933785, -87.67490331]);
+        popupList.push([""]);
+      
+        markerList.push([41.88437357, -87.7513788]);
+        popupList.push([""]);
+      
+        markerList.push([41.9790063, -87.90646316]);
+        popupList.push([""]);
+      
+        markerList.push([41.91459002, -87.65202941]);
+        popupList.push([""]);
+      
+        markerList.push([41.71801958, -87.6579373]);
+        popupList.push([""]);
+      
+        markerList.push([41.79599104, -87.63054249]);
+        popupList.push([""]);
+      
+        markerList.push([41.93960441, -87.72965818]);
+        popupList.push([""]);
+      
+        markerList.push([41.93262988, -87.65423363]);
+        popupList.push([""]);
+      
+        markerList.push([41.88252395, -87.73062909]);
+        popupList.push([""]);
+      
+        markerList.push([41.71579794, -87.63699881]);
+        popupList.push([""]);
+      
+        markerList.push([41.95847826, -87.6506393]);
+        popupList.push([""]);
+      
+        markerList.push([41.89330087, -87.62625565]);
+        popupList.push([""]);
+      
+        markerList.push([41.88767039, -87.73501347]);
+        popupList.push([""]);
+      
+        markerList.push([41.89281615, -87.6241932]);
+        popupList.push([""]);
+      
+        markerList.push([41.73682075, -87.55834211]);
+        popupList.push([""]);
+      
+        markerList.push([41.86020706, -87.70792827]);
+        popupList.push([""]);
+      
+        markerList.push([41.74859559, -87.65914504]);
+        popupList.push([""]);
+      
+        markerList.push([41.67851969, -87.66249794]);
+        popupList.push([""]);
+      
+        markerList.push([41.75479884, -87.67447653]);
+        popupList.push([""]);
+      
+        markerList.push([41.96206888, -87.64991709]);
+        popupList.push([""]);
+      
+        markerList.push([41.89249714, -87.66150501]);
+        popupList.push([""]);
+      
+        markerList.push([41.90056346, -87.644079]);
+        popupList.push([""]);
+      
+        markerList.push([41.91855608, -87.71519247]);
+        popupList.push([""]);
+      
+        markerList.push([41.87927977, -87.76276798]);
+        popupList.push([""]);
+      
+        markerList.push([41.75274094, -87.70490828]);
+        popupList.push([""]);
+      
+        markerList.push([41.93347465, -87.64769393]);
+        popupList.push([""]);
+      
+        markerList.push([41.97815189, -87.71360508]);
+        popupList.push([""]);
+      
+        markerList.push([41.88796617, -87.6347907]);
+        popupList.push([""]);
+      
+        markerList.push([41.89259826, -87.65582947]);
+        popupList.push([""]);
+      
+        markerList.push([41.7535838, -87.56336658]);
+        popupList.push([""]);
+      
+        markerList.push([41.79346135, -87.645136]);
+        popupList.push([""]);
+      
+        markerList.push([41.78040735, -87.63748817]);
+        popupList.push([""]);
+      
+        markerList.push([41.77497181, -87.64952036]);
+        popupList.push([""]);
+      
+        markerList.push([41.75229559, -87.6039915]);
+        popupList.push([""]);
+      
+        markerList.push([41.67624381, -87.6195366]);
+        popupList.push([""]);
+      
+        markerList.push([41.92799852, -87.67320816]);
+        popupList.push([""]);
+      
+        markerList.push([41.765444, -87.62690618]);
+        popupList.push([""]);
+      
+        markerList.push([41.7534944, -87.64897143]);
+        popupList.push([""]);
+      
+        markerList.push([41.92278653, -87.64504512]);
+        popupList.push([""]);
+      
+        markerList.push([41.74578646, -87.60578012]);
+        popupList.push([""]);
+      
+        markerList.push([41.91009083, -87.70873109]);
+        popupList.push([""]);
+      
+        markerList.push([41.92938643, -87.70789243]);
+        popupList.push([""]);
+      
+        markerList.push([41.90412856, -87.6969092]);
+        popupList.push([""]);
+      
+        markerList.push([41.89892229, -87.73195888]);
+        popupList.push([""]);
+      
+        markerList.push([41.96981095, -87.76923807]);
+        popupList.push([""]);
+      
+        markerList.push([41.87137115, -87.62751442]);
+        popupList.push([""]);
+      
+        markerList.push([41.88321078, -87.62990697]);
+        popupList.push([""]);
+      
+        markerList.push([41.87793585, -87.72911529]);
+        popupList.push([""]);
+      
+        markerList.push([41.82367661, -87.69567033]);
+        popupList.push([""]);
+      
+        markerList.push([41.95833678, -87.72040025]);
+        popupList.push([""]);
+      
+        markerList.push([41.80942724, -87.66742827]);
+        popupList.push([""]);
+      
+        markerList.push([41.99295445, -87.66523541]);
+        popupList.push([""]);
+      
+        markerList.push([41.97236456, -87.65630497]);
+        popupList.push([""]);
+      
+        markerList.push([41.95642478, -87.69831562]);
+        popupList.push([""]);
+      
+        markerList.push([41.97160047, -87.65331603]);
+        popupList.push([""]);
+      
+        markerList.push([41.77016612, -87.68155196]);
+        popupList.push([""]);
+      
+        markerList.push([41.77834098, -87.70312224]);
+        popupList.push([""]);
+      
+        markerList.push([41.97984048, -87.66863842]);
+        popupList.push([""]);
+      
+        markerList.push([41.89598287, -87.62818377]);
+        popupList.push([""]);
+      
+        markerList.push([41.6930467, -87.66742908]);
+        popupList.push([""]);
+      
+        markerList.push([41.96876382, -87.68866183]);
+        popupList.push([""]);
+      
+        markerList.push([41.71252655, -87.63200913]);
+        popupList.push([""]);
+      
+        markerList.push([41.97010479, -87.7420127]);
+        popupList.push([""]);
+      
+        markerList.push([41.97951941, -87.68982955]);
+        popupList.push([""]);
+      
+        markerList.push([41.89540763, -87.75561642]);
+        popupList.push([""]);
+      
+        markerList.push([41.88045044, -87.62773031]);
+        popupList.push([""]);
+      
+        markerList.push([41.96801033, -87.76748157]);
+        popupList.push([""]);
+      
+        markerList.push([41.87076834, -87.72143213]);
+        popupList.push([""]);
+      
+        markerList.push([41.77847481, -87.69703123]);
+        popupList.push([""]);
+      
+        markerList.push([41.99475899, -87.7144777]);
+        popupList.push([""]);
+      
+        markerList.push([41.86622945, -87.72093573]);
+        popupList.push([""]);
+      
+        markerList.push([41.78986288, -87.64869108]);
+        popupList.push([""]);
+      
+        markerList.push([41.8210784, -87.68889797]);
+        popupList.push([""]);
+      
+        markerList.push([41.891836, -87.71224384]);
+        popupList.push([""]);
+      
+        markerList.push([41.89788767, -87.62823261]);
+        popupList.push([""]);
+      
+        markerList.push([41.87287178, -87.69693665]);
+        popupList.push([""]);
+      
+        markerList.push([41.76415189, -87.6832293]);
+        popupList.push([""]);
+      
+        markerList.push([41.86026011, -87.72134143]);
+        popupList.push([""]);
+      
+        markerList.push([41.70546064, -87.54011892]);
+        popupList.push([""]);
+      
+        markerList.push([41.94748541, -87.65674105]);
+        popupList.push([""]);
+      
+        markerList.push([41.78309302, -87.72532802]);
+        popupList.push([""]);
+      
+        markerList.push([41.98174761, -87.77078779]);
+        popupList.push([""]);
+      
+        markerList.push([41.96635091, -87.76045471]);
+        popupList.push([""]);
+      
+        markerList.push([41.92546549, -87.64789728]);
+        popupList.push([""]);
+      
+        markerList.push([41.8952244, -87.73378966]);
+        popupList.push([""]);
+      
+        markerList.push([41.76317457, -87.61278259]);
+        popupList.push([""]);
+      
+        markerList.push([41.7809464, -87.62199537]);
+        popupList.push([""]);
+      
+        markerList.push([41.9795209, -87.68960519]);
+        popupList.push([""]);
+      
+        markerList.push([41.91505523, -87.76417995]);
+        popupList.push([""]);
+      
+        markerList.push([41.98039046, -87.69791573]);
+        popupList.push([""]);
+      
+        markerList.push([41.92425058, -87.74554504]);
+        popupList.push([""]);
+      
+        markerList.push([41.96969534, -87.67104217]);
+        popupList.push([""]);
+      
+        markerList.push([41.89914695, -87.62773389]);
+        popupList.push([""]);
+      
+        markerList.push([41.72818911, -87.55619286]);
+        popupList.push([""]);
+      
+        markerList.push([41.89804054, -87.62409132]);
+        popupList.push([""]);
+      
+        markerList.push([41.75950049, -87.60416649]);
+        popupList.push([""]);
+      
+        markerList.push([41.78025398, -87.61480224]);
+        popupList.push([""]);
+      
+        markerList.push([41.77335382, -87.58456153]);
+        popupList.push([""]);
+      
+        markerList.push([41.77411866, -87.61188291]);
+        popupList.push([""]);
+      
+        markerList.push([41.89608664, -87.6312349]);
+        popupList.push([""]);
+      
+        markerList.push([41.90937146, -87.76630613]);
+        popupList.push([""]);
+      
+        markerList.push([41.72102225, -87.67646637]);
+        popupList.push([""]);
+      
+        markerList.push([41.85759856, -87.6815092]);
+        popupList.push([""]);
+      
+        markerList.push([41.91221113, -87.76065252]);
+        popupList.push([""]);
+      
+        markerList.push([41.92638583, -87.78555083]);
+        popupList.push([""]);
+      
+        markerList.push([41.87341509, -87.70590492]);
+        popupList.push([""]);
+      
+        markerList.push([41.97570224, -87.71276092]);
+        popupList.push([""]);
+      
+        markerList.push([41.89592299, -87.67638882]);
+        popupList.push([""]);
+      
+        markerList.push([41.90980687, -87.73213594]);
+        popupList.push([""]);
+      
+        markerList.push([41.89224816, -87.6782592]);
+        popupList.push([""]);
+      
+        markerList.push([41.7544187, -87.583378]);
+        popupList.push([""]);
+      
+        markerList.push([41.77399419, -87.63166252]);
+        popupList.push([""]);
+      
+        markerList.push([41.88449455, -87.62713864]);
+        popupList.push([""]);
+      
+        markerList.push([41.85907653, -87.70593498]);
+        popupList.push([""]);
+      
+        markerList.push([41.97116119, -87.67925682]);
+        popupList.push([""]);
+      
+        markerList.push([41.8920174, -87.62416531]);
+        popupList.push([""]);
+      
+        markerList.push([41.85854291, -87.67674952]);
+        popupList.push([""]);
+      
+        markerList.push([41.78679401, -87.66111004]);
+        popupList.push([""]);
+      
+        markerList.push([41.8920174, -87.62416531]);
+        popupList.push([""]);
+      
+        markerList.push([41.75968758, -87.58503564]);
+        popupList.push([""]);
+      
+        markerList.push([41.81768763, -87.63239271]);
+        popupList.push([""]);
+      
+        markerList.push([41.81577855, -87.64571518]);
+        popupList.push([""]);
+      
+        markerList.push([41.80917124, -87.70279081]);
+        popupList.push([""]);
+      
+        markerList.push([41.75933064, -87.55810432]);
+        popupList.push([""]);
+      
+        markerList.push([42.01951586, -87.69078808]);
+        popupList.push([""]);
+      
+        markerList.push([41.88108866, -87.72076449]);
+        popupList.push([""]);
+      
+        markerList.push([41.82050237, -87.68845617]);
+        popupList.push([""]);
+      
+        markerList.push([41.80242404, -87.6538718]);
+        popupList.push([""]);
+      
+        markerList.push([41.78252305, -87.77411284]);
+        popupList.push([""]);
+      
+        markerList.push([41.78252305, -87.77411284]);
+        popupList.push([""]);
+      
+        markerList.push([41.79311903, -87.65727416]);
+        popupList.push([""]);
+      
+        markerList.push([41.77892297, -87.70616692]);
+        popupList.push([""]);
+      
+        markerList.push([41.85461942, -87.7124205]);
+        popupList.push([""]);
+      
+        markerList.push([41.79957686, -87.74783001]);
+        popupList.push([""]);
+      
+        markerList.push([41.89380719, -87.76209145]);
+        popupList.push([""]);
+      
+        markerList.push([41.78805059, -87.70417854]);
+        popupList.push([""]);
+      
+        markerList.push([41.89940218, -87.76920066]);
+        popupList.push([""]);
+      
+        markerList.push([41.7210836, -87.65073669]);
+        popupList.push([""]);
+      
+        markerList.push([41.93135418, -87.68661682]);
+        popupList.push([""]);
+      
+        markerList.push([41.72163586, -87.63036061]);
+        popupList.push([""]);
+      
+        markerList.push([41.84797796, -87.68552671]);
+        popupList.push([""]);
+      
+        markerList.push([41.86718175, -87.71684043]);
+        popupList.push([""]);
+      
+        markerList.push([41.87619437, -87.72413428]);
+        popupList.push([""]);
+      
+        markerList.push([41.88171846, -87.62776043]);
+        popupList.push([""]);
+      
+        markerList.push([41.90957304, -87.75011764]);
+        popupList.push([""]);
+      
+        markerList.push([41.69722033, -87.61714432]);
+        popupList.push([""]);
+      
+        markerList.push([41.91085767, -87.65199563]);
+        popupList.push([""]);
+      
+        markerList.push([41.67355249, -87.6165905]);
+        popupList.push([""]);
+      
+        markerList.push([42.01159046, -87.66433393]);
+        popupList.push([""]);
+      
+        markerList.push([41.87629691, -87.67031096]);
+        popupList.push([""]);
+      
+        markerList.push([41.98560051, -87.77191617]);
+        popupList.push([""]);
+      
+        markerList.push([42.00753463, -87.67002064]);
+        popupList.push([""]);
+      
+        markerList.push([41.76071782, -87.64307789]);
+        popupList.push([""]);
+      
+        markerList.push([41.75660479, -87.57609578]);
+        popupList.push([""]);
+      
+        markerList.push([41.96572871, -87.69012646]);
+        popupList.push([""]);
+      
+        markerList.push([41.8863702, -87.6206912]);
+        popupList.push([""]);
+      
+        markerList.push([41.91042161, -87.68086553]);
+        popupList.push([""]);
+      
+        markerList.push([41.9083197, -87.670832]);
+        popupList.push([""]);
+      
+        markerList.push([41.86718364, -87.71668254]);
+        popupList.push([""]);
+      
+        markerList.push([41.89098807, -87.62102183]);
+        popupList.push([""]);
+      
+        markerList.push([41.70504774, -87.64829891]);
+        popupList.push([""]);
+      
+        markerList.push([41.9083197, -87.670832]);
+        popupList.push([""]);
+      
+        markerList.push([41.83411266, -87.63158971]);
+        popupList.push([""]);
+      
+        markerList.push([41.84449469, -87.70664999]);
+        popupList.push([""]);
+      
+        markerList.push([41.89586877, -87.72120728]);
+        popupList.push([""]);
+      
+        markerList.push([41.94107019, -87.71528382]);
+        popupList.push([""]);
+      
+        markerList.push([41.79701251, -87.66466328]);
+        popupList.push([""]);
+      
+        markerList.push([41.80786914, -87.65116967]);
+        popupList.push([""]);
+      
+        markerList.push([41.89146573, -87.62415304]);
+        popupList.push([""]);
+      
+        markerList.push([41.74754334, -87.66457955]);
+        popupList.push([""]);
+      
+        markerList.push([41.87192737, -87.70034227]);
+        popupList.push([""]);
+      
+        markerList.push([41.93180142, -87.76380692]);
+        popupList.push([""]);
+      
+        markerList.push([41.7796184, -87.65376796]);
+        popupList.push([""]);
+      
+        markerList.push([41.9762144, -87.68916408]);
+        popupList.push([""]);
+      
+        markerList.push([41.97852657, -87.75708711]);
+        popupList.push([""]);
+      
+        markerList.push([41.87610203, -87.73160373]);
+        popupList.push([""]);
+      
+        markerList.push([41.89237653, -87.71988536]);
+        popupList.push([""]);
+      
+        markerList.push([41.89785298, -87.64193367]);
+        popupList.push([""]);
+      
+        markerList.push([41.8860399, -87.62452154]);
+        popupList.push([""]);
+      
+        markerList.push([41.90579754, -87.72639871]);
+        popupList.push([""]);
+      
+        markerList.push([41.84529875, -87.62362816]);
+        popupList.push([""]);
+      
+        markerList.push([42.01851754, -87.6816385]);
+        popupList.push([""]);
+      
+        markerList.push([41.77215003, -87.65916239]);
+        popupList.push([""]);
+      
+        markerList.push([41.801173, -87.64288595]);
+        popupList.push([""]);
+      
+        markerList.push([41.88077543, -87.62702903]);
+        popupList.push([""]);
+      
+        markerList.push([41.91461422, -87.69344326]);
+        popupList.push([""]);
+      
+        markerList.push([41.7578693, -87.59199114]);
+        popupList.push([""]);
+      
+        markerList.push([41.89144754, -87.61768188]);
+        popupList.push([""]);
+      
+        markerList.push([41.69256976, -87.62439788]);
+        popupList.push([""]);
+      
+        markerList.push([41.89913047, -87.74835404]);
+        popupList.push([""]);
+      
+        markerList.push([41.88225903, -87.76367422]);
+        popupList.push([""]);
+      
+        markerList.push([41.76517539, -87.58365228]);
+        popupList.push([""]);
+      
+        markerList.push([41.77098837, -87.58626801]);
+        popupList.push([""]);
+      
+        markerList.push([41.70042817, -87.68020236]);
+        popupList.push([""]);
+      
+        markerList.push([41.77879632, -87.71418637]);
+        popupList.push([""]);
+      
+        markerList.push([41.9113343, -87.70027271]);
+        popupList.push([""]);
+      
+        markerList.push([41.93485217, -87.71688745]);
+        popupList.push([""]);
+      
+        markerList.push([41.77809913, -87.63382853]);
+        popupList.push([""]);
+      
+        markerList.push([41.90258062, -87.69440463]);
+        popupList.push([""]);
+      
+        markerList.push([41.88173662, -87.75143211]);
+        popupList.push([""]);
+      
+        markerList.push([41.88545483, -87.65999967]);
+        popupList.push([""]);
+      
+        markerList.push([41.9216049, -87.66568629]);
+        popupList.push([""]);
+      
+        markerList.push([41.99636424, -87.69837856]);
+        popupList.push([""]);
+      
+        markerList.push([41.87923585, -87.62434704]);
+        popupList.push([""]);
+      
+        markerList.push([41.75103519, -87.55049725]);
+        popupList.push([""]);
+      
+        markerList.push([41.68110974, -87.64201841]);
+        popupList.push([""]);
+      
+        markerList.push([41.90021095, -87.67472865]);
+        popupList.push([""]);
+      
+        markerList.push([41.74935505, -87.56012995]);
+        popupList.push([""]);
+      
+        markerList.push([41.71502124, -87.53527653]);
+        popupList.push([""]);
+      
+        markerList.push([41.78032315, -87.67392567]);
+        popupList.push([""]);
+      
+        markerList.push([41.682587, -87.65180266]);
+        popupList.push([""]);
+      
+        markerList.push([41.88537469, -87.74374214]);
+        popupList.push([""]);
+      
+        markerList.push([41.8718119, -87.62734067]);
+        popupList.push([""]);
+      
+        markerList.push([41.8900532, -87.65053835]);
+        popupList.push([""]);
+      
+        markerList.push([41.87981919, -87.6277189]);
+        popupList.push([""]);
+      
+        markerList.push([41.9231139, -87.75734714]);
+        popupList.push([""]);
+      
+        markerList.push([42.01584369, -87.69316178]);
+        popupList.push([""]);
+      
+        markerList.push([41.87705173, -87.77005454]);
+        popupList.push([""]);
+      
+        markerList.push([41.85403789, -87.67405733]);
+        popupList.push([""]);
+      
+        markerList.push([41.87701081, -87.731687]);
+        popupList.push([""]);
+      
+        markerList.push([41.73868579, -87.73865178]);
+        popupList.push([""]);
+      
+        markerList.push([41.78053659, -87.68734253]);
+        popupList.push([""]);
+      
+        markerList.push([41.75255272, -87.730212]);
+        popupList.push([""]);
+      
+        markerList.push([41.81204109, -87.68638414]);
+        popupList.push([""]);
+      
+        markerList.push([41.76460796, -87.68867896]);
+        popupList.push([""]);
+      
+        markerList.push([41.78558269, -87.68869255]);
+        popupList.push([""]);
+      
+        markerList.push([41.79228892, -87.68319076]);
+        popupList.push([""]);
+      
+        markerList.push([41.79187065, -87.65359823]);
+        popupList.push([""]);
+      
+        markerList.push([41.88120318, -87.64734233]);
+        popupList.push([""]);
+      
+        markerList.push([41.96604791, -87.66106006]);
+        popupList.push([""]);
+      
+        markerList.push([41.85427141, -87.68324982]);
+        popupList.push([""]);
+      
+        markerList.push([41.8555743, -87.71189003]);
+        popupList.push([""]);
+      
+        markerList.push([41.89410472, -87.62622107]);
+        popupList.push([""]);
+      
+        markerList.push([41.90251748, -87.75825594]);
+        popupList.push([""]);
+      
+        markerList.push([41.92458656, -87.71852228]);
+        popupList.push([""]);
+      
+        markerList.push([41.7710461, -87.58501728]);
+        popupList.push([""]);
+      
+        markerList.push([41.89704129, -87.76071461]);
+        popupList.push([""]);
+      
+        markerList.push([41.8952399, -87.74581479]);
+        popupList.push([""]);
+      
+        markerList.push([41.88741207, -87.65218973]);
+        popupList.push([""]);
+      
+        markerList.push([41.88886626, -87.71367921]);
+        popupList.push([""]);
+      
+        markerList.push([41.91928942, -87.78043437]);
+        popupList.push([""]);
+      
+        markerList.push([41.96542634, -87.65522754]);
+        popupList.push([""]);
+      
+        markerList.push([41.73115835, -87.60606245]);
+        popupList.push([""]);
+      
+        markerList.push([41.91093076, -87.69578356]);
+        popupList.push([""]);
+      
+        markerList.push([41.90442409, -87.6250566]);
+        popupList.push([""]);
+      
+        markerList.push([41.76445548, -87.63218799]);
+        popupList.push([""]);
+      
+        markerList.push([41.77712815, -87.65079163]);
+        popupList.push([""]);
+      
+        markerList.push([41.77328486, -87.59127475]);
+        popupList.push([""]);
+      
+        markerList.push([41.74933038, -87.65856201]);
+        popupList.push([""]);
+      
+        markerList.push([41.73706515, -87.66309445]);
+        popupList.push([""]);
+      
+        markerList.push([41.87622558, -87.72174359]);
+        popupList.push([""]);
+      
+        markerList.push([41.69530861, -87.62395405]);
+        popupList.push([""]);
+      
+        markerList.push([41.81593313, -87.62464213]);
+        popupList.push([""]);
+      
+        markerList.push([41.73516288, -87.54578418]);
+        popupList.push([""]);
+      
+        markerList.push([41.75748131, -87.55774541]);
+        popupList.push([""]);
+      
+        markerList.push([41.71001112, -87.64170152]);
+        popupList.push([""]);
+      
+        markerList.push([41.68841945, -87.60711516]);
+        popupList.push([""]);
+      
+        markerList.push([41.87607277, -87.73388056]);
+        popupList.push([""]);
+      
+        markerList.push([41.69076163, -87.62401499]);
+        popupList.push([""]);
+      
+        markerList.push([41.93363563, -87.63931652]);
+        popupList.push([""]);
+      
+        markerList.push([41.65659872, -87.60233501]);
+        popupList.push([""]);
+      
+        markerList.push([41.75928391, -87.74170902]);
+        popupList.push([""]);
+      
+        markerList.push([41.802009, -87.62203019]);
+        popupList.push([""]);
+      
+        markerList.push([41.89542055, -87.72052104]);
+        popupList.push([""]);
+      
+        markerList.push([41.99693858, -87.66046281]);
+        popupList.push([""]);
+      
+        markerList.push([41.80034799, -87.59666193]);
+        popupList.push([""]);
+      
+        markerList.push([41.92062817, -87.74286656]);
+        popupList.push([""]);
+      
+        markerList.push([41.89097744, -87.71130092]);
+        popupList.push([""]);
+      
+        markerList.push([41.87885601, -87.72667207]);
+        popupList.push([""]);
+      
+        markerList.push([41.88427684, -87.62209893]);
+        popupList.push([""]);
+      
+        markerList.push([41.7685973, -87.66076119]);
+        popupList.push([""]);
+      
+        markerList.push([41.87861153, -87.62768812]);
+        popupList.push([""]);
+      
+        markerList.push([41.77969673, -87.60044004]);
+        popupList.push([""]);
+      
+        markerList.push([41.8848616, -87.62792048]);
+        popupList.push([""]);
+      
+        markerList.push([41.94621213, -87.64657968]);
+        popupList.push([""]);
+      
+        markerList.push([41.73853867, -87.55752637]);
+        popupList.push([""]);
+      
+        markerList.push([41.71651743, -87.62273193]);
+        popupList.push([""]);
+      
+        markerList.push([41.88103139, -87.70058659]);
+        popupList.push([""]);
+      
+        markerList.push([41.86886082, -87.7407438]);
+        popupList.push([""]);
+      
+        markerList.push([41.80932324, -87.62037936]);
+        popupList.push([""]);
+      
+        markerList.push([41.91348908, -87.63866408]);
+        popupList.push([""]);
+      
+        markerList.push([41.92160672, -87.66552826]);
+        popupList.push([""]);
+      
+        markerList.push([41.77696521, -87.58750014]);
+        popupList.push([""]);
+      
+        markerList.push([41.79485222, -87.67310933]);
+        popupList.push([""]);
+      
+        markerList.push([41.73109172, -87.56463174]);
+        popupList.push([""]);
+      
+        markerList.push([41.87770242, -87.7684405]);
+        popupList.push([""]);
+      
+        markerList.push([41.94588781, -87.80579971]);
+        popupList.push([""]);
+      
+        markerList.push([41.88631473, -87.76030361]);
+        popupList.push([""]);
+      
+        markerList.push([41.88281685, -87.76659605]);
+        popupList.push([""]);
+      
+        markerList.push([41.87949219, -87.74611329]);
+        popupList.push([""]);
+      
+        markerList.push([41.74874226, -87.61365127]);
+        popupList.push([""]);
+      
+        markerList.push([41.65795709, -87.59759166]);
+        popupList.push([""]);
+      
+        markerList.push([41.86202357, -87.7104179]);
+        popupList.push([""]);
+      
+    
+
+    //create the markers for a dataset
+     
+    {
+      for (var i=0; i<markerList.length; i++) {
+              var lat = markerList[i][0];
+              var lon = markerList[i][1];
+              var popup = popupList[i];
+
+              if (!isNaN(lat) && !isNaN(lon)) {
+                var markerLocation = new L.LatLng(lat, lon);
+                var marker = new L.Marker(markerLocation, {icon: Marker});
+                
+                {
+                  markers.addLayer(marker);
+                }
+                
+                if(popup != "")
+                {
+                  marker.bindPopup(''+popup);
+                }
+                sumLat += lat;
+                sumLon += lon;
+                countMarkers++;
+              }
+      }
+  }
+
+    //create clusters
+    
+    {
+      map.addLayer(markers);
+    }
+
+    //set the map view for dataset
+    
+    {
+      center_map=[sumLat / countMarkers, sumLon / countMarkers];
+    }
+
+    //set the map for the view
+    
+    {
+      
+      
+      {
+        zoom_map=10;
+      }
+    }
+
+    map.addLayer(style).setView(center_map,zoom_map);
+
+    //set streetview with Mapillary
+    
+
+//manages post mapping
+function JekyllMapPosts() {
+
+    this.map;
+
+    var center_map1 = [0,0];
+    var lat1=0;
+    var lon1=0;
+    var sumLat1 = 0.;
+    var sumLon1 = 0.;
+    var countMarkers1 = 0;
+
+    this.data = {
+      type: 'FeatureCollection',
+      features: [
+        
+          
+          
+          
+          
+      ]
+    };
+
+    
+      
+    
+      
+    
+
+  var myPostLayer = L.geoJSON(data, {onEachFeature: function (features, layer) {
+    layer.bindPopup('<a href='+features.link+' itemprop="url">'+features.properties+'</a>');
+  }}).addTo(map);
+
+  center_map1=[lat1 , lon1];
+  myPostLayer.addData(this.data);
+  return center_map1;
+}
+</script>
+</article>
+        </section>
+      </article>
+    </main>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/jmap/assets/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/jmap/assets/js/index.js"></script>
+<script type="text/javascript" src="/jmap/assets/js/readingTime.min.js"></script>
+<script>
+(function ($) {
+  "use strict";
+  $(document).ready(function(){
+
+    var $window = $(window),
+    $image = $('.post-image-image, .teaserimage-image');
+    
+      $window.on('scroll', function() {
+        var top = $window.scrollTop();
+
+        if (top < 0 || top > 1500) { return; }
+        $image
+          .css('transform', 'translate3d(0px, '+top/3+'px, 0px)')
+          .css('opacity', 1-Math.max(top/700, 0));
+      });
+      $window.trigger('scroll');
+
+      var height = $('.article-image').height();
+      $('.post-content').css('padding-top', height + 'px');
+
+      $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+         && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+          if (target.length) {
+            $('html,body').animate({ scrollTop: target.offset().top }, 500);
+            return false;
+          }
+        }
+      });
+
+  });
+}(jQuery));
+</script>
+
+<!-- Google Analytics -->
+<script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-47474515-6', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+  </body>
+</html>
