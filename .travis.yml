@@ -5,7 +5,6 @@ rvm:
 
 script:
 - set -e
-- install bundle
 - bundle exec jekyll build
 - bundle exec htmlproofer ./_site
 
