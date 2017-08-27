@@ -1,13 +1,9 @@
 language: ruby
-
 rvm:
 - 2.3.3
-
 script:
 - set -e
 - bundle exec jekyll build
-#- bundle exec htmlproofer ./_site
-
 after_success:
 - git clone https://$GH_REF
 - cd $(basename ${GH_REF%.git})
@@ -18,14 +14,12 @@ after_success:
 - git add -A .
 - git commit -m "Generated Site by Travis CI - ${TRAVIS_BUILD_NUMBER}"
 - git push -f "https://${GH_TOKEN}@${GH_REF}" ${TARGET_BRANCH} > /dev/null 2>&1
-
 branches:
   only:
   - development
-
 env:
   global:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
   - GH_REF: github.com/iltempe/jmap
   - TARGET_BRANCH: master
-  - secure: "oTQPlxbGu7FuTvDmcKdgcu9fg7ApQ0UW0BtoZA9OnmO+OaM1Q/102lComcVwpcH2qNSaQc2Kf7B6WqoOtoKz6U2GJxzuZYy+3pkdKVQPJojS52zBC4mkoEyFOWk7LSyELrVHIjlKOc/RsAPf90MJMdKvlfJejzEVNk3y9T2VjBM/ZCfm+E6U/ZcWJWm+67ChdViEKr+4wxdvQQj9eX6iVEHiQrA+/cBSSwSXcIGk4nIyxizxPHS9ceFymoJeDNWTL4p4V7CM+c50N/Rrjj5bt2oitqRGeW46NdPzd36FYMSXBG9KrhzSGLNCB+FWdLHBbLToQciVNuAaeMYfqW8RLoL79Vw0bgyhV601F6yT1iB2T8D091zXF8hvPzMeaQtEJZ9pTjkuKmsCQ3TX8aUzG7Uq9mPxQFJbF764CzY90JpYbhT09u7cMADjc+uyFj35vYWusFXjm/lO/GP0ecJO7qbVwgovgQKQXBhhlkz7qGLpxL5v8lhurq414Vk4opeSJYsRwryqEn9j0vooJetk/ngWAPFlihXDRinMOZ/dvhY7xyCzWgKsa2GhV75sIs/ntbiNUR60rstr2lKKfLDeyisGlQ1P2a85hp2X+MgGMFYAY85vl4f5w+UquwBA0yzactxc+pIH3GBaVoTauPPNgnGP7IgnjNrFiQ2TIv461G0="
+  - secure: NPW1fOch1Vy/W0OXhbgvmxYhySPPC4yLPUGTB+usiF810YAqzhfrqxQkzfHWpW+1XQ5GOevPRv5W/HmqVqvh4O4RCIoi4Z3WzZ13XyN9FWfTtlr1V2DwpN16rmhHNmQ0r3r2uFd05BqGjcqeE5RrFn7XFNxyGwMhzGBZVcNMuIs12PAvznV9bH9ys8Gp2FDNic+3cS+VH+tthapCsrqh/gGwk8ExTLJJvZ93M/b9njUQ4dqwzppIKm+0GQSvEaYWrtde/Fd0zHx/scxtutRaabnTUbFZY+Bc2ETioDYEUkn6h/oJjvc2UjBXfPZcho4/HIDWFgQHPOxUV1lPkmrRGUSnrCffAydv6h+clln2FhPcWkFmzhpI9y+ZCtKCPxvQ9PTXmgFttRogBg5zzt5bFjPSrMU+oGbiU9Piz10oPskQxRL9CLrGNGCAIvB7bji9yM6Jnhci4LMcPazXfTmFfHHqpSvLpKlEs8gloBcOQIYUhZnmWHQ256RkpI3aF1HlMk1MrCVCFMXWqyvq9QLxfPfFdgmiMo5SQwV3qgfGoc9Rat8ppMBqaaahVMFwyp5C8PjTdPOozYvZAGc98MHFj2UUqoY8Be7zX90RcRGdWmxoiQutGiRO2rWzdQqZrY9pyNoQbHdUAzuq8MoxGiftg7jW/YxGBLWDmV78OgsH29M=
