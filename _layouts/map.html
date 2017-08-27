@@ -186,6 +186,7 @@ function JekyllMapPosts() {
   var myPostLayer = L.geoJSON(data, {onEachFeature: function (features, layer) {
     layer.bindPopup('<a href='+features.link+' itemprop="url">'+features.properties+'</a>');
   }}).addTo(map);
+
   center_map1=[lat1 , lon1];
   myPostLayer.addData(this.data);
   return center_map1;
