@@ -1,0 +1,60 @@
+# Site settings
+ title: "JMAP"
+ description: "This is JMAP. The framework is based on Jekyll and generates maps from data."
+
+######## DON'T CHANGE
+ collections:
+  maps:
+    output: true
+    permalink: /:collection/:name
+########
+
+ email: mtempestini@gmail.com
+
+#blog logo
+ logo: "/assets/images/logo.jpg"
+ float_logo: true # true, false (default)
+
+# blog cover
+ cover: "/assets/images/back.jpeg"
+
+ name: 'Matteo Tempestini'
+ author: 'Matteo Tempestini'
+ author_image: "/assets/images/logo.jpeg"
+
+ paginate_path: "/blog/page:num/"
+ paginate: 5
+
+ url: "https://iltempe.github.io" # the base hostname & protocol for your site
+ baseurl: "/jmap"
+
+#used to display twitter cards
+ twitter_handle: '@il_tempe'
+
+#fill in disqus shortname to use disqus
+#disqus: disqus-shortname
+
+ google_analytics: UA-47474515-6
+
+ #to se the streetview
+ mapillary_client_id: cWJESEstdVBuN2J4cHp0empVR09sUTplMGE3Y2M2MjE4Y2E2MDRi
+
+ #social icons and sharing options
+ social:
+  -
+    icon: twitter
+    url: https://twitter.com/il_tempe
+    desc: Follow me on twitter
+  -
+    icon: github
+    url: https://github.com/iltempe/jmap
+    desc: Fork me on github
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+
+ plugins:
+  - jemoji
+  - jekyll-paginate

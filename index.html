@@ -1,97 +1,31 @@
-<!DOCTYPE html>
-<html>
+---
+layout: default
+---
 
-  <head>
-  <meta charset="utf-8">
-  <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- (1) force latest IE rendering engine: bit.ly/1c8EiC9 -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-  <title>JMAP</title>
-  <meta name="description" content="This is JMAP. The framework is based on Jekyll and generates maps from data." />
-
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="MobileOptimized" content="320" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@il_tempe" />
-    <meta name="twitter:title" content="JMAP" />
-    <meta name="twitter:image" content="https://iltempe.github.io/jmap/assets/images/logo.jpg" />
-    
-    <meta name="twitter:description" content="This is JMAP. The framework is based on Jekyll and generates maps from data." />
-    
-  
-
-  <meta property="og:site_name" content="JMAP" />
-  <meta property="og:title" content="JMAP"/>
-  
-  <meta property="og:description" content="This is JMAP. The framework is based on Jekyll and generates maps from data." />
-  
-  <meta property="og:image" content="https://iltempe.github.io/jmap/assets/images/logo.jpg" />
-  <meta property="og:url" content="https://iltempe.github.io/jmap/" >
-  <meta property="og:type" content="blog" />
-  
-
-  <link rel="canonical" href="https://iltempe.github.io/jmap/"/>
-  <link rel="shortcut icon" href="/jmap/assets/images/favicon.png" type="image/png"/>
-
-  <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
-  <link rel="stylesheet" href="/jmap/assets/css/font-awesome-4.7.0/css/font-awesome.min.css">
-
-  <link rel="stylesheet" type="text/css" media="screen" href="/jmap/css/main.css" />
-  <link rel="stylesheet" type="text/css" media="print" href="/jmap/css/print.css" />
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
-</head>
-
-
-  <body>
-
-    <!-- header start -->
-
-
-  <a href="https://iltempe.github.io/jmap" class="logo-readium"><span class="logo" style="background-image: url(/jmap/assets/images/logo.jpg)"></span></a>
-
-<!-- header end -->
-
-
-    <!-- content start -->
-
-    <div class="page-content">
-      <div class="wrapper">
-        <div class="teaserimage">
-    <div class="teaserimage-image" style="background-image: url(/jmap/assets/images/back.jpeg)">
+<div class="teaserimage">
+    <div class="teaserimage-image" {% if site.cover %}style="background-image: url({{ site.cover | prepend: site.baseurl }})"{% endif %}>
         Teaser Image
     </div>
 </div>
 
 <header class="blog-header">
-    
-      <a class="blog-logo" href="https://iltempe.github.io/jmap" style="background-image: url('/jmap/assets/images/logo.jpg')">JMAP</a>
-    
-    <h1 class="blog-title">JMAP</h1>
-    <h2 class="blog-description">This is JMAP. The framework is based on Jekyll and generates maps from data.</h2>
+    {% if site.logo %}
+      <a class="blog-logo" href="{{site.url}}{{site.baseurl}}" style="background-image: url('{{ site.logo | prepend: site.baseurl }}')">{{ site.title }}</a>
+    {% endif %}
+    <h1 class="blog-title">{{ site.title }}</h1>
+    <h2 class="blog-description">{{ site.description }}</h2>
     <div class="custom-links">
-      
-        
-            <a class="icon-twitter" href="https://twitter.com/il_tempe"  title="Follow me on twitter">
-              <i class="fa fa-twitter"></i>
+      {% for social in site.social %}
+        {% if social.url %}
+            <a class="icon-{{ social.icon }}" href="{{ social.url }}" {% if social.desc %} title="{{ social.desc }}"{% endif %}>
+              <i class="fa fa-{{ social.icon }}"></i>
             </a>
             &nbsp;&nbsp;·&nbsp;&nbsp;
-        
-      
-        
-            <a class="icon-github" href="https://github.com/iltempe/jmap"  title="Fork me on github">
-              <i class="fa fa-github"></i>
-            </a>
-            &nbsp;&nbsp;·&nbsp;&nbsp;
-        
-      
-      <a href=/jmap/blog/>Blog</a>
+        {% endif %}
+      {% endfor %}
+      <a href={{ "/blog/" | prepend: site.baseurl }}>Blog</a>
       &nbsp;&nbsp;·&nbsp;&nbsp;
-      <a href=/jmap/about/>About</a>
+      <a href={{ "/about/" | prepend: site.baseurl }}>About</a>
       &nbsp;&nbsp;·&nbsp;&nbsp;
       <a href="https://github.com/iltempe/jmap/wiki">Wiki</a>
     </div>
@@ -100,192 +34,53 @@
 
 <main class="content" role="main">
     <ul class="map-list">
-      
+      {% for post in site.maps %}
       <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
         <div class="article-item">
           <header class="post-header">
-            <h2 class="post-title" itemprop="name"><a href="/jmap/maps/2017-08-15-map1" itemprop="url">Tuscany Museums</a></h2>
+            <h2 class="post-title" itemprop="name"><a href="{{ post.url | prepend: site.baseurl }}" itemprop="url">{{ post.title }}</a></h2>
           </header>
           <section class="post-excerpt" itemprop="description">
-            <p>The map of museums in Tuscany, my beautiful Region in Italy.</p>
+            <p>{{ post.description | strip_html | truncatewords: 50 }}</p>
           </section>
           <div class="post-meta">
-            <time datetime="15 August 2017">15 August 2017</time>
+            <time datetime="{{ post.date | date_to_long_string }}">{{ post.date | date_to_long_string }}</time>
           </div>
         </div>
       </article>
-      
-      <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-        <div class="article-item">
-          <header class="post-header">
-            <h2 class="post-title" itemprop="name"><a href="/jmap/maps/2017-08-15-map2" itemprop="url">Wi-Fi HotSpot Prato City</a></h2>
-          </header>
-          <section class="post-excerpt" itemprop="description">
-            <p>Wifi Hotspots Map of my city, Prato in Tuscany</p>
-          </section>
-          <div class="post-meta">
-            <time datetime="15 August 2017">15 August 2017</time>
-          </div>
-        </div>
-      </article>
-      
-      <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-        <div class="article-item">
-          <header class="post-header">
-            <h2 class="post-title" itemprop="name"><a href="/jmap/maps/2017-08-15-map3" itemprop="url">Chicago Crimes 2017</a></h2>
-          </header>
-          <section class="post-excerpt" itemprop="description">
-            <p>All Crimes Map in Chicago during the 2017</p>
-          </section>
-          <div class="post-meta">
-            <time datetime="15 August 2017">15 August 2017</time>
-          </div>
-        </div>
-      </article>
-      
-      <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-        <div class="article-item">
-          <header class="post-header">
-            <h2 class="post-title" itemprop="name"><a href="/jmap/maps/2017-08-21-map7" itemprop="url">Blog Map</a></h2>
-          </header>
-          <section class="post-excerpt" itemprop="description">
-            <p>A simple map of blog posts. This map is generated with data in posts of Jekyll.</p>
-          </section>
-          <div class="post-meta">
-            <time datetime="15 August 2017">15 August 2017</time>
-          </div>
-        </div>
-      </article>
-      
-      <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-        <div class="article-item">
-          <header class="post-header">
-            <h2 class="post-title" itemprop="name"><a href="/jmap/maps/2017-08-20-map4" itemprop="url">Detroit Public Libraries</a></h2>
-          </header>
-          <section class="post-excerpt" itemprop="description">
-            <p>The public libraries of Detroit published on DataWorld</p>
-          </section>
-          <div class="post-meta">
-            <time datetime="20 August 2017">20 August 2017</time>
-          </div>
-        </div>
-      </article>
-      
-      <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-        <div class="article-item">
-          <header class="post-header">
-            <h2 class="post-title" itemprop="name"><a href="/jmap/maps/2017-08-20-map5" itemprop="url">Number of Italian Regions Wildfires</a></h2>
-          </header>
-          <section class="post-excerpt" itemprop="description">
-            <p>Number of Wildfires in Italian regions divided for years</p>
-          </section>
-          <div class="post-meta">
-            <time datetime="20 August 2017">20 August 2017</time>
-          </div>
-        </div>
-      </article>
-      
-      <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-        <div class="article-item">
-          <header class="post-header">
-            <h2 class="post-title" itemprop="name"><a href="/jmap/maps/2017-08-20-map6" itemprop="url">Gavigno Tour</a></h2>
-          </header>
-          <section class="post-excerpt" itemprop="description">
-            <p>Gavigno is a little village in tuscany mountains. Map generated with Mapillary data.</p>
-          </section>
-          <div class="post-meta">
-            <time datetime="20 August 2017">20 August 2017</time>
-          </div>
-        </div>
-      </article>
-      
+      {% endfor %}
     </ul>
 
     <div class="cf frame">
-      
+      {% for post in paginator.post %}
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
+          <div class="article-item">
+            <header class="post-header">
+              <h2 class="post-title" itemprop="name"><a href="{{ post.url | prepend: site.baseurl }}" itemprop="url">{{ post.title }}</a></h2>
+            </header>
+            <section class="post-excerpt" itemprop="description">
+              <p>{{ post.excerpt | strip_html | truncatewords: 50 }}</p>
+            </section>
+            <div class="post-meta">
+              <time datetime="{{ post.date | date_to_long_string }}">{{ post.date | date_to_long_string }}</time>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
     </div>
 
     <nav class="pagination" role="navigation">
-      
-      <span class="page-number">   </span>
-      
+      {% if paginator.next_page %}
+        <a class="newer-posts" href={{ "/page" | prepend: site.baseurl | append: paginator.next_page }}>&larr; Older posts</a>
+      {% endif %}
+      <span class="page-number"> {{ paginator.page }}  {{ paginator.total_pages }}</span>
+      {% if paginator.previous_page %}
+        {% if paginator.page == 2 %}
+          <a class="older-posts" href={{ "/" | prepend: site.baseurl }}>Newer posts &rarr;</a>
+        {% else %}
+          <a class="older-posts" href={{ "/page" | prepend: site.baseurl | append: paginator.previous_page }}>Newer posts &rarr;</a>
+        {% endif %}
+      {% endif %}
     </nav>
 
 </main>
-
-      </div>
-    </div>
-
-    <!-- content end -->
-
-    <!-- footer start -->
-
-<footer class="site-footer">
-  <a class="subscribe" href="/jmap/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> Subscribe!</span></a>
-    <div class="inner">
-         <section class="copyright">All content copyright <a href="mailto:mtempestini@gmail.com">Matteo Tempestini</a> &copy; 2017 &bull; Some rights reserved.</section>
-         <section class="poweredby">Made with <a href="http://jekyllrb.com"> Jekyll</a></section>
-    </div>
-</footer>
-
-<!-- footer end -->
-
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="/jmap/assets/js/jquery.fitvids.js"></script>
-<script type="text/javascript" src="/jmap/assets/js/index.js"></script>
-<script type="text/javascript" src="/jmap/assets/js/readingTime.min.js"></script>
-<script>
-(function ($) {
-  "use strict";
-  $(document).ready(function(){
-
-    var $window = $(window),
-    $image = $('.post-image-image, .teaserimage-image');
-    
-      $window.on('scroll', function() {
-        var top = $window.scrollTop();
-
-        if (top < 0 || top > 1500) { return; }
-        $image
-          .css('transform', 'translate3d(0px, '+top/3+'px, 0px)')
-          .css('opacity', 1-Math.max(top/700, 0));
-      });
-      $window.trigger('scroll');
-
-      var height = $('.article-image').height();
-      $('.post-content').css('padding-top', height + 'px');
-
-      $('a[href*=#]:not([href=#])').click(function() {
-        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
-         && location.hostname == this.hostname) {
-          var target = $(this.hash);
-          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-          if (target.length) {
-            $('html,body').animate({ scrollTop: target.offset().top }, 500);
-            return false;
-          }
-        }
-      });
-
-  });
-}(jQuery));
-</script>
-
-<!-- Google Analytics -->
-<script>
-   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-47474515-6', 'auto');
-ga('send', 'pageview');
-
-</script>
-
-
-
-
-  </body>
-
-</html>

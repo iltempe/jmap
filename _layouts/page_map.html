@@ -1,0 +1,54 @@
+---
+---
+
+
+<!DOCTYPE html>
+<html>
+  {% include head.html %}
+  <body itemscope itemtype="http://schema.org/Article">
+    {% include header.html %}
+    <style>
+    .content{
+      max-width: 1300px;
+    }
+    </style>
+    
+    <main class="content" role="main">
+      <article class="post">
+        {% if page.image %}
+        <div class="article-image">
+          <div class="post-image-image" style="background-image: url({% if page.image %}{{ page.image }}{% endif %})">
+            Article Image
+          </div>
+          <div class="post-meta">
+            <h1 class="post-title">{{ page.title }}</h1>
+            <div class="cf post-meta-text">
+              <div class="author-image" style="background-image: url({{ site.author_image | prepend: site.baseurl }})">Blog Logo</div>
+              <h4 class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person">{{ site.author }}</h4>
+            </div>
+            <div style="text-align:center">
+              <a href="#topofpage" class="topofpage"><i class="fa fa-angle-down"></i></a>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="noarticleimage">
+          <div class="post-meta">
+            <h1 class="post-title">{{ page.title }}</h1>
+            <div class="cf post-meta-text">
+              <h4> <a href={{ page.source | escape }}>Data Source</a> </h4>
+              <h4 class="description-name" itemprop="author" itemscope itemtype="http://schema.org/Person">{{ page.description }}</h4>
+              <time datetime="{{ page.date | date_to_long_string }}">{{ page.date | date_to_long_string }}</time>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <section class="post-content">
+          <a name="topofpage"></a>
+          {{content}}
+        </section>
+      </article>
+    </main>
+    {% include javascripts.html %}
+  </body>
+</html>
