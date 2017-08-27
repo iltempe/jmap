@@ -48,7 +48,6 @@ layout: page_map
       {% endfor %}
     {% endif %}
 
-
     // init map
     var map = L.map('map', {
         minZoom: 1,
@@ -64,6 +63,9 @@ layout: page_map
     // create the style tile layer
     var style = L.tileLayer.provider('{{page.style}}').addTo(map);
 
+    //any post to be mapped?
+    center_map=JekyllMapPosts();
+
     //create the markers for a dataset
      {% if page.dataset %}
     {
@@ -78,7 +80,9 @@ layout: page_map
                 {% if page.cluster == true %}
                 {
                   markers.addLayer(marker);
-                }else{
+                }
+                {% else %}
+                {
                   map.addLayer(marker);
                 }{% endif %}
                 if(popup != "")
@@ -116,8 +120,6 @@ layout: page_map
       }{% endif %}
     }{% endif %}
 
-    //any post to be mapped here?
-    center_map=JekyllMapPosts();
 
     map.addLayer(style).setView(center_map,zoom_map);
 
@@ -148,6 +150,8 @@ function JekyllMapPosts() {
     this.map;
 
     var center_map1 = [0,0];
+    var lat1=0;
+    var lon1=0;
     var sumLat1 = 0.;
     var sumLon1 = 0.;
     var countMarkers1 = 0;
