@@ -17,3 +17,5 @@ JMAP is a collaborative project launched by [Matteo Tempestini](http://iltempe.g
 All credits are available on [Wiki Page](https://github.com/iltempe/jmap/wiki/Credits)
 
 ![](https://github.com/iltempe/jmap/blob/master/assets/article_images/1.png?raw=true)
+
+![](https://media.giphy.com/media/3oKGzCUdVqQydbCCcw/giphy.gif)
