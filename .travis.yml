@@ -4,7 +4,7 @@ rvm:
 
 script:
 - set -e # halt script on error
-- build jekyll build && htmlproofer ./_site
+- bundle exec jekyll build && htmlproofer --assume-extension ./_site
 
 after_success:
 - git clone https://$GH_REF
