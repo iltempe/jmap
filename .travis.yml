@@ -4,9 +4,10 @@ rvm:
 - 2.3.3
 
 script:
-- set -e # halt script on error
-- jekyll build --exclude vendor
-- bundle exec htmlproofer --disable-external ./_site
+- set -e
+- install bundle
+- bundle exec jekyll build
+- bundle exec htmlproofer ./_site
 
 after_success:
 - git clone https://$GH_REF
@@ -18,6 +19,10 @@ after_success:
 - git add -A .
 - git commit -m "Generated Site by Travis CI - ${TRAVIS_BUILD_NUMBER}"
 - git push -f "https://${GH_TOKEN}@${GH_REF}" ${TARGET_BRANCH} > /dev/null 2>&1
+
+branches:
+  only:
+  - master
 
 env:
   global:

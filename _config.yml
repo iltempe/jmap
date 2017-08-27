@@ -50,6 +50,8 @@
     url: https://github.com/iltempe/jmap
     desc: Fork me on github
 
+ exclude: ["vendor/bundle/", "vendor/cache/", "vendor/gems/", "vendor/ruby/"]
+
  plugins:
   - jemoji
   - jekyll-paginate
