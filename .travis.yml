@@ -6,7 +6,7 @@ rvm:
 script:
 - set -e
 - bundle exec jekyll build
-- bundle exec htmlproofer ./_site
+#- bundle exec htmlproofer ./_site
 
 after_success:
 - git clone https://$GH_REF
