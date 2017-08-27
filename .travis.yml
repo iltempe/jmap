@@ -3,7 +3,6 @@ rvm:
 - 2.3.3
 
 script:
-- bundle install
 - bundle exec jekyll build
 - bundle exec htmlproofer ./_site
 
