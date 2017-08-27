@@ -41,7 +41,6 @@ layout: page_map
     {% if page.dataset %}
       //find the dataset
       {% assign data_file = page.dataset %}
-
       //find the coordinates in the dataset
       {% for member in site.data[data_file] %}
         markerList.push([{{member.lat}}, {{member.lon}}]);
@@ -59,45 +58,52 @@ layout: page_map
     var sumLat = 0.;
     var sumLon = 0.;
     var countMarkers=0;
+    var center_map=[40.737,-73.923];
+    var zoom_map = 7;
 
     // create the style tile layer
     var style = L.tileLayer.provider('{{page.style}}').addTo(map);
 
-    //create the markers
-    for (var i=0; i<markerList.length; i++) {
-            var lat = markerList[i][0];
-            var lon = markerList[i][1];
-            var popup = popupList[i];
+    //create the markers for a dataset
+     {% if page.dataset %}
+    {
+      for (var i=0; i<markerList.length; i++) {
+              var lat = markerList[i][0];
+              var lon = markerList[i][1];
+              var popup = popupList[i];
 
-            if (!isNaN(lat) && !isNaN(lon)) {
-              var markerLocation = new L.LatLng(lat, lon);
-              var marker = new L.Marker(markerLocation, {icon: Marker});
-              if({{page.cluster}})
-              {
-                markers.addLayer(marker);
-              }else{
-                map.addLayer(marker);
+              if (!isNaN(lat) && !isNaN(lon)) {
+                var markerLocation = new L.LatLng(lat, lon);
+                var marker = new L.Marker(markerLocation, {icon: Marker});
+                {% if page.cluster == true %}
+                {
+                  markers.addLayer(marker);
+                }else{
+                  map.addLayer(marker);
+                }{% endif %}
+                if(popup != "")
+                {
+                  marker.bindPopup(''+popup);
+                }
+                sumLat += lat;
+                sumLon += lon;
+                countMarkers++;
               }
-              if(popup != "")
-              {
-                marker.bindPopup(''+popup);
-              }
-              sumLat += lat;
-              sumLon += lon;
-              countMarkers++;
-            }
-    }
+      }
+  }{% endif %}
 
     //create clusters
-    if({{page.cluster}})
+    {% if page.cluster == true %}
     {
       map.addLayer(markers);
-    }
+    }{% endif %}
 
     //set the map view
-    var center_map=[];
-    center_map=[sumLat / countMarkers, sumLon / countMarkers];
-    var zoom_map = 6;
+    {% if page.dataset %}
+    {
+      center_map=[sumLat / countMarkers, sumLon / countMarkers];
+    }{% endif %}
+
     {% if page.view %}
     {
       {% if page.view.center_lat %}
@@ -108,16 +114,14 @@ layout: page_map
       {
         zoom_map={{page.view.zoom}};
       }{% endif %}
-      map.addLayer(style).setView(center_map,zoom_map);
-    }
-    {% else %}{
-      map.addLayer(style).setView(center_map, zoom_map);
     }{% endif %}
 
     //any post to be mapped here?
-    JekyllMapPosts();
+    center_map=JekyllMapPosts();
 
-    //set streetview
+    map.addLayer(style).setView(center_map,zoom_map);
+
+    //set streetview with Mapillary
     {% if page.streetview %}
       {
         var mly = new Mapillary.Viewer(
@@ -136,12 +140,18 @@ layout: page_map
             map.setView(latLon);
         });
         window.addEventListener('resize', function() { mly.resize(); });
-
       }{% endif %}
 
 //manages post mapping
 function JekyllMapPosts() {
+
     this.map;
+
+    var center_map1 = [0,0];
+    var sumLat1 = 0.;
+    var sumLon1 = 0.;
+    var countMarkers1 = 0;
+
     this.data = {
       type: 'FeatureCollection',
       features: [
@@ -163,10 +173,22 @@ function JekyllMapPosts() {
           {% endfor %}
       ]
     };
+
+    {% for post in site.posts %}
+      {% if post.map == page.title %}
+          {
+            lat1 = {{ post.lat }};
+            lon1 = {{ post.lon }};
+          }
+          {% endif %}
+    {% endfor %}
+
   var myPostLayer = L.geoJSON(data, {onEachFeature: function (features, layer) {
     layer.bindPopup('<a href='+features.link+' itemprop="url">'+features.properties+'</a>');
   }}).addTo(map);
+  center_map1=[lat1 , lon1];
   myPostLayer.addData(this.data);
+  return center_map1;
 }
 </script>
 </article>
