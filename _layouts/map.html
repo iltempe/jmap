@@ -38,17 +38,7 @@ layout: page_map
     var markerList=[];
     var popupList=[];
 
-    {% if page.dataset %}
-      //find the dataset
-      {% assign data_file = page.dataset %}
-      //find the coordinates in the dataset
-      {% for member in site.data[data_file] %}
-        markerList.push([{{member.lat}}, {{member.lon}}]);
-        popupList.push(["{{member[page.popup]}}"]);
-      {% endfor %}
-    {% endif %}
-
-    // init map
+    // init map default values
     var map = L.map('map', {
         minZoom: 1,
         maxZoom: 20
@@ -65,6 +55,17 @@ layout: page_map
 
     //any post to be mapped?
     center_map=JekyllMapPosts();
+
+    //any dataset to be mapped?
+    {% if page.dataset %}
+      //find the dataset
+      {% assign data_file = page.dataset %}
+      //find the coordinates in the dataset
+      {% for member in site.data[data_file] %}
+        markerList.push([{{member.lat}}, {{member.lon}}]);
+        popupList.push(["{{member[page.popup]}}"]);
+      {% endfor %}
+    {% endif %}
 
     //create the markers for a dataset
      {% if page.dataset %}
@@ -102,12 +103,13 @@ layout: page_map
       map.addLayer(markers);
     }{% endif %}
 
-    //set the map view
+    //set the map view for dataset
     {% if page.dataset %}
     {
       center_map=[sumLat / countMarkers, sumLon / countMarkers];
     }{% endif %}
 
+    //set the map for the view
     {% if page.view %}
     {
       {% if page.view.center_lat %}
