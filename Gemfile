@@ -7,3 +7,4 @@ gem 'jemoji'
 gem 'pygments.rb'
 gem 'html-proofer'
 gem 'jekyll-tidy'
+gem "rake", "~> 10.1.1"

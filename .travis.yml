@@ -1,0 +1,24 @@
+language: ruby
+rvm:
+- 2.3.3
+
+script:
+- bundle exec jekyll build
+- bundle exec htmlproofer ./_site --disable-external
+
+after_success:
+- git clone https://$GH_REF
+- cd $(basename ${GH_REF%.git})
+- git config user.name "iltempe"
+- git config user.email ${EMAIL}
+- rsync -az --delete --exclude '.git*' ../_site/ .
+- touch .nojekyll
+- git add -A .
+- git commit -m "Generated Site by Travis CI - ${TRAVIS_BUILD_NUMBER}"
+- git push -f "https://${GH_TOKEN}@${GH_REF}" ${TARGET_BRANCH} > /dev/null 2>&1
+
+env:
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  - GH_REF: github.com/iltempe/jmap
+  - TARGET_BRANCH: master
