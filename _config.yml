@@ -47,7 +47,7 @@
     desc: Follow me on twitter
   -
     icon: github
-    url: https://github.com/iltempe/jmap
+    url: https://github.com/iltempe/jmap/tree/development
     desc: Fork me on github
 
 exclude:
