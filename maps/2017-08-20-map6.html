@@ -175,7 +175,7 @@
       {
         var mly = new Mapillary.Viewer(
             'mly',
-            'MAPILLARY_CLIENT_ID',
+            'ENV['MAPILLARY_CLIENT_ID']',
             '43Rju2Xtu-QZRNP1umMhlw');
         var marker1;
         mly.on(Mapillary.Viewer.nodechanged, function (node) {
