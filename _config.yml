@@ -37,7 +37,7 @@
  google_analytics: UA-47474515-6
 
  #to se the streetview
- mapillary_client_id: MAPILLARY_CLIENT_ID
+ mapillary_client_id: ${MAPILLARY_CLIENT_ID}
  #mapillary_client_id: cWJESEstdVBuN2J4cHp0empVR09sUTplMGE3Y2M2MjE4Y2E2MDRi
 
  #social icons and sharing options
