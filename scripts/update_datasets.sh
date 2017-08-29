@@ -1,0 +1,1 @@
+cat remote_datasets.txt | xargs -n 3 curl -L

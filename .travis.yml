@@ -1,6 +1,9 @@
 language: ruby
 rvm:
 - 2.3.3
+
+before_install: sed -i "s/MAPILLARY_CLIENT_ID_SECRET/$MAPILLARY_CLIENT_ID/" _config.yml
+
 script:
 - set -e
 - bundle exec jekyll build
@@ -22,4 +25,3 @@ env:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
   - GH_REF: github.com/iltempe/jmap
   - TARGET_BRANCH: master
-  - secure: NPW1fOch1Vy/W0OXhbgvmxYhySPPC4yLPUGTB+usiF810YAqzhfrqxQkzfHWpW+1XQ5GOevPRv5W/HmqVqvh4O4RCIoi4Z3WzZ13XyN9FWfTtlr1V2DwpN16rmhHNmQ0r3r2uFd05BqGjcqeE5RrFn7XFNxyGwMhzGBZVcNMuIs12PAvznV9bH9ys8Gp2FDNic+3cS+VH+tthapCsrqh/gGwk8ExTLJJvZ93M/b9njUQ4dqwzppIKm+0GQSvEaYWrtde/Fd0zHx/scxtutRaabnTUbFZY+Bc2ETioDYEUkn6h/oJjvc2UjBXfPZcho4/HIDWFgQHPOxUV1lPkmrRGUSnrCffAydv6h+clln2FhPcWkFmzhpI9y+ZCtKCPxvQ9PTXmgFttRogBg5zzt5bFjPSrMU+oGbiU9Piz10oPskQxRL9CLrGNGCAIvB7bji9yM6Jnhci4LMcPazXfTmFfHHqpSvLpKlEs8gloBcOQIYUhZnmWHQ256RkpI3aF1HlMk1MrCVCFMXWqyvq9QLxfPfFdgmiMo5SQwV3qgfGoc9Rat8ppMBqaaahVMFwyp5C8PjTdPOozYvZAGc98MHFj2UUqoY8Be7zX90RcRGdWmxoiQutGiRO2rWzdQqZrY9pyNoQbHdUAzuq8MoxGiftg7jW/YxGBLWDmV78OgsH29M=

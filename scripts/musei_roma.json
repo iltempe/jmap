@@ -1,0 +1,1320 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "2017-08-29T16:03:02Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 307965221,
+  "lat": 41.8886142,
+  "lon": 12.4852456,
+  "tags": {
+    "historic:civilization": "ancient_roman",
+    "name": "Casa di Augusto",
+    "name:de": "Palast des Augustus",
+    "name:he": "מוזיאון הפלטין",
+    "name:it": "Casa di Augusto",
+    "odbl": "clean",
+    "ruins": "yes",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "node",
+  "id": 658750297,
+  "lat": 41.8942735,
+  "lon": 12.4838631,
+  "tags": {
+    "name": "Museo Centrale del Risorgimento",
+    "tourism": "museum",
+    "website": "http://www.risorgimento.it/php/page_gen.php?id_sezione=5",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1387899682,
+  "lat": 41.8949454,
+  "lon": 12.4836346,
+  "tags": {
+    "entrance": "yes",
+    "name": "Sacrario delle Bandiere delle Forze Armate",
+    "name:zh": "军旗寺庙",
+    "tourism": "museum",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 2184077390,
+  "lat": 41.8863514,
+  "lon": 12.4918527,
+  "tags": {
+    "addr:city": "Roma",
+    "addr:postcode": "00184",
+    "addr:street": "Clivo di Scauro",
+    "name": "Case romane del Celio",
+    "phone": "+39 0670454544",
+    "tourism": "museum",
+    "website": "http://www.caseromane.it/"
+  }
+},
+{
+  "type": "node",
+  "id": 2263021095,
+  "lat": 41.8882674,
+  "lon": 12.4865980,
+  "tags": {
+    "name": "Museo Palatino",
+    "opening_hours": "Mo-Su 08:30-19:30",
+    "tourism": "museum",
+    "wikidata": "Q3330361",
+    "wikipedia": "it:Antiquarium del Palatino"
+  }
+},
+{
+  "type": "node",
+  "id": 3548468545,
+  "lat": 41.8946377,
+  "lon": 12.5001321,
+  "tags": {
+    "name": "Museo nazionale d'arte orientale Giuseppe Tucci",
+    "ref": "MNOR",
+    "tourism": "museum",
+    "wikipedia": "it:Museo nazionale d'arte orientale Giuseppe Tucci"
+  }
+},
+{
+  "type": "node",
+  "id": 4724460910,
+  "lat": 41.8929410,
+  "lon": 12.4825333,
+  "tags": {
+    "name": "Musei Capitolini",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "way",
+  "id": 25958413,
+  "nodes": [
+    283188803,
+    283188832,
+    283188831,
+    1379492136,
+    283188830,
+    1379492142,
+    283188808,
+    1379492138,
+    283188828,
+    283188804,
+    283188803
+  ],
+  "tags": {
+    "building": "yes",
+    "description": "Musei Capitolini",
+    "importance": "national",
+    "name": "Palazzo Nuovo",
+    "name:de": "Neuer Palast",
+    "tourism": "museum",
+    "website": "http://en.museicapitolini.org/",
+    "wheelchair": "yes",
+    "wikipedia": "it:Palazzo Nuovo (Roma)"
+  }
+},
+{
+  "type": "way",
+  "id": 123817452,
+  "nodes": [
+    1379491695,
+    1379491680,
+    1379491731,
+    1379491773,
+    1379491823,
+    1379491861,
+    1379491789,
+    1379491695
+  ],
+  "tags": {
+    "building": "yes",
+    "description": "Musei Capitolini",
+    "name": "Esedra di Marco Aurelio",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "way",
+  "id": 123817454,
+  "nodes": [
+    1379491700,
+    1379491730,
+    1379491815,
+    1379491867,
+    1379491861,
+    1379491823,
+    1379491773,
+    1379491731,
+    1379491716,
+    1379491653,
+    1379491546,
+    1379491475,
+    1379491625,
+    1379491620,
+    1379491697,
+    1379491700
+  ],
+  "tags": {
+    "building": "yes",
+    "description": "Musei Capitolini",
+    "name": "Palazzo Caffarelli",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "way",
+  "id": 123817455,
+  "nodes": [
+    1379491894,
+    1379491932,
+    1379491888,
+    1379491826,
+    1379491877,
+    1379491861,
+    1379491789,
+    1379491745,
+    1379491777,
+    1379491887,
+    283190921,
+    1379491963,
+    283190920,
+    1379491942,
+    1379491894
+  ],
+  "tags": {
+    "building": "public",
+    "description": "Musei Capitolini",
+    "importance": "national",
+    "name": "Palazzo dei Conservatori",
+    "name:ca": "Palau dels Conservadors",
+    "name:de": "Konservatorenpalast",
+    "name:es": "Palacio de los Conservadores",
+    "name:eu": "Kontserbadoreen Jauregia",
+    "name:hr": "Konzervatorska palača",
+    "name:lt": "Konservatorių rūmai",
+    "name:uk": "Палаццо консерваторе",
+    "name:zh": "卡比托利欧博物馆",
+    "tourism": "museum",
+    "website": "http://en.museicapitolini.org/",
+    "wikipedia": "it:Palazzo dei Conservatori"
+  }
+},
+{
+  "type": "way",
+  "id": 123817484,
+  "nodes": [
+    1379491861,
+    1379491867,
+    283190923,
+    1379491942,
+    1379491894,
+    1379491877,
+    1379491861
+  ],
+  "tags": {
+    "building": "public",
+    "description": "Musei Capitolini",
+    "name": "Palazzo Clementino",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "way",
+  "id": 123817514,
+  "nodes": [
+    1379491731,
+    1379491680,
+    1379491695,
+    1379491565,
+    1379491294,
+    1379491319,
+    1379491332,
+    1379491412,
+    1379491400,
+    1379491467,
+    1379491716,
+    1379491731
+  ],
+  "tags": {
+    "building": "yes",
+    "description": "Musei Capitolini",
+    "name:en": "Forum Museum",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "way",
+  "id": 123817572,
+  "nodes": [
+    1379491565,
+    1379491695,
+    1379491789,
+    1379491745,
+    283190922,
+    1379491708,
+    1379491565
+  ],
+  "tags": {
+    "building": "yes",
+    "description": "Musei Capitolini",
+    "name:ko": "카피톨리노 박물관",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "way",
+  "id": 140264232,
+  "nodes": [
+    1536870734,
+    1536870666,
+    1536870713,
+    1536870769,
+    1536870734
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Museo Internazionale del Presepio",
+    "tourism": "museum",
+    "website": "http://www.presepio.it/museo-del-presepio-roma.php"
+  }
+},
+{
+  "type": "relation",
+  "id": 1849827,
+  "members": [
+    {
+      "type": "way",
+      "ref": 131488086,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 137278826,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 134605525,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 137278893,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 137278774,
+      "role": "outer"
+    }
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Carcere Mamertino",
+    "name:uk": "Мамертинська в'язниця",
+    "opening_hours": "09:00-17:00",
+    "tourism": "museum",
+    "type": "multipolygon",
+    "wikidata": "Q1035634",
+    "wikipedia": "it:Carcere Mamertino"
+  }
+},
+{
+  "type": "relation",
+  "id": 1849831,
+  "members": [
+    {
+      "type": "way",
+      "ref": 137278755,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 111539862,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 137278966,
+      "role": "outer"
+    }
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Museo Centrale del Risorgimento",
+    "name:de": "Hauptmuseum des Risorgimento",
+    "tourism": "museum",
+    "type": "multipolygon",
+    "website": "http://www.risorgimento.it/php/page_gen.php?id_sezione=5"
+  }
+},
+{
+  "type": "relation",
+  "id": 1857985,
+  "members": [
+    {
+      "type": "way",
+      "ref": 137910792,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 131923970,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 138303112,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 138303127,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 138303143,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 138303079,
+      "role": "outer"
+    }
+  ],
+  "tags": {
+    "alt_name": "Antiquario Palatino",
+    "building": "yes",
+    "building:levels": "3",
+    "name": "Museo Palatino",
+    "opening_hours": "08:30-(sunset-01:00)",
+    "ruins": "yes",
+    "start_date": "1930",
+    "tourism": "museum",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 2054907,
+  "members": [
+    {
+      "type": "way",
+      "ref": 152146335,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 152146307,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 152146292,
+      "role": "outer"
+    }
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Museo delle Cere",
+    "name:en": "Wax Museum",
+    "name:es": "Museo de Figuras de Cera",
+    "name:fr": "Musée de Cire",
+    "tourism": "museum",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "node",
+  "id": 279484845,
+  "lat": 41.8938950,
+  "lon": 12.4835770
+},
+{
+  "type": "node",
+  "id": 279485500,
+  "lat": 41.8938151,
+  "lon": 12.4835245
+},
+{
+  "type": "node",
+  "id": 279485660,
+  "lat": 41.8938283,
+  "lon": 12.4835998
+},
+{
+  "type": "node",
+  "id": 283188803,
+  "lat": 41.8933665,
+  "lon": 12.4833866
+},
+{
+  "type": "node",
+  "id": 283188804,
+  "lat": 41.8934842,
+  "lon": 12.4834488
+},
+{
+  "type": "node",
+  "id": 283188808,
+  "lat": 41.8936968,
+  "lon": 12.4833254
+},
+{
+  "type": "node",
+  "id": 283188828,
+  "lat": 41.8936333,
+  "lon": 12.4835277
+},
+{
+  "type": "node",
+  "id": 283188830,
+  "lat": 41.8935964,
+  "lon": 12.4832731
+},
+{
+  "type": "node",
+  "id": 283188831,
+  "lat": 41.8937219,
+  "lon": 12.4828809
+},
+{
+  "type": "node",
+  "id": 283188832,
+  "lat": 41.8935785,
+  "lon": 12.4827885
+},
+{
+  "type": "node",
+  "id": 283190920,
+  "lat": 41.8932580,
+  "lon": 12.4825228
+},
+{
+  "type": "node",
+  "id": 283190921,
+  "lat": 41.8929475,
+  "lon": 12.4830070
+},
+{
+  "type": "node",
+  "id": 283190922,
+  "lat": 41.8925995,
+  "lon": 12.4826032
+},
+{
+  "type": "node",
+  "id": 283190923,
+  "lat": 41.8929570,
+  "lon": 12.4821821
+},
+{
+  "type": "node",
+  "id": 565336695,
+  "lat": 41.8937466,
+  "lon": 12.4835386
+},
+{
+  "type": "node",
+  "id": 1270506288,
+  "lat": 41.8938529,
+  "lon": 12.4836891
+},
+{
+  "type": "node",
+  "id": 1270506291,
+  "lat": 41.8937036,
+  "lon": 12.4836683
+},
+{
+  "type": "node",
+  "id": 1270506293,
+  "lat": 41.8937318,
+  "lon": 12.4835798
+},
+{
+  "type": "node",
+  "id": 1270506330,
+  "lat": 41.8937497,
+  "lon": 12.4838478
+},
+{
+  "type": "node",
+  "id": 1270506331,
+  "lat": 41.8938030,
+  "lon": 12.4836798
+},
+{
+  "type": "node",
+  "id": 1270506332,
+  "lat": 41.8936637,
+  "lon": 12.4838030
+},
+{
+  "type": "node",
+  "id": 1379491294,
+  "lat": 41.8920633,
+  "lon": 12.4819969
+},
+{
+  "type": "node",
+  "id": 1379491319,
+  "lat": 41.8921117,
+  "lon": 12.4818740
+},
+{
+  "type": "node",
+  "id": 1379491332,
+  "lat": 41.8921388,
+  "lon": 12.4819045
+},
+{
+  "type": "node",
+  "id": 1379491400,
+  "lat": 41.8922498,
+  "lon": 12.4820785
+},
+{
+  "type": "node",
+  "id": 1379491412,
+  "lat": 41.8922675,
+  "lon": 12.4820500
+},
+{
+  "type": "node",
+  "id": 1379491467,
+  "lat": 41.8923218,
+  "lon": 12.4821562
+},
+{
+  "type": "node",
+  "id": 1379491475,
+  "lat": 41.8923241,
+  "lon": 12.4815567
+},
+{
+  "type": "node",
+  "id": 1379491546,
+  "lat": 41.8923552,
+  "lon": 12.4817071
+},
+{
+  "type": "node",
+  "id": 1379491565,
+  "lat": 41.8923658,
+  "lon": 12.4823465
+},
+{
+  "type": "node",
+  "id": 1379491620,
+  "lat": 41.8923895,
+  "lon": 12.4815231
+},
+{
+  "type": "node",
+  "id": 1379491625,
+  "lat": 41.8923913,
+  "lon": 12.4815361
+},
+{
+  "type": "node",
+  "id": 1379491653,
+  "lat": 41.8924222,
+  "lon": 12.4816810
+},
+{
+  "type": "node",
+  "id": 1379491680,
+  "lat": 41.8924706,
+  "lon": 12.4821949
+},
+{
+  "type": "node",
+  "id": 1379491695,
+  "lat": 41.8924903,
+  "lon": 12.4822210
+},
+{
+  "type": "node",
+  "id": 1379491697,
+  "lat": 41.8924959,
+  "lon": 12.4814866
+},
+{
+  "type": "node",
+  "id": 1379491700,
+  "lat": 41.8924997,
+  "lon": 12.4815033
+},
+{
+  "type": "node",
+  "id": 1379491708,
+  "lat": 41.8925123,
+  "lon": 12.4825074
+},
+{
+  "type": "node",
+  "id": 1379491716,
+  "lat": 41.8925427,
+  "lon": 12.4820130
+},
+{
+  "type": "node",
+  "id": 1379491730,
+  "lat": 41.8925695,
+  "lon": 12.4814674
+},
+{
+  "type": "node",
+  "id": 1379491731,
+  "lat": 41.8925841,
+  "lon": 12.4821205
+},
+{
+  "type": "node",
+  "id": 1379491745,
+  "lat": 41.8926307,
+  "lon": 12.4826405
+},
+{
+  "type": "node",
+  "id": 1379491773,
+  "lat": 41.8926991,
+  "lon": 12.4820452
+},
+{
+  "type": "node",
+  "id": 1379491777,
+  "lat": 41.8927029,
+  "lon": 12.4827241
+},
+{
+  "type": "node",
+  "id": 1379491789,
+  "lat": 41.8927250,
+  "lon": 12.4824935
+},
+{
+  "type": "node",
+  "id": 1379491815,
+  "lat": 41.8927653,
+  "lon": 12.4819903
+},
+{
+  "type": "node",
+  "id": 1379491823,
+  "lat": 41.8927805,
+  "lon": 12.4821610
+},
+{
+  "type": "node",
+  "id": 1379491826,
+  "lat": 41.8927812,
+  "lon": 12.4825342
+},
+{
+  "type": "node",
+  "id": 1379491861,
+  "lat": 41.8928479,
+  "lon": 12.4823018
+},
+{
+  "type": "node",
+  "id": 1379491867,
+  "lat": 41.8928660,
+  "lon": 12.4822591
+},
+{
+  "type": "node",
+  "id": 1379491877,
+  "lat": 41.8928952,
+  "lon": 12.4823564
+},
+{
+  "type": "node",
+  "id": 1379491887,
+  "lat": 41.8929148,
+  "lon": 12.4829692
+},
+{
+  "type": "node",
+  "id": 1379491888,
+  "lat": 41.8929259,
+  "lon": 12.4827016
+},
+{
+  "type": "node",
+  "id": 1379491894,
+  "lat": 41.8929596,
+  "lon": 12.4824451
+},
+{
+  "type": "node",
+  "id": 1379491932,
+  "lat": 41.8930346,
+  "lon": 12.4825319
+},
+{
+  "type": "node",
+  "id": 1379491942,
+  "lat": 41.8930581,
+  "lon": 12.4822915
+},
+{
+  "type": "node",
+  "id": 1379491963,
+  "lat": 41.8931037,
+  "lon": 12.4827633
+},
+{
+  "type": "node",
+  "id": 1379492136,
+  "lat": 41.8936645,
+  "lon": 12.4830694
+},
+{
+  "type": "node",
+  "id": 1379492138,
+  "lat": 41.8936726,
+  "lon": 12.4834022
+},
+{
+  "type": "node",
+  "id": 1379492141,
+  "lat": 41.8936768,
+  "lon": 12.4837561
+},
+{
+  "type": "node",
+  "id": 1379492142,
+  "lat": 41.8936813,
+  "lon": 12.4833173
+},
+{
+  "type": "node",
+  "id": 1379492197,
+  "lat": 41.8938429,
+  "lon": 12.4835948
+},
+{
+  "type": "node",
+  "id": 1479751211,
+  "lat": 41.8930917,
+  "lon": 12.4845127
+},
+{
+  "type": "node",
+  "id": 1479751273,
+  "lat": 41.8932013,
+  "lon": 12.4845272
+},
+{
+  "type": "node",
+  "id": 1446979187,
+  "lat": 41.8931933,
+  "lon": 12.4846359
+},
+{
+  "type": "node",
+  "id": 1446979283,
+  "lat": 41.8931945,
+  "lon": 12.4846207
+},
+{
+  "type": "node",
+  "id": 1451292301,
+  "lat": 41.8881092,
+  "lon": 12.4867273
+},
+{
+  "type": "node",
+  "id": 1451292333,
+  "lat": 41.8881178,
+  "lon": 12.4867184
+},
+{
+  "type": "node",
+  "id": 1451292360,
+  "lat": 41.8881249,
+  "lon": 12.4867479
+},
+{
+  "type": "node",
+  "id": 1451292376,
+  "lat": 41.8881263,
+  "lon": 12.4867055
+},
+{
+  "type": "node",
+  "id": 1451292383,
+  "lat": 41.8881288,
+  "lon": 12.4866965
+},
+{
+  "type": "node",
+  "id": 1451292402,
+  "lat": 41.8881339,
+  "lon": 12.4867353
+},
+{
+  "type": "node",
+  "id": 1451292429,
+  "lat": 41.8881415,
+  "lon": 12.4867461
+},
+{
+  "type": "node",
+  "id": 1451292477,
+  "lat": 41.8881505,
+  "lon": 12.4867600
+},
+{
+  "type": "node",
+  "id": 1451292593,
+  "lat": 41.8881799,
+  "lon": 12.4867978
+},
+{
+  "type": "node",
+  "id": 1451292627,
+  "lat": 41.8881872,
+  "lon": 12.4867869
+},
+{
+  "type": "node",
+  "id": 1451292652,
+  "lat": 41.8881940,
+  "lon": 12.4868298
+},
+{
+  "type": "node",
+  "id": 1451292678,
+  "lat": 41.8882016,
+  "lon": 12.4868401
+},
+{
+  "type": "node",
+  "id": 1451292698,
+  "lat": 41.8882063,
+  "lon": 12.4865381
+},
+{
+  "type": "node",
+  "id": 1451292700,
+  "lat": 41.8882067,
+  "lon": 12.4868121
+},
+{
+  "type": "node",
+  "id": 1451292720,
+  "lat": 41.8882187,
+  "lon": 12.4865180
+},
+{
+  "type": "node",
+  "id": 1451292734,
+  "lat": 41.8882221,
+  "lon": 12.4865564
+},
+{
+  "type": "node",
+  "id": 1451292776,
+  "lat": 41.8882332,
+  "lon": 12.4865358
+},
+{
+  "type": "node",
+  "id": 1451293105,
+  "lat": 41.8883439,
+  "lon": 12.4863796
+},
+{
+  "type": "node",
+  "id": 1451293188,
+  "lat": 41.8883784,
+  "lon": 12.4865855
+},
+{
+  "type": "node",
+  "id": 1451293238,
+  "lat": 41.8884082,
+  "lon": 12.4866216
+},
+{
+  "type": "node",
+  "id": 1451293409,
+  "lat": 41.8884678,
+  "lon": 12.4865323
+},
+{
+  "type": "node",
+  "id": 1458236857,
+  "lat": 41.8882119,
+  "lon": 12.4865291
+},
+{
+  "type": "node",
+  "id": 1479751098,
+  "lat": 41.8931388,
+  "lon": 12.4846519
+},
+{
+  "type": "node",
+  "id": 1479751206,
+  "lat": 41.8930838,
+  "lon": 12.4846461
+},
+{
+  "type": "node",
+  "id": 1479751208,
+  "lat": 41.8930852,
+  "lon": 12.4846219
+},
+{
+  "type": "node",
+  "id": 1479751262,
+  "lat": 41.8931917,
+  "lon": 12.4846574
+},
+{
+  "type": "node",
+  "id": 1512238698,
+  "lat": 41.8882459,
+  "lon": 12.4865179
+},
+{
+  "type": "node",
+  "id": 1512238699,
+  "lat": 41.8882647,
+  "lon": 12.4867492
+},
+{
+  "type": "node",
+  "id": 1536870666,
+  "lat": 41.8937073,
+  "lon": 12.4877735
+},
+{
+  "type": "node",
+  "id": 1536870713,
+  "lat": 41.8937542,
+  "lon": 12.4878426
+},
+{
+  "type": "node",
+  "id": 1536870734,
+  "lat": 41.8937720,
+  "lon": 12.4876906
+},
+{
+  "type": "node",
+  "id": 1536870769,
+  "lat": 41.8938123,
+  "lon": 12.4877502
+},
+{
+  "type": "node",
+  "id": 279484841,
+  "lat": 41.8941903,
+  "lon": 12.4834176
+},
+{
+  "type": "node",
+  "id": 279484843,
+  "lat": 41.8940731,
+  "lon": 12.4834587
+},
+{
+  "type": "node",
+  "id": 279484844,
+  "lat": 41.8940984,
+  "lon": 12.4836105
+},
+{
+  "type": "node",
+  "id": 332367901,
+  "lat": 41.8969788,
+  "lon": 12.4835152
+},
+{
+  "type": "node",
+  "id": 621436186,
+  "lat": 41.8942884,
+  "lon": 12.4836693
+},
+{
+  "type": "node",
+  "id": 621436187,
+  "lat": 41.8941053,
+  "lon": 12.4837225
+},
+{
+  "type": "node",
+  "id": 1270506325,
+  "lat": 41.8941254,
+  "lon": 12.4838236
+},
+{
+  "type": "node",
+  "id": 1270506328,
+  "lat": 41.8939020,
+  "lon": 12.4836218
+},
+{
+  "type": "node",
+  "id": 1270506335,
+  "lat": 41.8940066,
+  "lon": 12.4838657
+},
+{
+  "type": "node",
+  "id": 1270506339,
+  "lat": 41.8939095,
+  "lon": 12.4836664
+},
+{
+  "type": "node",
+  "id": 1270506349,
+  "lat": 41.8939437,
+  "lon": 12.4836566
+},
+{
+  "type": "node",
+  "id": 1270506354,
+  "lat": 41.8942265,
+  "lon": 12.4834066
+},
+{
+  "type": "node",
+  "id": 1270512003,
+  "lat": 41.8942729,
+  "lon": 12.4836738
+},
+{
+  "type": "node",
+  "id": 1270512006,
+  "lat": 41.8941463,
+  "lon": 12.4837106
+},
+{
+  "type": "node",
+  "id": 1479753325,
+  "lat": 41.8941132,
+  "lon": 12.4837624
+},
+{
+  "type": "node",
+  "id": 1649776466,
+  "lat": 41.8970184,
+  "lon": 12.4836855
+},
+{
+  "type": "node",
+  "id": 1649776472,
+  "lat": 41.8970957,
+  "lon": 12.4834646
+},
+{
+  "type": "node",
+  "id": 1649776475,
+  "lat": 41.8971357,
+  "lon": 12.4836348
+},
+{
+  "type": "way",
+  "id": 111539862,
+  "nodes": [
+    1270506325,
+    1270506335,
+    1270506330,
+    1270506332
+  ]
+},
+{
+  "type": "way",
+  "id": 137278755,
+  "nodes": [
+    1270506332,
+    1379492141,
+    1270506291,
+    1270506293,
+    565336695,
+    279485500,
+    279485660,
+    1270506331,
+    1270506288,
+    1379492197,
+    279484845,
+    1270506328,
+    1270506339,
+    1270506349,
+    279484844,
+    279484843,
+    279484841,
+    1270506354
+  ]
+},
+{
+  "type": "way",
+  "id": 137278774,
+  "nodes": [
+    1479751273,
+    1446979283
+  ]
+},
+{
+  "type": "way",
+  "id": 137278893,
+  "nodes": [
+    1479751208,
+    1479751211,
+    1479751273
+  ]
+},
+{
+  "type": "way",
+  "id": 131488086,
+  "nodes": [
+    1446979283,
+    1446979187
+  ]
+},
+{
+  "type": "way",
+  "id": 131923970,
+  "nodes": [
+    1512238698,
+    1451292776,
+    1451292720,
+    1458236857,
+    1451292698,
+    1451292734,
+    1451292383
+  ]
+},
+{
+  "type": "way",
+  "id": 134605525,
+  "nodes": [
+    1479751208,
+    1479751206,
+    1479751098,
+    1479751262
+  ]
+},
+{
+  "type": "way",
+  "id": 137278826,
+  "nodes": [
+    1446979187,
+    1479751262
+  ]
+},
+{
+  "type": "way",
+  "id": 137910792,
+  "nodes": [
+    1512238699,
+    1451293188,
+    1451293238,
+    1451293409,
+    1451293105,
+    1512238698
+  ]
+},
+{
+  "type": "way",
+  "id": 138303079,
+  "nodes": [
+    1451292376,
+    1451292383
+  ]
+},
+{
+  "type": "way",
+  "id": 138303112,
+  "nodes": [
+    1451292376,
+    1451292333,
+    1451292301
+  ]
+},
+{
+  "type": "way",
+  "id": 138303127,
+  "nodes": [
+    1451292301,
+    1451292360,
+    1451292402,
+    1451292429
+  ]
+},
+{
+  "type": "way",
+  "id": 138303143,
+  "nodes": [
+    1451292429,
+    1451292477,
+    1451292593,
+    1451292627,
+    1451292700,
+    1451292652,
+    1451292678,
+    1512238699
+  ]
+},
+{
+  "type": "way",
+  "id": 137278966,
+  "nodes": [
+    1270506325,
+    1479753325,
+    621436187,
+    1270512006,
+    1270512003,
+    621436186,
+    1270506354
+  ]
+},
+{
+  "type": "way",
+  "id": 152146292,
+  "nodes": [
+    1649776475,
+    1649776472
+  ]
+},
+{
+  "type": "way",
+  "id": 152146307,
+  "nodes": [
+    1649776466,
+    1649776475
+  ]
+},
+{
+  "type": "way",
+  "id": 152146335,
+  "nodes": [
+    1649776472,
+    332367901,
+    1649776466
+  ]
+}
+
+  ]
+}
